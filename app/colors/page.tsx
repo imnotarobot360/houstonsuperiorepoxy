@@ -9,6 +9,7 @@ import {
   Section,
 } from '@/components/blocks'
 import { CatalogButton } from '@/components/catalog-cta'
+import { ShortlistBar } from '@/components/shortlist/shortlist-bar'
 import { catalogEnabled } from '@/lib/catalog'
 import { CtaBand } from '@/components/cta-band'
 import { FlakeBlendGrid } from '@/components/flake-blend-grid'
@@ -216,6 +217,13 @@ export default function Page() {
         stood here until the owner supplied genuine manufacturer photographs of
         these blends.
       */}
+      {/*
+        Fixed to the bottom of the viewport, so it is placed here only for
+        document order — it appears once a blend is saved and is invisible
+        otherwise. See the positioning note in the component.
+      */}
+      <ShortlistBar />
+
       <Section bleed id="blends">
         <Heading
           eyebrow="The range"

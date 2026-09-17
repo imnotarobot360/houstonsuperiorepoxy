@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { blendsByTone, type FlakeBlend, toneGroups } from '@/lib/content/flake-blends'
 import { coverPhoto, projectForBlend } from '@/lib/content/projects'
+import { BlendHeart } from '@/components/shortlist/blend-heart'
 
 /*
   The installed-floor photo for a blend, if one exists.
@@ -123,13 +124,22 @@ export function FlakeBlendGrid() {
                     </div>
 
                     <div className="mt-3 flex flex-col gap-1.5">
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                        <h4 className="font-serif text-lg leading-none tracking-tight text-foreground">
-                          {b.name}
-                        </h4>
-                        <span className="text-[0.6rem] uppercase tracking-[0.16em] text-primary">
-                          {b.family}
-                        </span>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex flex-wrap items-baseline gap-x-3">
+                          <h4 className="font-serif text-lg leading-none tracking-tight text-foreground">
+                            {b.name}
+                          </h4>
+                          <span className="text-[0.6rem] uppercase tracking-[0.16em] text-primary">
+                            {b.family}
+                          </span>
+                        </div>
+                        {/*
+                          The only client component in this grid. The rest of
+                          the page stays server-rendered — a heart per card does
+                          not justify shipping 27 cards' worth of markup to the
+                          browser.
+                        */}
+                        <BlendHeart slug={b.slug} name={b.name} />
                       </div>
                       <p className="text-xs leading-relaxed text-muted-foreground text-pretty">
                         {b.blurb}

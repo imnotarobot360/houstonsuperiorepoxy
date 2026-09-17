@@ -6,6 +6,8 @@ import { cookies, headers } from 'next/headers'
 import { db } from '@/lib/db'
 import { estimateLeads } from '@/lib/db/schema'
 import { notifyNewLead, sendCustomerEstimate } from '@/lib/email'
+import { flakeBlends } from '@/lib/content/flake-blends'
+import { formatShortlistForLead, SHORTLIST_FIELD, SHORTLIST_MAX } from '@/lib/shortlist'
 import {
   DEDUPE_WINDOW_MINUTES,
   dedupeKeyFor,
@@ -306,6 +308,36 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
   */
   const spamSuspected = Boolean(clamp(formData.get(HONEYPOT_FIELD)))
 
+  /*
+    The blend shortlist, folded into `details`.
+
+    NAMES ARE RE-DERIVED SERVER-SIDE FROM THE SLUGS. The form posts slugs and
+    this looks each one up in the real blend list, so what reaches the inbox is
+    always a blend we actually stock. Trusting a display string from the client
+    would let anything at all be written into a field the crew reads as fact —
+    and an unknown slug is simply dropped rather than passed through.
+
+    It lands in `details` rather than a new column because that is the field
+    /admin/leads and the notification email already show. A migration against
+    the production leads table is a bigger change than this feature earns.
+  */
+  const shortlistNames = String(formData.get(SHORTLIST_FIELD) ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, SHORTLIST_MAX)
+    .map((slug) => flakeBlends.find((b) => b.slug === slug)?.name)
+    .filter((n): n is string => Boolean(n))
+
+  const shortlistLine = formatShortlistForLead(shortlistNames)
+  const typedDetails = String(formData.get('details') ?? '').trim()
+  /*
+    Customer's own words first. Capped to the column's 2000 so a long note plus
+    a shortlist cannot fail validation — the shortlist is what gets trimmed,
+    because losing the note the customer typed would be worse.
+  */
+  const details = [typedDetails, shortlistLine].filter(Boolean).join('\n\n').slice(0, 2000)
+
   const parsed = leadSchema.safeParse({
     name: formData.get('name') ?? '',
     phone: formData.get('phone') ?? '',
@@ -317,7 +349,7 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
     floorCondition: formData.get('floorCondition') ?? '',
     timeframe: formData.get('timeframe') ?? '',
     contactMethod: formData.get('contactMethod') ?? '',
-    details: formData.get('details') ?? '',
+    details,
     smsConsent: formData.get('smsConsent') === 'on' || formData.get('smsConsent') === 'true',
   })
 

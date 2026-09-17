@@ -19,6 +19,7 @@ import { type AnalyticsEvent, captureAttribution, track } from '@/lib/analytics'
 const CTA_EVENTS = {
   preview_floor: 'preview_floor_click',
   catalog: 'catalog_click',
+  shortlist_to_estimate: 'shortlist_to_estimate',
 } as const satisfies Record<string, AnalyticsEvent>
 
 /*

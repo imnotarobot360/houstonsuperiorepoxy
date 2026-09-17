@@ -54,6 +54,13 @@ export type AnalyticsEvent =
   */
   | 'preview_floor_click'
   | 'catalog_click'
+  /*
+    The blend shortlist converting: someone who saved blends on /colors/ acting
+    on the bar's CTA into /schedule/. The event worth having, because it is the
+    one that says the shortlist earned its place rather than just being played
+    with.
+  */
+  | 'shortlist_to_estimate'
 
 /*
   `location` answers "which of the many phone links was it?" — the header, the

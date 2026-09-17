@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { ShortlistField } from '@/components/shortlist/shortlist-field'
 import { Check, Clock, ImageIcon, Loader2, Mail, MapPin, Phone, X } from 'lucide-react'
 import { submitEstimate } from '@/app/actions/estimate'
 import { readAttribution, readGaSessionId, track } from '@/lib/analytics'
@@ -626,6 +627,17 @@ export function Estimate() {
                   className={`${field} resize-none`}
                   placeholder="Existing coating peeling, cracks near the door, timeline…"
                 />
+              </div>
+
+              {/*
+                The blend shortlist, if they built one on /colors/. Renders
+                nothing otherwise, so the form is unchanged for everyone else.
+                Sits directly under the free-text box because that is where the
+                server action folds it — into `details` — and the customer
+                should see the two together.
+              */}
+              <div className="sm:col-span-2">
+                <ShortlistField />
               </div>
 
               {/*
