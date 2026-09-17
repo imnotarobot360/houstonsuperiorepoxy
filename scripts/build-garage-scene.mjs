@@ -92,7 +92,14 @@ const grey = await sharp(scene).greyscale().blur(11).resize(768).raw().toBuffer(
 let sum = 0
 for (let i = 0; i < grey.data.length; i += grey.info.channels) sum += grey.data[i]
 const mean = sum / (grey.data.length / grey.info.channels)
-const CONTRAST = 1.75
+/*
+  1.15, down from 1.75. The stretch exists to stop the shading washing out once
+  it is blended, not to become the subject. At 1.75 — and composited at full
+  strength, which it also was — the bright pool in the middle of the slab
+  swallowed the flake entirely and read as a radial gradient painted over the
+  floor. The map's job is to place the material in the room, not to replace it.
+*/
+const CONTRAST = 1.15
 console.log(`light map: mean ${mean.toFixed(1)}, contrast x${CONTRAST}`)
 
 await sharp(scene)
@@ -107,15 +114,22 @@ await sharp(scene)
 /* --------------------------------------------------- 4. the highlight map */
 /*
   Specular only. Everything below the threshold is crushed to black so `screen`
-  adds nothing there; what survives is the bright pool and the door reflections.
-  Blurred after thresholding so the additions are soft rather than hard-edged.
+  adds nothing there; what survives is the door reflections down the slab.
+
+  GAIN AND BLUR BOTH CUT HARD, and for the same reason. A 2.6x gain behind a
+  hard threshold saturates every surviving pixel, and a blur of 9 then spreads
+  that saturated mass into soft round blooms — so what began as the photograph's
+  own reflections arrived as white blobs with no relation to anything in the
+  room. 1.5 keeps the reflections short of saturation and a blur of 4 keeps
+  their actual shape, which is the whole point of deriving this from the
+  photograph rather than drawing a gradient.
 */
-const THRESHOLD = 168
+const THRESHOLD = 172
 await sharp(scene)
   .greyscale()
   .resize(768)
-  .linear(2.6, -(THRESHOLD * 2.6 - 10))
-  .blur(9)
+  .linear(1.5, -(THRESHOLD * 1.5 - 8))
+  .blur(4)
   .webp({ quality: 80, effort: 6 })
   .toFile(`${OUT}/garage-highlight.webp`)
 

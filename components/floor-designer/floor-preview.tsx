@@ -23,13 +23,17 @@ import { GarageScene } from './garage-scene'
        back wall — which is what read as vertical panels.
 
   WHAT REPLACED IT
-  scripts/build-flake-textures.mjs samples each manufacturer photograph for its
-  real chip colours, then SYNTHESISES a broadcast floor from them: thousands of
-  irregular chips scattered over a pigmented base, drawn to wrap at the tile
-  edges. Seamless by construction, and flake scale is a number we chose (a
-  quarter-inch chip at ~2.7px) rather than an accident of the photo's
-  magnification. Verified: the wrap join measures SMOOTHER than two random
-  interior columns of the same texture.
+  scripts/build-flake-textures.mjs QUILTS a floor out of the manufacturer
+  photograph itself — many small pieces of the real sample, mirrored and turned,
+  joined along minimum-error cuts so the boundaries wander around chips instead
+  of across them. Seamless by construction, and flake scale is a number we chose
+  rather than an accident of the photo's magnification.
+
+  An intermediate version synthesised chips from the sample's colour histogram
+  instead, and it is worth knowing why that failed: the colours were right and
+  the material was gone. A blend's character is in its chip shapes and size
+  distribution, and a histogram keeps none of it, so every blend rendered as the
+  same grey static in a different tint. Nothing here invents pixels any more.
 
   So the layer stack here is the coating system, bottom up:
 
@@ -48,52 +52,41 @@ import { GarageScene } from './garage-scene'
 */
 
 /*
-  Texture scale on screen.
+  TEXTURE SCALE ON SCREEN — half of the scale decision, and the half that lives
+  here. The other half is CHIP_PX in scripts/build-flake-textures.mjs, which
+  fixes how many chips a tile holds (~82). This says how much screen that tile
+  occupies, so together they set apparent flake size.
 
-  The tile is 512px standing in for 4ft of slab, so this is what sets apparent
-  flake size at the FRONT of the floor. Perspective does the rest: the same tile
-  compresses toward the back wall on its own, which is the gradient a real
-  camera produces. Do not "fix" the back of the floor by adding bands — that was
-  the old bug.
+  Set as a CSS variable rather than an inline style because it has to cross a
+  breakpoint, and it has to cross one: the plane is sized as a PERCENTAGE of the
+  preview box, so a fixed pixel tile would stand in for a different amount of
+  real slab at every screen width, and a blend would read coarser on a phone
+  than on a desktop. The two values keep the apparent floor the same.
+
+  WHY THESE ARE LARGER THAN PHYSICALLY CORRECT, which they unambiguously are.
+  One tile is about 1.7ft of slab. Laid strictly to scale across a 20ft bay it
+  would come out near 120px, and a quarter-inch chip would land at 1.4px — which
+  is what the previous 140px value did, and why the floor arrived as grey static.
+  Accurate, and useless for choosing a colour.
+
+  150px is the working value, and it has to be read together with the 3.6x
+  near-to-far magnification the perspective now supplies (see PERSPECTIVE in
+  garage-scene.tsx). That lands chips at roughly:
+
+    at the door      1.8px    merged into the blend, as they should be
+    in the foreground  6px    unmistakably decorative flake
+
+  A single number cannot do that; a number plus a real perspective gradient can,
+  which is why fixing the flat projection mattered more than any tile value.
+
+  Worth noting 150 is close to the 140 this had before, and that the material
+  changed rather than the number: a tile now holds 82 real chips instead of 193
+  synthesised ones, so a chip is more than twice the size at the same tile.
+
+  Never "fix" the back of the floor by adding bands. The gradient is the
+  projection's job.
 */
-/*
-  512 is the tile's NATIVE size, deliberately, on two counts: the chips render
-  at the 2.7px they were drawn at instead of being resampled soft, and the plane
-  ends up standing in for roughly a single bay's width rather than an
-  implausibly wide room. An earlier 300px value quietly stretched the plane to
-  represent a 37-foot-wide garage, which is why the flake shrank to noise.
-
-  This is a LEGIBILITY choice as much as a physical one, and worth being straight
-  about: at the size this box actually renders, a strictly scaled quarter-inch
-  chip would be under a pixel — accurate, and useless for choosing a colour. The
-  caption says plainly that this is not a rendering of the finished floor.
-*/
-/*
-  Tile size is RESPONSIVE, set as a CSS variable so it can cross a breakpoint —
-  inline styles cannot.
-
-  The plane is sized as a percentage of the preview box, so a fixed tile means
-  the floor represents a different amount of real slab at every screen width. At
-  512px the desktop plane spans about 10ft, which is right; the same 512px on a
-  375px phone spans barely 6ft, and the flake reads chunky. 300px on mobile
-  brings it back to roughly the same 10ft, so the blend looks like the same
-  floor on both.
-*/
-/*
-  How much screen one 4ft tile occupies, and it is deliberately SMALL.
-
-  The garage bay in the photograph is roughly 20ft across. The texture plane is
-  220% of the panel and is then tipped back, so it stands in for something like
-  40ft of slab — which puts one 4ft tile at about a tenth of the plane's width.
-  That lands a quarter-inch chip under a pixel across most of the floor, and
-  perspective magnifies the near edge to the two or three pixels you actually
-  want in the foreground.
-
-  This is the number that was wrong before. At 512px the same tile covered eight
-  times the screen, chips rendered around ten pixels in the foreground, and the
-  floor read as gravel rather than flake.
-*/
-const TILE_VAR = '[--tile:78px] sm:[--tile:140px]'
+const TILE_VAR = '[--tile:95px] sm:[--tile:150px]'
 
 export function FloorPreview({
   blend,

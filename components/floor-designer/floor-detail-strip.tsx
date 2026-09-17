@@ -86,14 +86,21 @@ export function FloorDetailStrip({
       key: 'bright',
       label: 'Bright',
       kind: 'render',
-      style: render(150),
+      /*
+        270, not the 150 the main preview uses. These tiles are flat — no
+        perspective — so they need a single scale standing in for a range the
+        preview covers by receding. At 150 a chip is 1.8px, which is the scale
+        at the DOOR, and a whole tile of it reads as static rather than as a
+        floor. 270 sits mid-room, where chips are legible.
+      */
+      style: render(270),
     },
     {
       key: 'dim',
       label: 'One bulb',
       kind: 'render',
       /* Matches the dim filter on the main preview so the pair is comparable. */
-      style: render(150, 'brightness(0.44) saturate(0.9) contrast(1.03)'),
+      style: render(270, 'brightness(0.44) saturate(0.9) contrast(1.03)'),
     },
   ]
 
