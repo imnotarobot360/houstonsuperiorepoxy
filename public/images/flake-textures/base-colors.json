@@ -1,0 +1,83 @@
+{
+  "basalt": {
+    "base": "#3d3c42"
+  },
+  "cabin-fever": {
+    "base": "#605e5a"
+  },
+  "carbon": {
+    "base": "#121212"
+  },
+  "coyote": {
+    "base": "#64625f"
+  },
+  "creekbed": {
+    "base": "#5c5952"
+  },
+  "daredevil": {
+    "base": "#181717"
+  },
+  "dolerite": {
+    "base": "#333030"
+  },
+  "dovetail": {
+    "base": "#575453"
+  },
+  "garnet": {
+    "base": "#362c28"
+  },
+  "gravel": {
+    "base": "#595a5b"
+  },
+  "lanai-grey": {
+    "base": "#47474a"
+  },
+  "madras": {
+    "base": "#4f4a45"
+  },
+  "nightfall": {
+    "base": "#383835"
+  },
+  "obsidian": {
+    "base": "#403730"
+  },
+  "outback": {
+    "base": "#5f5246"
+  },
+  "portobello": {
+    "base": "#28231e"
+  },
+  "pumice": {
+    "base": "#554d4a"
+  },
+  "rocky-arrow": {
+    "base": "#61605f"
+  },
+  "sable": {
+    "base": "#50443c"
+  },
+  "safari": {
+    "base": "#594b3f"
+  },
+  "schist": {
+    "base": "#666567"
+  },
+  "shoreline": {
+    "base": "#676256"
+  },
+  "stargazer": {
+    "base": "#5b5b5b"
+  },
+  "stone-wash": {
+    "base": "#4e4d4b"
+  },
+  "stonehenge": {
+    "base": "#575858"
+  },
+  "stony-creek": {
+    "base": "#605f5d"
+  },
+  "tidal-wave": {
+    "base": "#636362"
+  }
+}
