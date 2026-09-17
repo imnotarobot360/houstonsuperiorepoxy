@@ -16,7 +16,7 @@ import { FlakeBlendGrid } from '@/components/flake-blend-grid'
 import { JsonLd } from '@/components/json-ld'
 import { MaterialSample } from '@/components/material-sample'
 import { PageHero } from '@/components/page-hero'
-import { flakeBlends } from '@/lib/content/flake-blends'
+import { activeBlends } from '@/lib/content/flake-blends'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { finishSamples } from '@/lib/site'
@@ -158,7 +158,7 @@ export default function Page() {
       <PageHero
         routeKey={KEY}
         eyebrow="Appearance"
-        intro={`All ${flakeBlends.length} vinyl flake blends we stock, grouped by how light or dark they read. Use these to narrow down the direction you want — then we bring the physical boards to your estimate and look at them on your own slab, because a screen is not the colour of a finished floor.`}
+        intro={`All ${activeBlends.length} vinyl flake blends we stock, grouped by how light or dark they read. Use these to narrow down the direction you want — then we bring the physical boards to your estimate and look at them on your own slab, because a screen is not the colour of a finished floor.`}
       />
 
       {/*
@@ -227,7 +227,7 @@ export default function Page() {
       <Section bleed id="blends">
         <Heading
           eyebrow="The range"
-          title={`${flakeBlends.length} stocked flake blends`}
+          title={`${activeBlends.length} stocked flake blends`}
           intro="Grouped light to dark, because that is the decision that most often gets regretted. Colour family is noted on each so you can tell a cool grey from a warm earth tone at a glance."
         />
         <FlakeBlendGrid />

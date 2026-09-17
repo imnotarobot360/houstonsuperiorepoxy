@@ -2,7 +2,7 @@
 
 import { Info } from 'lucide-react'
 import type { FlakeBlend } from '@/lib/content/flake-blends'
-import { flakeBaseColors, flakeTexture, hasTexture } from '@/lib/content/flake-textures.generated'
+import { blendVisuals } from '@/lib/content/blend-visuals'
 import { FloorDetailStrip, type InstalledPhoto } from './floor-detail-strip'
 
 /*
@@ -81,9 +81,8 @@ export function FloorPreview({
 }) {
   const dim = lighting === 'dim'
 
-  /* Falls back to a neutral ground if a blend ships before its texture is built. */
-  const base = hasTexture(blend.slug) ? flakeBaseColors[blend.slug] : '#4a4a4e'
-  const texture = flakeTexture(blend.slug)
+  /* One accessor for the blend's whole visual set — see lib/content/blend-visuals. */
+  const { baseColor: base, seamlessTexture: texture } = blendVisuals(blend)
 
   return (
     <figure className="flex flex-col gap-3">
@@ -194,6 +193,20 @@ export function FloorPreview({
           )}
         </div>
       </div>
+
+      {/*
+        Names the panel above for what it is.
+
+        The raw flake sample and this rendered floor are two different KINDS of
+        image, and the site must never let the first stand in for the second.
+        The strip below labels each tile; this labels the big panel, so the pair
+        is explicit wherever a visitor looks. "Preview" stays in the wording
+        because that is exactly what it is.
+      */}
+      <p className="text-[0.6rem] uppercase tracking-[0.16em] text-muted-foreground">
+        Installed floor preview
+        <span className="opacity-60"> · {blend.name}</span>
+      </p>
 
       {/* Sample, a real installed floor where we have one, and the lighting pair. */}
       <FloorDetailStrip blend={blend} installed={installed} />

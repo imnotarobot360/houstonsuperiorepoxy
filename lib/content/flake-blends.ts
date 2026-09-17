@@ -74,6 +74,24 @@ export type FlakeBlend = {
     /* Area level only — "Memorial", "Cypress". Never a street or subdivision. */
     neighborhood: string
   }
+  /*
+    Still stocked and orderable.
+
+    OMITTED MEANS TRUE, so the 27 current blends need no edit. Set `false` to
+    retire one: it leaves /colors/, the designer and the picker, but the record
+    stays. Deleting the entry instead would orphan every published project whose
+    `blend` names it, and break the /colors/ card that shows that floor. A blend
+    we no longer sell is still a blend we installed.
+  */
+  active?: boolean
+  /*
+    Worth leading with — the blends that actually sell, or that we want to.
+
+    Nothing filters on this yet; it exists so the ordering decision has somewhere
+    to live other than the array order, which is currently doing that job
+    implicitly and silently.
+  */
+  featured?: boolean
 }
 
 const img = (slug: string) => `/images/flake-blends/${slug}-flake-blend.jpg`
@@ -358,4 +376,18 @@ export const toneGroups: readonly {
   },
 ]
 
-export const blendsByTone = (tone: FlakeTone) => flakeBlends.filter((b) => b.tone === tone)
+/**
+ * The blends a customer can actually order.
+ *
+ * Everything customer-facing reads THIS, not `flakeBlends` — the raw array
+ * includes retired blends, which still need to exist so published projects that
+ * used them keep rendering. See `active` on FlakeBlend.
+ */
+export const activeBlends: readonly FlakeBlend[] = flakeBlends.filter((b) => b.active !== false)
+
+/** Blends marked worth leading with. Empty until someone marks some. */
+export const featuredBlends: readonly FlakeBlend[] = activeBlends.filter((b) => b.featured)
+
+export const blendsByTone = (tone: FlakeTone) => activeBlends.filter((b) => b.tone === tone)
+
+export const blendBySlug = (slug: string) => flakeBlends.find((b) => b.slug === slug)

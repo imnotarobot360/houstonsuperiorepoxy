@@ -5,7 +5,7 @@ import { JsonLd } from '@/components/json-ld'
 import { PageHero } from '@/components/page-hero'
 import { FloorDesigner } from '@/components/floor-designer/floor-designer'
 import { catalogEnabled } from '@/lib/catalog'
-import { flakeBlends } from '@/lib/content/flake-blends'
+import { activeBlends, flakeBlends } from '@/lib/content/flake-blends'
 import { coverPhoto, projectForBlend } from '@/lib/content/projects'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
@@ -103,7 +103,7 @@ export default function Page() {
       <PageHero
         routeKey={KEY}
         eyebrow="Design tool"
-        intro={`Preview any of our ${flakeBlends.length} stocked flake blends on a garage floor, see how each reads in bright and dim light, then get an honest starting estimate and book a free onsite inspection — all in one place.`}
+        intro={`Preview any of our ${activeBlends.length} stocked flake blends on a garage floor, see how each reads in bright and dim light, then get an honest starting estimate and book a free onsite inspection — all in one place.`}
       />
 
       <Section bleed>

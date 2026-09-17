@@ -1,7 +1,7 @@
 'use client'
 
 import type { FlakeBlend } from '@/lib/content/flake-blends'
-import { flakeBaseColors, flakeTexture, hasTexture } from '@/lib/content/flake-textures.generated'
+import { blendVisuals } from '@/lib/content/blend-visuals'
 
 /** A real installed floor, when one exists for this blend. */
 export type InstalledPhoto = { src: string; alt: string; neighborhood: string }
@@ -37,8 +37,7 @@ export function FloorDetailStrip({
   blend: FlakeBlend
   installed?: InstalledPhoto
 }) {
-  const base = hasTexture(blend.slug) ? flakeBaseColors[blend.slug] : '#4a4a4e'
-  const texture = flakeTexture(blend.slug)
+  const { baseColor: base, seamlessTexture: texture, sampleImage, sampleAlt } = blendVisuals(blend)
 
   /* Shared render styling — the coating system, flattened to a top-down view. */
   const render = (tilePx: number, filter?: string) => ({
@@ -61,7 +60,7 @@ export function FloorDetailStrip({
       label: 'Flake sample',
       kind: 'photo',
       style: {},
-      img: { src: blend.image, alt: blend.alt },
+      img: { src: sampleImage, alt: sampleAlt },
     },
     installed
       ? {
