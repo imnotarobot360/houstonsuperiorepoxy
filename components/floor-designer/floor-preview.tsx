@@ -4,6 +4,7 @@ import { Info } from 'lucide-react'
 import type { FlakeBlend } from '@/lib/content/flake-blends'
 import { blendVisuals } from '@/lib/content/blend-visuals'
 import { FloorDetailStrip, type InstalledPhoto } from './floor-detail-strip'
+import { GarageScene } from './garage-scene'
 
 /*
   Garage floor preview.
@@ -108,113 +109,12 @@ export function FloorPreview({
 
   return (
     <figure className="flex flex-col gap-3">
-      <div
-        className="relative aspect-[5/4] w-full overflow-hidden rounded-xl border border-border bg-[#0a0a0c]"
-        style={{ perspective: '1150px' }}
-      >
-        <div
-          className="absolute inset-0 transition-[filter] duration-500 ease-out"
-          style={{ filter: dim ? 'brightness(0.42) saturate(0.9) contrast(1.03)' : 'brightness(1)' }}
-        >
-          {/* Back wall */}
-          <div
-            className="absolute inset-x-0 top-0 h-[44%]"
-            style={{ background: 'linear-gradient(180deg,#27272c 0%,#1b1b20 100%)' }}
-          />
-
-          {/* Roll-up garage door on the back wall */}
-          <div
-            className="absolute left-1/2 top-[8%] h-[28%] w-[46%] -translate-x-1/2 rounded-t border border-black/40"
-            style={{
-              background:
-                'repeating-linear-gradient(180deg,#34343b 0px,#34343b 9px,#292930 9px,#292930 18px)',
-            }}
-            aria-hidden
-          />
-
-          {/* Baseboard shadow where wall meets floor */}
-          <div className="absolute inset-x-0 top-[43.4%] h-[1.6%] bg-black/55" aria-hidden />
-
-          {/*
-            THE FLOOR. Everything inside this box is clipped to it, which is what
-            keeps coating off the walls, the door and the baseboard. When the
-            real garage photograph lands, this box becomes a clip-path polygon
-            traced to the slab and nothing else in the stack has to change.
-          */}
-          <div className={`absolute inset-x-0 bottom-0 top-[44%] overflow-hidden ${TILE_VAR}`}>
-            <div
-              className="absolute left-1/2 top-0 h-[240%] w-[220%] -translate-x-1/2"
-              style={{ transform: 'rotateX(64deg)', transformOrigin: 'top center' }}
-            >
-              {/* 1 — pigmented base coat, the ground the chips sit in */}
-              <div
-                className="absolute inset-0 transition-colors duration-300 ease-out"
-                style={{ backgroundColor: base }}
-              />
-
-              {/*
-                2 — the flake broadcast. ONE seamless layer is enough: the
-                repetition problem was solved in the texture, not by stacking
-                randomised copies here. Fewer layers also means switching colour
-                costs one image swap on mobile.
-              */}
-              <div
-                className="absolute inset-0 transition-opacity duration-300 ease-out"
-                style={{
-                  backgroundImage: `url("${texture}")`,
-                  backgroundSize: 'var(--tile) var(--tile)',
-                  backgroundRepeat: 'repeat',
-                }}
-              />
-
-              {/*
-                3 — light falloff across the slab. Real garage light comes from
-                the door and dies toward the back corners, so the floor is never
-                evenly lit. Multiply keeps the chips visible through it rather
-                than greying them out.
-              */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    'radial-gradient(130% 80% at 50% 95%, rgba(255,255,255,0.16), transparent 55%),' +
-                    'linear-gradient(0deg, rgba(6,6,8,0.05) 0%, rgba(6,6,8,0.55) 100%)',
-                  mixBlendMode: 'multiply',
-                }}
-                aria-hidden
-              />
-            </div>
-          </div>
-
-          {/*
-            4 — polyaspartic topcoat. A broad, very low-contrast sweep plus a
-            slight deepening. Deliberately NOT a mirror and NOT wet-looking: a
-            real satin topcoat returns a soft sheen, and anything stronger reads
-            as water and hides the colour underneath, which is the one thing
-            this preview exists to show.
-          */}
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 top-[44%]"
-            style={{
-              background:
-                'linear-gradient(101deg, transparent 26%, rgba(255,255,255,0.07) 46%, rgba(255,255,255,0.03) 56%, transparent 72%)',
-            }}
-            aria-hidden
-          />
-
-          {/* A single warm pool of light — reads as the "one bulb" garage when dimmed */}
-          {dim && (
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  'radial-gradient(120% 68% at 50% 26%, rgba(255,240,214,0.20), transparent 58%)',
-              }}
-              aria-hidden
-            />
-          )}
-        </div>
-      </div>
+      <GarageScene
+        baseColor={base}
+        texture={texture}
+        dim={dim}
+        tileClass={TILE_VAR}
+      />
 
       {/*
         Blend name, tone and the lighting toggle — supplied by the designer so
