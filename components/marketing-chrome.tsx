@@ -62,13 +62,31 @@ export function MarketingChromeTop() {
   )
 }
 
+/*
+  The floor designer pins its own bar on phones, carrying the chosen colour and
+  the way on to the estimate. Two fixed bars would take about a hundred pixels
+  off the bottom of the one page whose whole job is scrolling a rail of colours,
+  so the site-wide one stands down here. Nothing is lost: the designer's bar
+  keeps the same reach, and the header's phone number is a tap away.
+
+  The FOOTER still renders — this is about the fixed bar only, which is why the
+  check is separate from useIsChromeless above.
+*/
+function useHidesCallBar() {
+  const pathname = usePathname()
+  return pathname?.startsWith('/floor-designer') ?? false
+}
+
 export function MarketingChromeBottom() {
-  if (useIsChromeless()) return null
+  /* Both hooks run before any early return, so the order never changes. */
+  const chromeless = useIsChromeless()
+  const hidesCallBar = useHidesCallBar()
+  if (chromeless) return null
 
   return (
     <>
       <SiteFooter />
-      <MobileCallBar />
+      {!hidesCallBar && <MobileCallBar />}
     </>
   )
 }

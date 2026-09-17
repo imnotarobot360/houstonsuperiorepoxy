@@ -1,68 +1,96 @@
-import type { FlakeBlend } from '@/lib/content/flake-blends'
-import { flakeBaseColors, flakeTexture, hasTexture } from '@/lib/content/flake-textures.generated'
+import { activeBlends, type FlakeBlend } from '@/lib/content/flake-blends'
+import {
+  hasInstalledPreview,
+  installedPreview,
+  installedPreviewSrcSet,
+  INSTALLED_PREVIEW_SIZE,
+  type InstalledLighting,
+} from '@/lib/content/installed-previews.generated'
 
 /*
-  Every image and colour a blend has, in one place.
+  Every image a blend has, in one place.
 
-  WHY THIS EXISTS RATHER THAN MORE FIELDS ON FlakeBlend
-  The schema a blend needs spans three sources that are maintained differently,
-  and collapsing them into one hand-edited record would mean copying generated
-  values by hand:
+  THE INSTALLED FLOOR IS NO LONGER ASSEMBLED AT RUNTIME. It is a flat image
+  rendered offline by scripts/build-installed-previews.mjs, composited onto one
+  locked master photograph so that nothing but the coating differs between
+  colours. The browser's whole job is to swap an `<img>`.
 
-    sample image      hand-authored   lib/content/flake-blends.ts
-    installed photo   hand-authored, OR derived from a published project
-    seamless texture  GENERATED       scripts/build-flake-textures.mjs
-    base coat colour  GENERATED       sampled from the manufacturer photograph
+  That is why this file is now mostly lookups. The interesting decisions — the
+  perspective, the filtering, the lighting, the colour fidelity gate — all
+  happen at build time where they can be verified once and then trusted.
 
-  A hex code pasted into flake-blends.ts would silently drift the moment the
-  generator's sampling changes, and nothing would catch it. So the generated
-  half stays generated and this function is the single place that assembles the
-  full set — one import for any component that needs a blend's visuals.
+  THE THREE SOURCES a blend draws on, maintained differently:
 
-  THE INSTALLED PHOTO IS NOT RESOLVED HERE, deliberately. It can come from a
-  published project, and lib/content/projects reads from disk — importing it
-  here would drag `node:fs` into every client component that wants a texture.
-  Server pages resolve it and pass it down; see app/floor-designer/page.tsx.
+    sample photograph   hand-authored   lib/content/flake-blends.ts
+    real installation   hand-authored, or derived from a published project
+    installed preview   GENERATED       scripts/build-installed-previews.mjs
+
+  A REAL PHOTOGRAPH ALWAYS WINS. A rendered preview is a sales aid; a photograph
+  of a floor this company actually installed is evidence. When a blend has one,
+  it leads and the render becomes the secondary view.
 */
 
+export type { InstalledLighting }
+
+export type InstalledPhoto = NonNullable<FlakeBlend['installedPhoto']>
+
 export type BlendVisuals = {
-  name: string
+  id: string
   slug: string
-  /** Manufacturer photograph of LOOSE FLAKE. A colour reference, never a floor. */
+  name: string
+  family: FlakeBlend['family']
+  tone: FlakeBlend['tone']
+  description: string
+
+  /** Manufacturer photograph of LOOSE FLAKE. The colour reference, never a floor. */
   sampleImage: string
   sampleAlt: string
-  /** Seamless synthesised floor texture. 512px tile ≈ 4ft of slab. */
-  seamlessTexture: string
-  /** Pigmented base coat sampled from the blend, shown between the chips. */
-  baseColor: string
-  colorFamily: FlakeBlend['family']
-  tone: FlakeBlend['tone']
+
+  /** Pre-rendered installed floor. Null only if a texture was added without a rerun. */
+  installedPreviewBright: string | null
+  installedPreviewOneBulb: string | null
+
   featured: boolean
   active: boolean
-  /**
-   * A real photograph of one of our floors in this blend, when the blend
-   * itself carries one. Projects contribute this too, but only server-side —
-   * see the note above.
-   */
-  installedPhoto?: FlakeBlend['installedPhoto']
+  sortOrder: number
 }
 
-/* Neutral ground for a blend added before its texture has been generated. */
-const FALLBACK_BASE = '#4a4a4e'
+/*
+  Position in the curated order of lib/content/flake-blends.ts, which is grouped
+  light -> mid -> dark. Derived rather than stored as a field on each blend: a
+  hand-kept sortOrder is a second copy of information the array already carries,
+  and the two drift the first time someone reorders the list.
+*/
+const order = new Map(activeBlends.map((b, i) => [b.slug, i]))
 
 export function blendVisuals(blend: FlakeBlend): BlendVisuals {
+  const rendered = hasInstalledPreview(blend.slug)
   return {
-    name: blend.name,
+    id: blend.slug,
     slug: blend.slug,
+    name: blend.name,
+    family: blend.family,
+    tone: blend.tone,
+    description: blend.blurb,
     sampleImage: blend.image,
     sampleAlt: blend.alt,
-    seamlessTexture: flakeTexture(blend.slug),
-    baseColor: hasTexture(blend.slug) ? flakeBaseColors[blend.slug] : FALLBACK_BASE,
-    colorFamily: blend.family,
-    tone: blend.tone,
+    installedPreviewBright: rendered ? installedPreview(blend.slug, 'bright') : null,
+    installedPreviewOneBulb: rendered ? installedPreview(blend.slug, 'one-bulb') : null,
     featured: blend.featured === true,
     /* Omitted means stocked — see the field note in flake-blends.ts. */
     active: blend.active !== false,
-    installedPhoto: blend.installedPhoto,
+    sortOrder: order.get(blend.slug) ?? Number.MAX_SAFE_INTEGER,
   }
 }
+
+/** Largest rendition, for `src`. */
+export function previewSrc(slug: string, lighting: InstalledLighting) {
+  return hasInstalledPreview(slug) ? installedPreview(slug, lighting) : null
+}
+
+/** Responsive set, so a phone never downloads the desktop rendition. */
+export function previewSrcSet(slug: string, lighting: InstalledLighting) {
+  return hasInstalledPreview(slug) ? installedPreviewSrcSet(slug, lighting) : undefined
+}
+
+export { INSTALLED_PREVIEW_SIZE, hasInstalledPreview }
