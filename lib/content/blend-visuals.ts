@@ -47,8 +47,7 @@ export type BlendVisuals = {
   sampleAlt: string
 
   /** Pre-rendered installed floor. Null only if a texture was added without a rerun. */
-  installedPreviewBright: string | null
-  installedPreviewOneBulb: string | null
+  installedPreview: string | null
 
   featured: boolean
   active: boolean
@@ -74,8 +73,7 @@ export function blendVisuals(blend: FlakeBlend): BlendVisuals {
     description: blend.blurb,
     sampleImage: blend.image,
     sampleAlt: blend.alt,
-    installedPreviewBright: rendered ? installedPreview(blend.slug, 'bright') : null,
-    installedPreviewOneBulb: rendered ? installedPreview(blend.slug, 'one-bulb') : null,
+    installedPreview: rendered ? installedPreview(blend.slug, 'bright') : null,
     featured: blend.featured === true,
     /* Omitted means stocked — see the field note in flake-blends.ts. */
     active: blend.active !== false,

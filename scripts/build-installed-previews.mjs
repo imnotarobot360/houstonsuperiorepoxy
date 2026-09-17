@@ -42,7 +42,12 @@ import path from 'node:path'
 
 const MASTER = 'public/images/designer/garage-scene-1536.webp'
 const MASK = 'public/images/designer/garage-floor-mask.png'
-const TEXTURE_DIR = 'public/images/flake-textures'
+/*
+  NOT UNDER public/. The textures are a build INPUT, never something a browser
+  asks for — what ships is the flat renditions in OUT_DIR. Keeping the
+  intermediates out of the served tree keeps ~13MB out of the deployment.
+*/
+const TEXTURE_DIR = 'assets/flake-textures'
 const OUT_DIR = 'public/images/installed'
 
 /*
@@ -102,12 +107,29 @@ const FLOOR_DEPTH_FT = 16
 */
 const TILE_FT = 1.71
 
-/* Lighting, all applied in linear light. See applyLighting. */
+/*
+  Lighting, all applied in linear light.
+
+  THE CLAMPS ARE THE FIX FOR THE FOUR WHITE DISCS. The garage door throws four
+  soft reflections down the bare slab, and they are genuinely in the master
+  photograph — but the field was allowed to run from 0.42x to 1.9x, so those
+  reflections were amplified until they stopped reading as sheen on a floor and
+  started reading as spotlights painted over one. Measured on the old output,
+  the brightest 1% of the floor sat 1.42x above the median.
+
+  0.82 to 1.16 keeps the room's shading — the pool near the camera, the falloff
+  into the back corners, the shadow under the cabinets — while holding the
+  reflections to something a topcoat could plausibly do. Nothing is drawn; this
+  only decides how much of the photograph's own light is allowed through.
+
+  SPECULAR IS GONE, not reduced. It added a second, synthetic highlight on top
+  of reflections that were already in the photograph, which is precisely the
+  "do not draw reflections" rule. A polyaspartic's sheen is the photograph's
+  light coming back off it, and that is what the light field already carries.
+*/
 const LIGHT_BLUR = 9
-const LIGHT_MIN = 0.42
-const LIGHT_MAX = 1.9
-const SPECULAR = 0.1
-const SPECULAR_THRESHOLD = 0.72
+const LIGHT_MIN = 0.82
+const LIGHT_MAX = 1.16
 
 /*
   ONE BULB IS AN EXPOSURE CHANGE, NOT A FILTER.
@@ -339,12 +361,14 @@ function compose(texLevels, dim) {
 
         trilinear(texLevels, u0 / TILE_FT, v0 / TILE_FT, footprint, col)
 
+        /*
+          The material, under the photograph's own light. Nothing is added on
+          top: no specular term, no gradient, no highlight layer.
+        */
         const l = light[p]
-        const spec = Math.max(0, l - SPECULAR_THRESHOLD * 2) * SPECULAR
-
-        const fr = col[0] * l + spec
-        const fg = col[1] * l + spec
-        const fb = col[2] * l + spec
+        const fr = col[0] * l
+        const fg = col[1] * l
+        const fb = col[2] * l
 
         r = r * (1 - a) + fr * a
         g = g * (1 - a) + fg * a
@@ -397,34 +421,56 @@ for (const slug of files) {
     .stats()
   const sMean = sample.channels.slice(0, 3).map((c) => c.mean)
 
-  for (const [state, dim] of [['bright', false], ['one-bulb', true]]) {
-    const buf = compose(levels, dim)
-    const img = sharp(buf, { raw: { width: W, height: H, channels: 3 } })
-    for (const w of WIDTHS) {
-      await img
-        .clone()
-        .resize(w, null, { kernel: 'lanczos3' })
-        .webp({ quality: 80, effort: 6 })
-        .toFile(path.join(OUT_DIR, `garage-${slug}-${state}-${w}.webp`))
-    }
-    if (state === 'bright') {
-      const fMean = floorMean(buf)
-      /*
-        Compared as a RATIO, not a difference. The floor sits under the room's
-        light, so it is legitimately a little darker than a sample shot in a
-        lightbox; what must not happen is the hue moving or one colour being
-        darkened far more than another.
-      */
-      const ratio = fMean.map((v, i) => v / sMean[i])
-      const spread = Math.max(...ratio) - Math.min(...ratio)
-      report.push({ slug, sMean, fMean, ratio, spread })
-    }
+  /*
+    ONE STATE, NATURAL LIGHT. The dim "one bulb" rendition is not emitted while
+    the look is being settled.
+
+    It is what the "almost black" floor actually was: a 0.25x linear exposure
+    put the floor's median at 76 against 146 for the lit version, and the door's
+    reflections then stood 1.45x above that dark field, which is what read as
+    four white discs on a black surface. Bright was never the problem — it
+    measured 146, a light-medium grey — but the two states were one toggle apart
+    and the dim one is what got looked at.
+
+    compose() still takes the flag and DIM_EXPOSURE is still here, so bringing
+    the mode back is a one-line change once the lit floor is approved.
+  */
+  const buf = compose(levels, false)
+  const img = sharp(buf, { raw: { width: W, height: H, channels: 3 } })
+  for (const w of WIDTHS) {
+    await img
+      .clone()
+      .resize(w, null, { kernel: 'lanczos3' })
+      .webp({ quality: 80, effort: 6 })
+      .toFile(path.join(OUT_DIR, `garage-${slug}-bright-${w}.webp`))
   }
 
-  manifest[slug] = {
-    bright: `garage-${slug}-bright`,
-    oneBulb: `garage-${slug}-one-bulb`,
+  /*
+    VERIFY_LOCK=1 also writes a LOSSLESS copy. Comparing the shipped WebP
+    against the master proves nothing about whether this renderer stays inside
+    the mask, because changing the floor changes the encoder's bit allocation
+    across the whole frame — untouched wall pixels come back a few levels
+    different purely from that. A PNG has no such excuse: any difference outside
+    the mask is this code's doing.
+  */
+  if (process.env.VERIFY_LOCK) {
+    await sharp(buf, { raw: { width: W, height: H, channels: 3 } })
+      .png({ compressionLevel: 6 })
+      .toFile(path.join(OUT_DIR, `verify-${slug}.png`))
   }
+
+  const fMean = floorMean(buf)
+  /*
+    Compared as a RATIO, not a difference. The floor sits under the room's
+    light, so it is legitimately a little darker than a sample shot in a
+    lightbox; what must not happen is the hue moving or one colour being
+    darkened far more than another.
+  */
+  const ratio = fMean.map((v, i) => v / sMean[i])
+  const spread = Math.max(...ratio) - Math.min(...ratio)
+  report.push({ slug, sMean, fMean, ratio, spread })
+
+  manifest[slug] = { bright: `garage-${slug}-bright` }
   const last = report[report.length - 1]
   console.log(
     `  ${slug.padEnd(20)} sample rgb(${last.sMean.map((v) => Math.round(v)).join(',')}) -> ` +
@@ -447,7 +493,7 @@ if (!only) {
   const ts = `/* GENERATED by scripts/build-installed-previews.mjs — do not edit by hand. */
 
 /*
-  Pre-rendered installed-floor previews, one pair per blend.
+  Pre-rendered installed-floor previews, one per blend.
 
   These are FLAT IMAGES, composited offline onto the one locked master
   photograph. The browser does not assemble a floor; it swaps an <img>. Any of
@@ -457,7 +503,17 @@ if (!only) {
 
 const WIDTHS = [${WIDTHS.join(', ')}] as const
 
-export type InstalledLighting = 'bright' | 'one-bulb'
+/*
+  One state. A dim "one bulb" rendition used to exist alongside this and was
+  what the floor-is-nearly-black report was actually about: it put the floor's
+  median at 76 against 146 lit, and the garage door's reflections then stood
+  1.45x above that dark field, reading as white discs on a black surface.
+
+  The type is deliberately narrowed to what is on disk, so nothing can request a
+  file that is not rendered. Widening it is the first step in bringing the mode
+  back.
+*/
+export type InstalledLighting = 'bright'
 
 /** Blends that have a rendered preview. */
 export const installedPreviewSlugs = [

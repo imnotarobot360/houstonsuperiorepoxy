@@ -2,7 +2,6 @@
 
 import { Heart } from 'lucide-react'
 import type { FlakeBlend } from '@/lib/content/flake-blends'
-import type { InstalledLighting } from '@/lib/content/blend-visuals'
 import { useShortlist } from '@/components/shortlist/use-shortlist'
 
 /*
@@ -17,15 +16,7 @@ import { useShortlist } from '@/components/shortlist/use-shortlist'
   competed with three pictures of itself. The strip is gone.
 */
 
-export function SelectedColor({
-  blend,
-  lighting,
-  onLighting,
-}: {
-  blend: FlakeBlend
-  lighting: InstalledLighting
-  onLighting: (l: InstalledLighting) => void
-}) {
+export function SelectedColor({ blend }: { blend: FlakeBlend }) {
   return (
     <div className="flex flex-col gap-5">
       <div>
@@ -62,59 +53,7 @@ export function SelectedColor({
 
       <p className="text-sm leading-relaxed text-muted-foreground text-pretty">{blend.blurb}</p>
 
-      <LightingToggle lighting={lighting} onLighting={onLighting} />
-
       <SaveFavourite slug={blend.slug} name={blend.name} />
-    </div>
-  )
-}
-
-/*
-  The lighting control.
-
-  LOAD-BEARING, NOT DECORATION. /colors/ states that the single most common
-  colour regret is a dark blend in a badly lit garage, so letting the visitor
-  drop the lights surfaces that decision here, where changing your mind is free.
-
-  Each state is its own pre-rendered image rather than a CSS filter over one.
-  The filter version multiplied the finished panel by 0.46 in sRGB and crushed
-  the floor to near black, taking the blend with it.
-*/
-function LightingToggle({
-  lighting,
-  onLighting,
-}: {
-  lighting: InstalledLighting
-  onLighting: (l: InstalledLighting) => void
-}) {
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="text-[0.6rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-        Garage lighting
-      </p>
-      <div role="group" aria-label="Preview lighting" className="flex gap-1 rounded-lg border border-border p-1">
-        {(
-          [
-            ['bright', 'Bright'],
-            ['one-bulb', 'One bulb'],
-          ] as const
-        ).map(([value, label]) => {
-          const active = value === lighting
-          return (
-            <button
-              key={value}
-              type="button"
-              aria-pressed={active}
-              onClick={() => onLighting(value)}
-              className={`flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-                active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {label}
-            </button>
-          )
-        })}
-      </div>
     </div>
   )
 }

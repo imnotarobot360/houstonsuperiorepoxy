@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import { submitEstimate } from '@/app/actions/estimate'
 import { computeEstimate, type EstimatorAnswers } from '@/lib/estimate-calc'
 import { activeBlends, flakeBlends } from '@/lib/content/flake-blends'
-import type { InstalledLighting, InstalledPhoto } from '@/lib/content/blend-visuals'
+import type { InstalledPhoto } from '@/lib/content/blend-visuals'
 import {
   COATING_CONDITIONS,
   type CoatingCondition,
@@ -71,7 +71,6 @@ export function FloorDesigner({
   installed?: Record<string, InstalledPhoto>
 }) {
   const [slug, setSlug] = useState(DEFAULT_SLUG)
-  const [lighting, setLighting] = useState<InstalledLighting>('bright')
   const [showReal, setShowReal] = useState(true)
   const [size, setSize] = useState<GarageSize | null>(null)
   const [condition, setCondition] = useState<CoatingCondition | null>(null)
@@ -147,7 +146,7 @@ export function FloorDesigner({
     data.set('timeframe', timeframe)
     data.set(
       'details',
-      `Floor Designer — leaning toward the "${blend.name}" flake blend (${blend.family}, ${blend.tone}-tone). Finish: ${RECOMMENDED_FINISH}. Viewed in ${lighting === 'one-bulb' ? 'dim/one-bulb' : 'bright'} lighting.`,
+      `Floor Designer — leaning toward the "${blend.name}" flake blend (${blend.family}, ${blend.tone}-tone). Finish: ${RECOMMENDED_FINISH}.`,
     )
     data.set('smsConsent', smsConsent ? 'on' : '')
 
@@ -222,13 +221,12 @@ export function FloorDesigner({
         <InstalledPreview
           slug={blend.slug}
           name={blend.name}
-          lighting={lighting}
           neighbours={neighbours}
           realPhoto={realPhoto}
           showReal={showReal}
           onToggleReal={setShowReal}
         />
-        <SelectedColor blend={blend} lighting={lighting} onLighting={setLighting} />
+        <SelectedColor blend={blend} />
       </section>
 
       {/* --------------------------------------------------------------- Colour rail */}
