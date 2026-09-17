@@ -170,44 +170,66 @@ export function FloorDesigner({
     <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14" id="designer-flow">
       {/* ------------------------------------------------------- Preview column */}
       <div className="lg:sticky lg:top-24 lg:self-start">
-        <FloorPreview blend={blend} lighting={lighting} installed={installed[blend.slug]} />
+        {/*
+          ORDER IS THE LAYOUT SPEC: garage panel, then the blend name, then the
+          samples, then the caveat. The name used to sit BELOW the sample strip
+          and the disclaimer, which meant the largest thing on the page was
+          unlabelled until you had scrolled past two other blocks.
+        */}
+        <FloorPreview
+          blend={blend}
+          lighting={lighting}
+          installed={installed[blend.slug]}
+          heading={
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                {/*
+                  Req 13's label for the panel above, placed as the eyebrow to
+                  the name so the two read as one line of thought: this is a
+                  preview, and it is of this blend.
+                */}
+                <p className="text-[0.6rem] uppercase tracking-[0.16em] text-muted-foreground">
+                  Installed floor preview
+                </p>
+                <h2 className="mt-1.5 font-serif text-3xl leading-none tracking-tight text-foreground">
+                  {blend.name}
+                </h2>
+                <p className="mt-1.5 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
+                  {blend.family} · {blend.tone}-tone
+                </p>
+              </div>
 
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="font-serif text-2xl leading-none tracking-tight text-foreground">
-              {blend.name}
-            </h2>
-            <p className="mt-1 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
-              {blend.family} · {blend.tone}-tone
-            </p>
-          </div>
+              {/* Lighting toggle — the on-brand, load-bearing control */}
+              <div
+                role="group"
+                aria-label="Preview lighting"
+                className="flex gap-1 rounded-lg border border-border p-1"
+              >
+                {(['bright', 'dim'] as const).map((l) => {
+                  const active = l === lighting
+                  return (
+                    <button
+                      key={l}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setLighting(l)}
+                      className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                        active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      {l === 'bright' ? 'Bright' : 'One bulb'}
+                    </button>
+                  )
+                })}
+              </div>
 
-          {/* Lighting toggle — the on-brand, load-bearing control */}
-          <div
-            role="group"
-            aria-label="Preview lighting"
-            className="flex gap-1 rounded-lg border border-border p-1"
-          >
-            {(['bright', 'dim'] as const).map((l) => {
-              const active = l === lighting
-              return (
-                <button
-                  key={l}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => setLighting(l)}
-                  className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-                    active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {l === 'bright' ? 'Bright' : 'One bulb'}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">{blend.blurb}</p>
+              {/* Full width under both, so a long blurb never squeezes the toggle. */}
+              <p className="w-full text-sm leading-relaxed text-muted-foreground text-pretty">
+                {blend.blurb}
+              </p>
+            </div>
+          }
+        />
       </div>
 
       {/* --------------------------------------------------------- Control column */}

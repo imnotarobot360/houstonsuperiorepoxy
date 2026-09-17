@@ -67,17 +67,39 @@ import { FloorDetailStrip, type InstalledPhoto } from './floor-detail-strip'
   chip would be under a pixel — accurate, and useless for choosing a colour. The
   caption says plainly that this is not a rendering of the finished floor.
 */
-const TILE_PX = 512
+/*
+  Tile size is RESPONSIVE, set as a CSS variable so it can cross a breakpoint —
+  inline styles cannot.
+
+  The plane is sized as a percentage of the preview box, so a fixed tile means
+  the floor represents a different amount of real slab at every screen width. At
+  512px the desktop plane spans about 10ft, which is right; the same 512px on a
+  375px phone spans barely 6ft, and the flake reads chunky. 300px on mobile
+  brings it back to roughly the same 10ft, so the blend looks like the same
+  floor on both.
+*/
+const TILE_VAR = '[--tile:300px] sm:[--tile:512px]'
 
 export function FloorPreview({
   blend,
   lighting,
   installed,
+  heading,
 }: {
   blend: FlakeBlend
   lighting: 'bright' | 'dim'
   /* A real installed floor for this blend, when one has been published. */
   installed?: InstalledPhoto
+  /*
+    Rendered BETWEEN the garage panel and the detail strip.
+    
+    A slot rather than baked-in markup because the order is the point: panel,
+    then what you are looking at, then the samples, then the caveat. The blend
+    name belongs directly under the thing it names, and the lighting toggle
+    belongs beside it — but both are the designer's state, so the designer
+    supplies them and this component just guarantees the position.
+  */
+  heading?: React.ReactNode
 }) {
   const dim = lighting === 'dim'
 
@@ -119,7 +141,7 @@ export function FloorPreview({
             real garage photograph lands, this box becomes a clip-path polygon
             traced to the slab and nothing else in the stack has to change.
           */}
-          <div className="absolute inset-x-0 bottom-0 top-[44%] overflow-hidden">
+          <div className={`absolute inset-x-0 bottom-0 top-[44%] overflow-hidden ${TILE_VAR}`}>
             <div
               className="absolute left-1/2 top-0 h-[240%] w-[220%] -translate-x-1/2"
               style={{ transform: 'rotateX(64deg)', transformOrigin: 'top center' }}
@@ -140,7 +162,7 @@ export function FloorPreview({
                 className="absolute inset-0 transition-opacity duration-300 ease-out"
                 style={{
                   backgroundImage: `url("${texture}")`,
-                  backgroundSize: `${TILE_PX}px ${TILE_PX}px`,
+                  backgroundSize: 'var(--tile) var(--tile)',
                   backgroundRepeat: 'repeat',
                 }}
               />
@@ -195,18 +217,12 @@ export function FloorPreview({
       </div>
 
       {/*
-        Names the panel above for what it is.
-
-        The raw flake sample and this rendered floor are two different KINDS of
-        image, and the site must never let the first stand in for the second.
-        The strip below labels each tile; this labels the big panel, so the pair
-        is explicit wherever a visitor looks. "Preview" stays in the wording
-        because that is exactly what it is.
+        Blend name, tone and the lighting toggle — supplied by the designer so
+        this component does not own its state. The "Installed floor preview"
+        label that satisfies req 13 lives in there as the eyebrow, directly
+        above the name, which is where someone reads it.
       */}
-      <p className="text-[0.6rem] uppercase tracking-[0.16em] text-muted-foreground">
-        Installed floor preview
-        <span className="opacity-60"> · {blend.name}</span>
-      </p>
+      {heading}
 
       {/* Sample, a real installed floor where we have one, and the lighting pair. */}
       <FloorDetailStrip blend={blend} installed={installed} />
