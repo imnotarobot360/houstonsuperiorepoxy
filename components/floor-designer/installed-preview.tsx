@@ -56,8 +56,8 @@ export function InstalledPreview({
   onToggleReal: (next: boolean) => void
 }) {
   const real = Boolean(realPhoto && showReal)
-  const src = real ? realPhoto!.src : previewSrc(slug, 'bright')
-  const srcSet = real ? undefined : previewSrcSet(slug, 'bright')
+  const src = real ? realPhoto!.src : previewSrc(slug)
+  const srcSet = real ? undefined : previewSrcSet(slug)
   const alt = real
     ? realPhoto!.alt
     : `A two-car garage with its floor finished in the ${name} flake blend, viewed from the back wall toward the closed door.`
@@ -70,7 +70,7 @@ export function InstalledPreview({
   useEffect(() => {
     const targets = [neighbours.prev, neighbours.next]
       .filter((s): s is string => Boolean(s))
-      .map((s) => ({ src: previewSrc(s, 'bright'), srcSet: previewSrcSet(s, 'bright') }))
+      .map((s) => ({ src: previewSrc(s), srcSet: previewSrcSet(s) }))
       .filter((t): t is { src: string; srcSet: string | undefined } => Boolean(t.src))
     const timer = window.setTimeout(() => {
       for (const t of targets) {

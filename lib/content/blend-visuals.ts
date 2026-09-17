@@ -4,7 +4,6 @@ import {
   installedPreview,
   installedPreviewSrcSet,
   INSTALLED_PREVIEW_SIZE,
-  type InstalledLighting,
 } from '@/lib/content/installed-previews.generated'
 
 /*
@@ -29,8 +28,6 @@ import {
   of a floor this company actually installed is evidence. When a blend has one,
   it leads and the render becomes the secondary view.
 */
-
-export type { InstalledLighting }
 
 export type InstalledPhoto = NonNullable<FlakeBlend['installedPhoto']>
 
@@ -73,7 +70,7 @@ export function blendVisuals(blend: FlakeBlend): BlendVisuals {
     description: blend.blurb,
     sampleImage: blend.image,
     sampleAlt: blend.alt,
-    installedPreview: rendered ? installedPreview(blend.slug, 'bright') : null,
+    installedPreview: rendered ? installedPreview(blend.slug) : null,
     featured: blend.featured === true,
     /* Omitted means stocked — see the field note in flake-blends.ts. */
     active: blend.active !== false,
@@ -82,13 +79,13 @@ export function blendVisuals(blend: FlakeBlend): BlendVisuals {
 }
 
 /** Largest rendition, for `src`. */
-export function previewSrc(slug: string, lighting: InstalledLighting) {
-  return hasInstalledPreview(slug) ? installedPreview(slug, lighting) : null
+export function previewSrc(slug: string) {
+  return hasInstalledPreview(slug) ? installedPreview(slug) : null
 }
 
 /** Responsive set, so a phone never downloads the desktop rendition. */
-export function previewSrcSet(slug: string, lighting: InstalledLighting) {
-  return hasInstalledPreview(slug) ? installedPreviewSrcSet(slug, lighting) : undefined
+export function previewSrcSet(slug: string) {
+  return hasInstalledPreview(slug) ? installedPreviewSrcSet(slug) : undefined
 }
 
 export { INSTALLED_PREVIEW_SIZE, hasInstalledPreview }

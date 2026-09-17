@@ -12,16 +12,16 @@
 const WIDTHS = [1536, 1152, 768] as const
 
 /*
-  One state. A dim "one bulb" rendition used to exist alongside this and was
-  what the floor-is-nearly-black report was actually about: it put the floor's
-  median at 76 against 146 lit, and the garage door's reflections then stood
-  1.45x above that dark field, reading as white discs on a black surface.
+  There is no lighting parameter. A dim "one bulb" rendition used to exist
+  alongside this and was what the floor-is-nearly-black report was actually
+  about: it put the floor's median at 76 against 146 lit, and the garage door's
+  reflections then stood 1.45x above that dark field, reading as white discs on
+  a black surface.
 
-  The type is deliberately narrowed to what is on disk, so nothing can request a
-  file that is not rendered. Widening it is the first step in bringing the mode
-  back.
+  Bringing the mode back means re-introducing the argument here and in
+  build-installed-previews.mjs — deliberately more than flipping a flag, so it
+  cannot come back without someone looking at the numbers again.
 */
-export type InstalledLighting = 'bright'
 
 /** Blends that have a rendered preview. */
 export const installedPreviewSlugs = [
@@ -59,16 +59,12 @@ export type InstalledPreviewSlug = (typeof installedPreviewSlugs)[number]
 export const hasInstalledPreview = (slug: string): slug is InstalledPreviewSlug =>
   (installedPreviewSlugs as readonly string[]).includes(slug)
 
-const base = (slug: string, lighting: InstalledLighting) =>
-  `/images/installed/garage-${slug}-${lighting}`
-
 /** Largest rendition — use as the `src` fallback. */
-export const installedPreview = (slug: string, lighting: InstalledLighting = 'bright') =>
-  `${base(slug, lighting)}-1536.webp`
+export const installedPreview = (slug: string) => `/floor-previews/${slug}-1536.webp`
 
 /** Responsive set, so a phone never downloads the desktop rendition. */
-export const installedPreviewSrcSet = (slug: string, lighting: InstalledLighting = 'bright') =>
-  WIDTHS.map((w) => `${base(slug, lighting)}-${w}.webp ${w}w`).join(', ')
+export const installedPreviewSrcSet = (slug: string) =>
+  WIDTHS.map((w) => `/floor-previews/${slug}-${w}.webp ${w}w`).join(', ')
 
 /** Natural size of the master, so the browser can reserve the box. */
 export const INSTALLED_PREVIEW_SIZE = { width: 1536, height: 1024 } as const
