@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Environment — never commit. FLAKECOLOR_URL and the GA/Meta ids live in Vercel.
+.env
+.env.*
+!.env.example
+
+# Local tooling
+.vercel/
+.claude/
+.DS_Store
+*.log

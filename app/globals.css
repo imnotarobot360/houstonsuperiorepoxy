@@ -1,0 +1,106 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+/*
+  Brand palette (5 colors total), sampled from the HSE logo
+  1. ink     — near-black charcoal page ground (logo matte)
+  2. slate   — raised surface / card
+  3. orange  — logo safety orange, primary CTA
+  4. bone    — off-white foreground (logo wordmark)
+  5. ash     — muted mid grey for secondary text (logo metallic)
+*/
+:root {
+  color-scheme: dark;
+
+  --background: oklch(0.18 0.008 260);
+  --foreground: oklch(0.96 0.004 90);
+
+  --card: oklch(0.23 0.01 260);
+  --card-foreground: oklch(0.96 0.004 90);
+
+  --popover: oklch(0.23 0.01 260);
+  --popover-foreground: oklch(0.96 0.004 90);
+
+  --primary: oklch(0.66 0.192 44);
+  --primary-foreground: oklch(0.15 0.014 44);
+
+  --secondary: oklch(0.27 0.012 260);
+  --secondary-foreground: oklch(0.96 0.004 90);
+
+  --muted: oklch(0.27 0.012 260);
+  --muted-foreground: oklch(0.7 0.012 260);
+
+  --accent: oklch(0.76 0.14 52);
+  --accent-foreground: oklch(0.15 0.014 44);
+
+  --destructive: oklch(0.62 0.2 25);
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.66 0.192 44);
+
+  --radius: 0.25rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    /* Clears the 5rem fixed header on anchor jumps */
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
