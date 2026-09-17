@@ -122,17 +122,25 @@ export function GarageScene({
           />
 
           {/*
-            5 — satin topcoat. Low contrast on purpose: a real polyaspartic
-            returns a soft sheen, and anything stronger reads as standing water
-            and hides the colour this preview exists to show.
+            5 — the clear coat's specular return, added rather than blended.
+
+            This is the "+ clearCoatHighlights" half of the model: the light map
+            above shades the floor, and this puts back the bright pool near the
+            camera and the four soft reflections the door throws down the slab.
+            Screen adds light and leaves everything below the map's threshold
+            untouched, so it lifts the highlights without washing the colour.
+
+            Kept at 55%: a real polyaspartic returns a soft sheen, and anything
+            stronger reads as standing water and hides the blend underneath,
+            which is the one thing this preview exists to show.
           */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(101deg, transparent 24%, rgba(255,255,255,0.055) 46%, rgba(255,255,255,0.025) 58%, transparent 74%)',
-            }}
-            aria-hidden
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/designer/garage-highlight.webp"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover opacity-55"
+            style={{ mixBlendMode: 'screen' }}
           />
         </div>
       </div>

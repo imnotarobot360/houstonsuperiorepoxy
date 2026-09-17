@@ -79,7 +79,21 @@ import { GarageScene } from './garage-scene'
   brings it back to roughly the same 10ft, so the blend looks like the same
   floor on both.
 */
-const TILE_VAR = '[--tile:300px] sm:[--tile:512px]'
+/*
+  How much screen one 4ft tile occupies, and it is deliberately SMALL.
+
+  The garage bay in the photograph is roughly 20ft across. The texture plane is
+  220% of the panel and is then tipped back, so it stands in for something like
+  40ft of slab — which puts one 4ft tile at about a tenth of the plane's width.
+  That lands a quarter-inch chip under a pixel across most of the floor, and
+  perspective magnifies the near edge to the two or three pixels you actually
+  want in the foreground.
+
+  This is the number that was wrong before. At 512px the same tile covered eight
+  times the screen, chips rendered around ten pixels in the foreground, and the
+  floor read as gravel rather than flake.
+*/
+const TILE_VAR = '[--tile:78px] sm:[--tile:140px]'
 
 export function FloorPreview({
   blend,

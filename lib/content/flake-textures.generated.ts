@@ -4,36 +4,36 @@
 export const flakeBaseColors = {
   'basalt': '#3d3c42',
   'cabin-fever': '#605e5a',
-  'carbon': '#121212',
-  'coyote': '#64625f',
-  'creekbed': '#5c5952',
-  'daredevil': '#181717',
-  'dolerite': '#333030',
-  'dovetail': '#575453',
-  'garnet': '#362c28',
-  'gravel': '#595a5b',
-  'lanai-grey': '#47474a',
-  'madras': '#4f4a45',
-  'nightfall': '#383835',
-  'obsidian': '#403730',
+  'carbon': '#131313',
+  'coyote': '#636260',
+  'creekbed': '#5d5a54',
+  'daredevil': '#1c191a',
+  'dolerite': '#322f30',
+  'dovetail': '#555350',
+  'garnet': '#372d28',
+  'gravel': '#59595a',
+  'lanai-grey': '#48484b',
+  'madras': '#504b46',
+  'nightfall': '#393835',
+  'obsidian': '#413831',
   'outback': '#5f5246',
-  'portobello': '#28231e',
-  'pumice': '#554d4a',
-  'rocky-arrow': '#61605f',
-  'sable': '#50443c',
-  'safari': '#594b3f',
+  'portobello': '#27211d',
+  'pumice': '#58504c',
+  'rocky-arrow': '#60605e',
+  'sable': '#51453e',
+  'safari': '#594c40',
   'schist': '#666567',
-  'shoreline': '#676256',
+  'shoreline': '#676255',
   'stargazer': '#5b5b5b',
-  'stone-wash': '#4e4d4b',
+  'stone-wash': '#4d4c4b',
   'stonehenge': '#575858',
-  'stony-creek': '#605f5d',
-  'tidal-wave': '#636362',
+  'stony-creek': '#5f5f5d',
+  'tidal-wave': '#626362',
 } as const
 
 export type TexturedBlendSlug = keyof typeof flakeBaseColors
 
-/** Seamless floor texture for a blend. 512px tile standing in for 4ft of slab. */
+/** Seamless installed-floor material. 1024px tile standing in for 4ft of slab. */
 export const flakeTexture = (slug: string) => `/images/flake-textures/${slug}.webp`
 
 export const hasTexture = (slug: string): slug is TexturedBlendSlug =>
