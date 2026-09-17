@@ -1,0 +1,26 @@
+{
+  "slug": "garage-floor-coating-katy-tx-500sf",
+  "title": "Two-Car Garage Floor Coating in Katy",
+  "city": "Katy",
+  "blend": "Stone Wash",
+  "system": "Full-broadcast vinyl flake",
+  "sqft": 500,
+  "installedOn": "August 2026",
+  "scope": [],
+  "images": [
+    {
+      "src": "/images/projects/garage-floor-coating-katy-tx-finished-wide.jpg",
+      "alt": "Finished two-car garage floor in an off-white and grey flake blend with navy chips, looking across the bay toward the closed garage door.",
+      "stage": "finished-wide",
+      "w": 1200,
+      "h": 1600
+    },
+    {
+      "src": "/images/projects/garage-floor-coating-katy-tx-finished-detail.jpg",
+      "alt": "The same floor at standing height, showing off-white, grey and navy flake locked under a clear topcoat with an even, closed surface.",
+      "stage": "finished-detail",
+      "w": 1200,
+      "h": 1600
+    }
+  ]
+}
