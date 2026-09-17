@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import {
   INSTALLED_PREVIEW_SIZE,
+  type InstalledLighting,
   type InstalledPhoto,
   previewSrc,
   previewSrcSet,
@@ -42,6 +43,7 @@ type Neighbours = { prev?: string; next?: string }
 export function InstalledPreview({
   slug,
   name,
+  lighting,
   neighbours,
   realPhoto,
   showReal,
@@ -49,6 +51,7 @@ export function InstalledPreview({
 }: {
   slug: string
   name: string
+  lighting: InstalledLighting
   neighbours: Neighbours
   /** A photograph of a floor we actually installed in this blend, when one exists. */
   realPhoto?: InstalledPhoto
@@ -56,8 +59,8 @@ export function InstalledPreview({
   onToggleReal: (next: boolean) => void
 }) {
   const real = Boolean(realPhoto && showReal)
-  const src = real ? realPhoto!.src : previewSrc(slug)
-  const srcSet = real ? undefined : previewSrcSet(slug)
+  const src = real ? realPhoto!.src : previewSrc(slug, lighting)
+  const srcSet = real ? undefined : previewSrcSet(slug, lighting)
   const alt = real
     ? realPhoto!.alt
     : `A two-car garage with its floor finished in the ${name} flake blend, viewed from the back wall toward the closed door.`
@@ -70,7 +73,7 @@ export function InstalledPreview({
   useEffect(() => {
     const targets = [neighbours.prev, neighbours.next]
       .filter((s): s is string => Boolean(s))
-      .map((s) => ({ src: previewSrc(s), srcSet: previewSrcSet(s) }))
+      .map((s) => ({ src: previewSrc(s, lighting), srcSet: previewSrcSet(s, lighting) }))
       .filter((t): t is { src: string; srcSet: string | undefined } => Boolean(t.src))
     const timer = window.setTimeout(() => {
       for (const t of targets) {
@@ -81,7 +84,7 @@ export function InstalledPreview({
       }
     }, 300)
     return () => window.clearTimeout(timer)
-  }, [neighbours.prev, neighbours.next])
+  }, [neighbours.prev, neighbours.next, lighting])
 
   if (!src) return null
 

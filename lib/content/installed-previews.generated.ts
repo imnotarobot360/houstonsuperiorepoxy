@@ -12,16 +12,16 @@
 const WIDTHS = [1536, 1152, 768] as const
 
 /*
-  There is no lighting parameter. A dim "one bulb" rendition used to exist
-  alongside this and was what the floor-is-nearly-black report was actually
-  about: it put the floor's median at 76 against 146 lit, and the garage door's
-  reflections then stood 1.45x above that dark field, reading as white discs on
-  a black surface.
+  Two lighting states, both pre-rendered.
 
-  Bringing the mode back means re-introducing the argument here and in
-  build-installed-previews.mjs — deliberately more than flipping a flag, so it
-  cannot come back without someone looking at the numbers again.
+  An earlier dim state was reported as an almost-black floor with white discs on
+  it. Neither fault was the dim state's own: the discs were the light field
+  being allowed to run to 1.9x, which amplified the garage door's real
+  reflections until they read as spotlights, and the darkness was an exposure
+  picked by feel. Both were measured and fixed before this came back — see
+  DIM_EXPOSURE and LIGHT_MAX in build-installed-previews.mjs.
 */
+export type InstalledLighting = 'bright' | 'one-bulb'
 
 /** Blends that have a rendered preview. */
 export const installedPreviewSlugs = [
@@ -60,11 +60,12 @@ export const hasInstalledPreview = (slug: string): slug is InstalledPreviewSlug 
   (installedPreviewSlugs as readonly string[]).includes(slug)
 
 /** Largest rendition — use as the `src` fallback. */
-export const installedPreview = (slug: string) => `/floor-previews/${slug}-1536.webp`
+export const installedPreview = (slug: string, lighting: InstalledLighting = 'bright') =>
+  `/floor-previews/${slug}-${lighting}-1536.webp`
 
 /** Responsive set, so a phone never downloads the desktop rendition. */
-export const installedPreviewSrcSet = (slug: string) =>
-  WIDTHS.map((w) => `/floor-previews/${slug}-${w}.webp ${w}w`).join(', ')
+export const installedPreviewSrcSet = (slug: string, lighting: InstalledLighting = 'bright') =>
+  WIDTHS.map((w) => `/floor-previews/${slug}-${lighting}-${w}.webp ${w}w`).join(', ')
 
 /** Natural size of the master, so the browser can reserve the box. */
 export const INSTALLED_PREVIEW_SIZE = { width: 1536, height: 1024 } as const

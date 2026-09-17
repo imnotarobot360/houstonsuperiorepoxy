@@ -140,12 +140,26 @@ const LIGHT_MAX = 1.16
   light instead is what a dimmer actually does: everything gets less light, and
   the chips stay distinguishable because their ratios are preserved.
 
-  0.25 with a slight warm shift reads as a single bulb rather than as dusk.
-  Note this is a LINEAR factor, so it is much gentler than the same number would
-  be in sRGB: gamma brings it back to roughly 0.55 of the encoded value. 0.44
-  was tried first and was barely distinguishable from bright for that reason.
+  0.42, CHOSEN BY SWEEPING IT RATHER THAN BY FEEL. This is a LINEAR factor, so
+  gamma brings it back to roughly 0.69 of the encoded value. Measured floor
+  medians against the lit versions (Dovetail 157, Carbon 36, Schist 191):
+
+    0.25   Dovetail  82   Carbon 14   Schist 101    <- shipped once, reported
+    0.34   Dovetail  95   Carbon 18   Schist 116       as an almost-black floor
+    0.42   Dovetail 105   Carbon 21   Schist 128
+    0.52   Dovetail 116   Carbon 24   Schist 142
+
+  0.42 keeps a mid-grey blend plainly readable while plainly dimmer, which is
+  the job. The warm shift is what a filament bulb does to a room.
+
+  CARBON STAYS DARK AT ANY VALUE HERE, and that is not a defect to tune away. It
+  is a near-black blend — its sample is rgb(39,37,40) — and a near-black floor
+  under one bulb really is close to invisible. /colors/ says the most common
+  colour regret is a dark blend in a badly lit garage; this toggle exists to
+  show a customer that before they commit, not to flatter it. Lifting the shadows
+  until Carbon looked fine would be inventing a floor that does not exist.
 */
-const DIM_EXPOSURE = 0.25
+const DIM_EXPOSURE = Number(process.env.DIM_EXPOSURE ?? 0.42)
 const DIM_WARM = [1.04, 1.0, 0.93]
 
 const srgbToLin = new Float32Array(256)
@@ -389,6 +403,21 @@ function compose(texLevels, dim) {
   return out
 }
 
+/**
+ * Median luminance of the floor. Used to gate the dim state: a "one bulb"
+ * garage should read dim, not black, and a mean would be dragged around by the
+ * blend's own bright chips.
+ */
+function floorMedian(buf) {
+  const L = []
+  for (let p = 0; p < W * H; p++) {
+    if (alpha[p] < 0.9) continue
+    L.push(0.299 * buf[p * 3] + 0.587 * buf[p * 3 + 1] + 0.114 * buf[p * 3 + 2])
+  }
+  L.sort((a, b) => a - b)
+  return L[Math.floor(L.length / 2)]
+}
+
 /** Mean sRGB of the rendered floor only, for the colour-fidelity gate. */
 function floorMean(buf) {
   const s = [0, 0, 0]
@@ -409,8 +438,14 @@ const files = fs
   .filter((s) => !only || s === only)
   .sort()
 
+const STATES = [
+  ['bright', false],
+  ['one-bulb', true],
+]
+
 const manifest = {}
 const report = []
+const dimMedians = []
 
 for (const slug of files) {
   const levels = await mipmaps(path.join(TEXTURE_DIR, `${slug}.webp`))
@@ -435,15 +470,20 @@ for (const slug of files) {
     compose() still takes the flag and DIM_EXPOSURE is still here, so bringing
     the mode back is a one-line change once the lit floor is approved.
   */
-  const buf = compose(levels, false)
-  const img = sharp(buf, { raw: { width: W, height: H, channels: 3 } })
-  for (const w of WIDTHS) {
-    await img
-      .clone()
-      .resize(w, null, { kernel: 'lanczos3' })
-      .webp({ quality: 80, effort: 6 })
-      .toFile(path.join(OUT_DIR, `${slug}-${w}.webp`))
+  for (const [state, dim] of STATES) {
+    const buf = compose(levels, dim)
+    const img = sharp(buf, { raw: { width: W, height: H, channels: 3 } })
+    for (const w of WIDTHS) {
+      await img
+        .clone()
+        .resize(w, null, { kernel: 'lanczos3' })
+        .webp({ quality: 80, effort: 6 })
+        .toFile(path.join(OUT_DIR, `${slug}-${state}-${w}.webp`))
+    }
+    if (dim) dimMedians.push({ slug, median: floorMedian(buf) })
   }
+
+  const buf = compose(levels, false)
 
   /*
     VERIFY_LOCK=1 also writes a LOSSLESS copy. Comparing the shipped WebP
@@ -480,6 +520,24 @@ for (const slug of files) {
   )
 }
 
+if (dimMedians.length) {
+  /*
+    THE DIM GATE. "One bulb" has to read as a dim garage, not a black one — the
+    first version of this state put the floor's median at 76 against 146 lit and
+    was reported as an almost-black floor with the colour gone.
+
+    Reported per blend rather than averaged, because a flat exposure hits dark
+    blends hardest: Carbon starts near black and has the least room to lose.
+  */
+  dimMedians.sort((a, b) => a.median - b.median)
+  const d = dimMedians
+  console.log(
+    `\ndim floors @ exposure ${DIM_EXPOSURE}: darkest ${d[0].slug} ${Math.round(d[0].median)}, ` +
+      `median blend ${Math.round(d[Math.floor(d.length / 2)].median)}, ` +
+      `lightest ${d[d.length - 1].slug} ${Math.round(d[d.length - 1].median)}`,
+  )
+}
+
 const worst = Math.max(...report.map((r) => r.spread))
 const dark = report.filter((r) => r.ratio.reduce((a, b) => a + b, 0) / 3 < 0.62)
 console.log(`\nworst hue spread: ${worst.toFixed(3)} (want < 0.08)`)
@@ -504,16 +562,16 @@ if (!only) {
 const WIDTHS = [${WIDTHS.join(', ')}] as const
 
 /*
-  There is no lighting parameter. A dim "one bulb" rendition used to exist
-  alongside this and was what the floor-is-nearly-black report was actually
-  about: it put the floor's median at 76 against 146 lit, and the garage door's
-  reflections then stood 1.45x above that dark field, reading as white discs on
-  a black surface.
+  Two lighting states, both pre-rendered.
 
-  Bringing the mode back means re-introducing the argument here and in
-  build-installed-previews.mjs — deliberately more than flipping a flag, so it
-  cannot come back without someone looking at the numbers again.
+  An earlier dim state was reported as an almost-black floor with white discs on
+  it. Neither fault was the dim state's own: the discs were the light field
+  being allowed to run to 1.9x, which amplified the garage door's real
+  reflections until they read as spotlights, and the darkness was an exposure
+  picked by feel. Both were measured and fixed before this came back — see
+  DIM_EXPOSURE and LIGHT_MAX in build-installed-previews.mjs.
 */
+export type InstalledLighting = 'bright' | 'one-bulb'
 
 /** Blends that have a rendered preview. */
 export const installedPreviewSlugs = [
@@ -526,11 +584,12 @@ export const hasInstalledPreview = (slug: string): slug is InstalledPreviewSlug 
   (installedPreviewSlugs as readonly string[]).includes(slug)
 
 /** Largest rendition — use as the \`src\` fallback. */
-export const installedPreview = (slug: string) => \`/floor-previews/\${slug}-${WIDTHS[0]}.webp\`
+export const installedPreview = (slug: string, lighting: InstalledLighting = 'bright') =>
+  \`/floor-previews/\${slug}-\${lighting}-${WIDTHS[0]}.webp\`
 
 /** Responsive set, so a phone never downloads the desktop rendition. */
-export const installedPreviewSrcSet = (slug: string) =>
-  WIDTHS.map((w) => \`/floor-previews/\${slug}-\${w}.webp \${w}w\`).join(', ')
+export const installedPreviewSrcSet = (slug: string, lighting: InstalledLighting = 'bright') =>
+  WIDTHS.map((w) => \`/floor-previews/\${slug}-\${lighting}-\${w}.webp \${w}w\`).join(', ')
 
 /** Natural size of the master, so the browser can reserve the box. */
 export const INSTALLED_PREVIEW_SIZE = { width: ${W}, height: ${H} } as const
