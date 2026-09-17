@@ -19,6 +19,7 @@ import { newEventId, readFbCookies, trackMeta, trackMetaOnce } from '@/lib/meta-
 import { site } from '@/lib/site'
 import { BlendPicker } from './blend-picker'
 import { BookingScheduler } from './booking-scheduler'
+import type { InstalledPhoto } from './floor-detail-strip'
 import { FloorPreview } from './floor-preview'
 
 /*
@@ -52,7 +53,14 @@ type FieldErrors = Record<string, string>
   FLAKECOLOR_URL is server-only — see lib/catalog.ts. Defaults to false so the
   catalog link is absent unless a server page positively says otherwise.
 */
-export function FloorDesigner({ catalogEnabled = false }: { catalogEnabled?: boolean }) {
+export function FloorDesigner({
+  catalogEnabled = false,
+  installed = {},
+}: {
+  catalogEnabled?: boolean
+  /* Real installed floors by blend slug — assembled server-side, see the page. */
+  installed?: Record<string, InstalledPhoto>
+}) {
   const [slug, setSlug] = useState(DEFAULT_SLUG)
   const [lighting, setLighting] = useState<'bright' | 'dim'>('bright')
   const [size, setSize] = useState<GarageSize | null>(null)
@@ -162,7 +170,7 @@ export function FloorDesigner({ catalogEnabled = false }: { catalogEnabled?: boo
     <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14" id="designer-flow">
       {/* ------------------------------------------------------- Preview column */}
       <div className="lg:sticky lg:top-24 lg:self-start">
-        <FloorPreview blend={blend} lighting={lighting} />
+        <FloorPreview blend={blend} lighting={lighting} installed={installed[blend.slug]} />
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
           <div>

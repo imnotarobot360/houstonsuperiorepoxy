@@ -6,6 +6,7 @@ import { PageHero } from '@/components/page-hero'
 import { FloorDesigner } from '@/components/floor-designer/floor-designer'
 import { catalogEnabled } from '@/lib/catalog'
 import { flakeBlends } from '@/lib/content/flake-blends'
+import { coverPhoto, projectForBlend } from '@/lib/content/projects'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 
@@ -65,7 +66,36 @@ const faqs = [
   },
 ]
 
+/*
+  Real installed floors, keyed by blend slug.
+
+  Built HERE rather than inside the designer because lib/content/projects reads
+  content/projects from disk — importing it into a client component would break
+  the build. The designer is a client component, so it receives the finished map.
+
+  Only blends with both a published project and an area name qualify: the tile is
+  captioned "Installed — <area>", and a caption with nothing in it is worse than
+  falling back to a render.
+*/
+function installedByBlend() {
+  const out: Record<string, { src: string; alt: string; neighborhood: string }> = {}
+  for (const b of flakeBlends) {
+    if (b.installedPhoto) {
+      out[b.slug] = b.installedPhoto
+      continue
+    }
+    const project = projectForBlend(b.name)
+    const photo = project ? coverPhoto(project) : undefined
+    if (project?.neighborhood && photo) {
+      out[b.slug] = { src: photo.src, alt: photo.alt, neighborhood: project.neighborhood }
+    }
+  }
+  return out
+}
+
 export default function Page() {
+  const installed = installedByBlend()
+
   return (
     <>
       <JsonLd data={graph(webPageNode(KEY), faqNode(PATH, faqs))} />
@@ -81,7 +111,7 @@ export default function Page() {
           FloorDesigner is a client component and FLAKECOLOR_URL is server-only,
           so the flag is read here and passed down — see lib/catalog.ts.
         */}
-        <FloorDesigner catalogEnabled={catalogEnabled} />
+        <FloorDesigner catalogEnabled={catalogEnabled} installed={installed} />
       </Section>
 
       <Section>

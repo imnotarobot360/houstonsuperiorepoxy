@@ -1,7 +1,9 @@
 'use client'
 
+import { Info } from 'lucide-react'
 import type { FlakeBlend } from '@/lib/content/flake-blends'
 import { flakeBaseColors, flakeTexture, hasTexture } from '@/lib/content/flake-textures.generated'
+import { FloorDetailStrip, type InstalledPhoto } from './floor-detail-strip'
 
 /*
   Garage floor preview.
@@ -70,9 +72,12 @@ const TILE_PX = 512
 export function FloorPreview({
   blend,
   lighting,
+  installed,
 }: {
   blend: FlakeBlend
   lighting: 'bright' | 'dim'
+  /* A real installed floor for this blend, when one has been published. */
+  installed?: InstalledPhoto
 }) {
   const dim = lighting === 'dim'
 
@@ -190,21 +195,25 @@ export function FloorPreview({
         </div>
       </div>
 
+      {/* Sample, a real installed floor where we have one, and the lighting pair. */}
+      <FloorDetailStrip blend={blend} installed={installed} />
+
       {/*
-        Disclaimer, kept but demoted. It has to stay — a preview that implies a
-        colour promise the medium cannot keep is the failure mode this whole
-        component is built to avoid — but it was competing with the thing it
-        annotates. One emphasised line, the detail underneath at half attention.
+        Disclaimer, kept but demoted into its own quiet panel. It has to stay — a
+        preview that implies a colour promise the medium cannot keep is the
+        failure mode this whole component exists to avoid — but as running text
+        it competed with the thing it annotates. Boxed and set at a smaller size,
+        it reads as a footnote, which is what it is.
       */}
-      <figcaption className="text-xs leading-relaxed text-muted-foreground text-pretty">
-        <span className="text-foreground">
-          Preview shown for visualization to help you narrow down your color — not a rendering of
-          your finished floor.
-        </span>{' '}
-        <span className="opacity-70">
-          Actual appearance can vary based on lighting, concrete conditions, base-coat color, flake
-          distribution, topcoat, and screen settings. Final color should be selected using physical
-          sample boards.
+      <figcaption className="flex gap-3 rounded-lg border border-border bg-card/40 p-4">
+        <Info size={15} aria-hidden className="mt-px shrink-0 text-primary" />
+        <span className="text-xs leading-relaxed text-muted-foreground text-pretty">
+          <span className="font-medium text-foreground">
+            Preview shown for visualization to help you narrow down your color.
+          </span>{' '}
+          This is not a rendering of your finished floor. Actual appearance can vary based on
+          lighting, concrete conditions, base-coat color, flake distribution, topcoat, and screen
+          settings. Final color should be selected using physical sample boards on your own slab.
         </span>
       </figcaption>
     </figure>
