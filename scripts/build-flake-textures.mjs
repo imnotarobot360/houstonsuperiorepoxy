@@ -68,11 +68,21 @@ const TILE = 2048
   out as static. Rendering this floor to scale means rendering a floor on which
   nobody can see what they are buying.
 
-  So the material is drawn as though the flake were roughly an inch rather than
-  a quarter, about 4x. At 25px per chip a tile holds ~82 chips across, and once
-  the tile is laid on the perspective plane that lands chips at a few pixels in
-  the foreground and merging into the blend at the door — which is what a real
-  photograph of a flake floor looks like, and what the preview exists to show.
+  A TILE IS 82 CHIPS ACROSS AND STANDS IN FOR 1.71ft OF SLAB, so a chip is
+  2048/25 into 20.5in = a quarter inch of floor. LIFE SIZE, not exaggerated.
+  Measured back off the finished render, foreground chips come out at 0.25in by
+  edge spacing.
+
+  An earlier version of this note claimed the flake was drawn about 4x life
+  size. That was wrong, and worth naming because it is an easy confusion to
+  repeat: the chips are ~4x larger than they appear in the SAMPLE PHOTOGRAPH at
+  the scale that photograph is usually viewed, which says nothing about their
+  size on the floor. The floor scale is set by TILE_FT in
+  build-installed-previews.mjs, and it is honest.
+
+  What made the earlier pipeline read as static was not scale, it was filtering:
+  chips genuinely are about a pixel once the floor recedes, and point-sampling
+  them returns noise where averaging them returns the blend.
 
   Anyone changing the scale should change it here and nowhere else: TILE/CHIP_PX
   decides how many chips a tile holds, and the component's --tile decides how
