@@ -37,8 +37,10 @@ import {
   transform, no opacity, no overlay. Anything of that kind appearing in this
   file again should be treated as a bug.
 
-  WHAT THE IMAGE MAY BE MADE OF. As of 18 Sep 2026 these previews may be
-  AI-generated (owner decision; CONTENT-POLICY.md). What does NOT change is what
+  WHAT THE IMAGE MAY BE MADE OF. As of 18 Sep 2026 these previews are PERMITTED
+  to be AI-generated (owner decision; CONTENT-POLICY.md), but none is — every
+  one is composited onto the locked master by
+  scripts/build-installed-previews.mjs. What does not change either way is what
   this component claims about them: the badge reads "Installed floor preview",
   the caption says colour varies and is confirmed against physical samples, and
   a real photograph of a real job outranks the render whenever one exists — see

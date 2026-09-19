@@ -27,13 +27,31 @@ should be read as moving it.
 
 ## Current policy
 
-### Installed-floor previews — AI-generated imagery PERMITTED
+### Installed-floor previews — AI-generated imagery PERMITTED BUT UNUSED
 
 *Owner decision, 18 September 2026, overruling the previous prohibition.*
+*Same day: approach not adopted. Every preview is composited.*
 
 The floor designer's installed previews (`public/floor-previews/`) may be
 AI-generated. Previously they could not be, under the original brief's rule of
 "no AI-generated 'finished floor' images."
+
+**Nothing currently uses this permission.** All 27 previews are produced by
+`scripts/build-installed-previews.mjs`, which composites the coating onto one
+locked master photograph. Verified: across all 27, the worst drift outside the
+floor is 0.41% of pixels, which is WebP noise — the garage is the same garage
+in every one.
+
+The permission is recorded rather than removed because the decision was made
+and reversing it silently would lose that. If it should be rescinded outright,
+say so and this section goes back to a prohibition.
+
+**Were it ever used, the conditions below still bind**, and the practical
+obstacle is worth knowing in advance: a model redraws every pixel, so the
+camera, cabinets and logo drift between colours. Twenty-seven previews are
+meant to be one room, and a customer stepping through the colour rail would
+watch it change shape. That is a property the compositing pipeline gets
+structurally and a generated frame does not get at all.
 
 **Conditions that survive the change**, because they are Rule 2, not Rule 1:
 
@@ -84,7 +102,7 @@ is `google.com/maps?cid=12278763065042880776` and carries under 25 reviews.
 
 ---
 
-## If a generated preview ships
+## If a generated preview ever ships
 
 Whatever produces the image, the pipeline's existing guarantees are worth
 keeping, because they are what stop 27 previews from quietly becoming 27
