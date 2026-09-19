@@ -36,6 +36,18 @@ import {
   There is no CSS here that alters the picture: no filter, no mix-blend-mode, no
   transform, no opacity, no overlay. Anything of that kind appearing in this
   file again should be treated as a bug.
+
+  WHAT THE IMAGE MAY BE MADE OF. As of 18 Sep 2026 these previews may be
+  AI-generated (owner decision; CONTENT-POLICY.md). What does NOT change is what
+  this component claims about them: the badge reads "Installed floor preview",
+  the caption says colour varies and is confirmed against physical samples, and
+  a real photograph of a real job outranks the render whenever one exists — see
+  `realPhoto` below, which flips the badge to "Real Houston installation".
+
+  Those three things are why showing a hypothetical floor here is honest. If a
+  future change drops the badge, softens the caption, or lets a render outrank a
+  photograph, it has quietly turned a visualization into a claim about work we
+  have done, which is a different thing and is not permitted.
 */
 
 type Neighbours = { prev?: string; next?: string }

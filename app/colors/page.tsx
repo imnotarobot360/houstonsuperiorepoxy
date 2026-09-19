@@ -39,7 +39,11 @@ export const metadata: Metadata = {
   supplied genuine manufacturer photographs of the blends we actually carry.
   That is the bar: real product photos of real stocked blends. Invented blend
   names, guessed hex swatches or AI-generated chip images would all still be
-  fabrication and must not appear here.
+  fabrication and must not appear here — including after the September 2026
+  decision to permit AI-generated INSTALLED PREVIEWS in the floor designer. The
+  sample is the product specification; the preview is one way that product
+  might look installed. See CONTENT-POLICY.md for why the line sits between
+  them rather than around all generated imagery.
 
   What did NOT change is the argument underneath. A backlit photo of loose
   flake is not the colour of a finished floor — different lighting, and on a

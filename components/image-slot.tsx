@@ -15,6 +15,13 @@ import { ImageIcon } from 'lucide-react'
   trust problem and, for a licensed contractor making representations to
   consumers, a legal one.
 
+  THIS RULE DID NOT MOVE when AI-generated imagery was permitted for the floor
+  designer's previews (owner decision, 18 Sep 2026 — see CONTENT-POLICY.md).
+  That change is about what a picture may be MADE OF. This one is about what it
+  may be PRESENTED AS, and a labelled preview of a hypothetical floor is not the
+  same claim as a photograph of a job we finished. A generated preview does not
+  become eligible for this slot by looking good.
+
   Material and finish SAMPLES are a different category of image and are handled
   by components/material-sample.tsx, which stamps a visible "sample" label on
   each one. Do not route a sample through this component — an unlabeled sample
