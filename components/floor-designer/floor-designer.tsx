@@ -681,10 +681,19 @@ function EstimateCard({ estimate }: { estimate: ReturnType<typeof computeEstimat
 /*
   The preview switch.
 
-  A tablist rather than a pair of buttons, because these are two views of the
-  same thing and a screen-reader user should hear them that way. Keyboard
-  support is the native button behaviour plus arrow keys, which is what a
-  visitor who cannot use a pointer will reach for first.
+  A GROUP OF PRESSED BUTTONS, NOT A TABLIST — and the first attempt at this was
+  a tablist, which was wrong twice over. `role="tab"` promises a `tabpanel` it
+  is associated with, and there is none: the two previews are separate
+  components swapped in place, not labelled panels. And a tablist implies
+  roving tabindex, where arrow keys move the selection; with only the active
+  button reachable, pressing an arrow changed the selection while leaving focus
+  on a button that had just become tabIndex={-1}.
+
+  This is the same pattern as LightingToggle in selected-color.tsx, three
+  elements up the page: a labelled group of toggle buttons, each reporting its
+  own state with aria-pressed. Both buttons stay in the tab order, Enter and
+  Space work because they are buttons, and there is no roving focus to get
+  wrong. Two controls that look identical should also behave identically.
 */
 function PreviewModeTabs({
   mode,
@@ -693,37 +702,30 @@ function PreviewModeTabs({
   mode: PreviewMode
   onMode: (m: PreviewMode) => void
 }) {
-  const tabs: { value: PreviewMode; label: string }[] = [
+  const options: { value: PreviewMode; label: string }[] = [
     { value: 'stylized', label: 'Stylized garage' },
     { value: 'photo', label: 'My garage photo' },
   ]
 
   return (
     <div
-      role="tablist"
+      role="group"
       aria-label="Choose how to preview this blend"
       className="flex gap-1 self-start rounded-lg border border-border p-1"
-      onKeyDown={(e) => {
-        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
-        e.preventDefault()
-        onMode(mode === 'stylized' ? 'photo' : 'stylized')
-      }}
     >
-      {tabs.map((t) => {
-        const active = t.value === mode
+      {options.map((o) => {
+        const active = o.value === mode
         return (
           <button
-            key={t.value}
+            key={o.value}
             type="button"
-            role="tab"
-            aria-selected={active}
-            tabIndex={active ? 0 : -1}
-            onClick={() => onMode(t.value)}
+            aria-pressed={active}
+            onClick={() => onMode(o.value)}
             className={`min-h-10 rounded-md px-4 text-xs font-medium transition-colors ${
               active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            {t.label}
+            {o.label}
           </button>
         )
       })}
