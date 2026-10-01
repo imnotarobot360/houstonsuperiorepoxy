@@ -40,6 +40,9 @@ function limitFrom(name: string, fallback: number): number {
   return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : fallback
 }
 
+/* Roughly one call in twenty does the cleanup — see the note at the prune. */
+export const PRUNE_SAMPLE_RATE = 0.05
+
 export const PER_IP_WINDOW_MS = 60 * 60 * 1000 // 1 hour
 export const GLOBAL_WINDOW_MS = 24 * 60 * 60 * 1000 // 1 day
 
@@ -99,36 +102,74 @@ export function clientIpFrom(headers: { get(name: string): string | null }): str
 }
 
 /*
+  The storage the limiter needs, as four operations.
+
+  SPLIT OUT SO THE DB PATH CAN BE TESTED WITHOUT A DATABASE. The only database
+  this project has is production Neon, and a test suite that reaches for it is
+  either useless offline or dangerous — so the orchestration takes a store and
+  defaults to the Postgres one. The fake in tests/rate-limit-store.test.ts
+  implements this interface and nothing else.
+*/
+export type RateStore = {
+  countForIp(ipHash: string, since: Date): Promise<number>
+  countGlobal(since: Date): Promise<number>
+  record(ipHash: string): Promise<void>
+  prune(before: Date): Promise<void>
+}
+
+export const postgresStore: RateStore = {
+  async countForIp(ipHash, since) {
+    const [row] = await db
+      .select({ n: sql<number>`count(*)::int` })
+      .from(visualizationRequests)
+      .where(and(eq(visualizationRequests.ipHash, ipHash), gte(visualizationRequests.createdAt, since)))
+    return row?.n ?? 0
+  },
+  async countGlobal(since) {
+    const [row] = await db
+      .select({ n: sql<number>`count(*)::int` })
+      .from(visualizationRequests)
+      .where(gte(visualizationRequests.createdAt, since))
+    return row?.n ?? 0
+  },
+  async record(ipHash) {
+    await db.insert(visualizationRequests).values({ ipHash })
+  },
+  async prune(before) {
+    await db.delete(visualizationRequests).where(lt(visualizationRequests.createdAt, before))
+  },
+}
+
+/*
   Checks the limit and, when allowed, records the attempt in the same call.
 
   Recording happens HERE rather than after the provider responds, so a request
   that is dispatched is always counted. Counting successes only would let a
-  caller burn the budget for free by triggering failures.
+  caller burn the budget for free by triggering failures. A REFUSED request is
+  not recorded — it never reaches the provider, so charging it against the
+  allowance would let a blocked caller extend their own block indefinitely.
+
+  `now` and `random` are injectable for the same reason the store is: a test
+  that cannot fix the clock cannot assert which window was queried, and one
+  that cannot fix the sampler cannot assert the prune happens at all.
 */
-export async function checkAndRecord(ip: string): Promise<RateDecision> {
+export async function checkAndRecord(
+  ip: string,
+  opts: { store?: RateStore; now?: number; random?: () => number } = {},
+): Promise<RateDecision> {
+  const store = opts.store ?? postgresStore
+  const now = opts.now ?? Date.now()
+  const random = opts.random ?? Math.random
   const ipHash = hashIp(ip)
-  const now = Date.now()
 
   try {
-    const [ipRow] = await db
-      .select({ n: sql<number>`count(*)::int` })
-      .from(visualizationRequests)
-      .where(
-        and(
-          eq(visualizationRequests.ipHash, ipHash),
-          gte(visualizationRequests.createdAt, new Date(now - PER_IP_WINDOW_MS)),
-        ),
-      )
+    const ipCount = await store.countForIp(ipHash, new Date(now - PER_IP_WINDOW_MS))
+    const globalCount = await store.countGlobal(new Date(now - GLOBAL_WINDOW_MS))
 
-    const [globalRow] = await db
-      .select({ n: sql<number>`count(*)::int` })
-      .from(visualizationRequests)
-      .where(gte(visualizationRequests.createdAt, new Date(now - GLOBAL_WINDOW_MS)))
-
-    const decision = decide({ ip: ipRow?.n ?? 0, global: globalRow?.n ?? 0 })
+    const decision = decide({ ip: ipCount, global: globalCount })
     if (!decision.allowed) return decision
 
-    await db.insert(visualizationRequests).values({ ipHash })
+    await store.record(ipHash)
 
     /*
       Pruning, AWAITED — not floated.
@@ -150,11 +191,9 @@ export async function checkAndRecord(ip: string): Promise<RateDecision> {
       Non-fatal on its own: a failed cleanup must not refuse a request that has
       already passed the limit.
     */
-    if (Math.random() < 0.05) {
+    if (random() < PRUNE_SAMPLE_RATE) {
       try {
-        await db
-          .delete(visualizationRequests)
-          .where(lt(visualizationRequests.createdAt, new Date(now - GLOBAL_WINDOW_MS)))
+        await store.prune(new Date(now - GLOBAL_WINDOW_MS))
       } catch (error) {
         console.log('[viz] prune failed:', error instanceof Error ? error.message : 'unknown')
       }
