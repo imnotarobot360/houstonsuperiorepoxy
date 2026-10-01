@@ -39,7 +39,7 @@ export const routes = {
     h1: 'Premium Garage Floor Coatings in Houston, TX',
     title: 'Garage Epoxy Flooring Houston | Houston Superior Epoxy',
     description:
-      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, Limited Lifetime residential workmanship warranty, no upfront payment.',
+      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, no upfront payment, and a Limited Lifetime workmanship warranty on qualifying residential garages.',
     parent: null,
     label: 'Home',
   },

@@ -109,7 +109,12 @@ const included = [
   'Added texture in the topcoat where slip resistance is required',
   'Zone or lane color changes as a separate itemized scope',
   'Coving and drain detail assessed for hygiene-critical spaces',
-  'Written Limited Lifetime residential workmanship warranty',
+  /*
+    Not the residential term: a solid colour goes into showrooms and shop
+    floors as often as garages, which is why this page's spec row uses
+    WARRANTY_BY_SURFACE. This line has to agree with it.
+  */
+  'Written workmanship warranty, with the term set by what is being coated',
 ]
 
 const notes = [

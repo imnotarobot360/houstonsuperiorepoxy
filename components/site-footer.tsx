@@ -2,7 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { site, socialProfiles } from '@/lib/site'
-import { footerNav, legalNav } from '@/lib/routes'
+import { footerNav, legalNav, r } from '@/lib/routes'
 import { cities } from '@/lib/content/cities'
 
 /*
@@ -180,7 +180,21 @@ export function SiteFooter() {
             <p>
               © {year} {site.company}. All rights reserved.
             </p>
-            <p>Fully insured · $2M liability + workers&apos; comp · Limited Lifetime residential workmanship warranty</p>
+            {/*
+              NEUTRAL ON PURPOSE, BECAUSE THIS LINE IS ON ALL 63 PAGES. It
+              named the Limited Lifetime residential term, which meant the
+              warehouse, commercial and patio pages asserted it in their
+              footer while their own copy carefully did not — the one place
+              the category discipline leaked. "Written workmanship warranty"
+              is true of every job we take; the link goes to the page that
+              breaks the terms down by what is being coated.
+            */}
+            <p>
+              Fully insured · $2M liability + workers&apos; comp ·{' '}
+              <Link href={r('warranty')} className="underline underline-offset-2 hover:text-foreground">
+                Written workmanship warranty
+              </Link>
+            </p>
           </div>
         </div>
       </div>

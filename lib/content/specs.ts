@@ -38,7 +38,7 @@ import type { RouteKey } from '@/lib/routes'
   disagrees with itself across pages is worse than no warranty statement.
 */
 /*
-  THREE WARRANTY STRINGS, NOT ONE, AND THE SPLIT IS THE POINT.
+  FOUR WARRANTY STRINGS, NOT ONE, AND THE SPLIT IS THE POINT.
 
   There used to be a single WARRANTY constant applied to all twelve systems
   below — including commercial, warehouse and patio. That was tolerable while
@@ -47,15 +47,25 @@ import type { RouteKey } from '@/lib/routes'
   would publish a lifetime promise on industrial traffic that nobody has
   agreed to underwrite.
 
-  So the category decides the string:
+  So what is being coated decides the string:
 
-    residential garage   -> Limited Lifetime, qualifying installations
-    exterior residential -> per the approved exterior system, no duration
-    commercial/industrial-> project-specific, no duration
+    residential garage    -> Limited Lifetime, qualifying installations
+    exterior residential  -> per the approved exterior system, no duration
+    commercial/industrial -> project-specific, no duration
+    neither, or any       -> written warranty, term set by the surface
 
-  NO DURATION is published for the latter two until those terms are approved.
-  Saying "written terms stated in your proposal" is accurate and commits the
-  business to nothing it has not signed.
+  THE FOURTH EXISTS BECAUSE FIVE PAGES ARE NOT ABOUT A GARAGE. Grinding,
+  coating removal and crack repair are services sold into warehouses and
+  retail units as readily as into garages, and metallic and solid-colour
+  finishes go into showrooms and lobbies. Naming the residential term on those
+  pages — even qualified with "on qualifying garage installations" — puts a
+  lifetime promise in front of a commercial reader and asks them to notice the
+  qualifier. These pages name no term at all and say the term follows the
+  surface, which is both true and free of anything to misread.
+
+  NO DURATION is published for the last three until those terms are approved.
+  Saying "stated in your proposal" is accurate and commits the business to
+  nothing it has not signed.
 */
 const WARRANTY_RESIDENTIAL =
   'Limited Lifetime residential workmanship warranty on qualifying garage installations, provided in writing'
@@ -65,6 +75,9 @@ const WARRANTY_EXTERIOR =
 
 const WARRANTY_PROJECT =
   'Project-specific written workmanship warranty, with the term stated in your proposal rather than assumed from a residential one'
+
+const WARRANTY_BY_SURFACE =
+  'Written workmanship warranty on the work we perform, with the term set by what is being coated — residential garage, exterior and commercial each carry their own, and yours is stated in writing before work starts'
 
 const PREPARATION = 'Mechanical diamond grinding with dust control. Never acid etching.'
 
@@ -207,7 +220,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'A multi-day installation, and the decorative coat cannot be rushed. Schedule confirmed in writing before work starts.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY_RESIDENTIAL,
+    warranty: WARRANTY_BY_SURFACE,
     whatDrivesCost: [
       'Complexity of the effect and the number of pigments involved',
       'Labour, which is the dominant factor — metallic is skill-intensive',
@@ -232,7 +245,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'A multi-day installation. Fewer stages than a broadcast floor, but cure time between coats still governs the schedule.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY_RESIDENTIAL,
+    warranty: WARRANTY_BY_SURFACE,
     whatDrivesCost: [
       'Area and number of coats',
       'How much slab levelling and repair is needed first, which a solid colour makes visible',
@@ -333,7 +346,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Quoted as a separate stage ahead of the new floor. Duration depends on how many layers there are and how well they are bonded, which is why it is inspected before it is quoted.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY_RESIDENTIAL,
+    warranty: WARRANTY_BY_SURFACE,
     whatDrivesCost: [
       'Number of coats and how tenaciously they are bonded — a well-bonded old floor is harder to remove',
       'Coating type, since some soften and load the tooling',
@@ -358,7 +371,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'The first stage of every installation, sized to the slab area and condition.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY_RESIDENTIAL,
+    warranty: WARRANTY_BY_SURFACE,
     whatDrivesCost: [
       'Area and slab hardness',
       'How much existing coating or sealer has to come off first',
@@ -383,7 +396,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Quoted as a stage before coating, with duration set by the extent of the damage found at inspection.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY_RESIDENTIAL,
+    warranty: WARRANTY_BY_SURFACE,
     whatDrivesCost: [
       'Linear feet of cracking and total spalled area',
       'Depth of damage and whether edges need rebuilding',

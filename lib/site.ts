@@ -257,7 +257,15 @@ export const proofPoints: readonly {
 
 export const assurances = [
   '$2M general liability + workers’ comp',
-  'Limited Lifetime residential workmanship warranty',
+  /*
+    NEUTRAL, BECAUSE THIS LIST IS ON EVERY PAGE. assurances renders in the
+    hero, the CTA band and the final CTA, so naming the residential Limited
+    Lifetime term here put it on the warehouse, commercial and patio pages —
+    the same leak the footer had, and the thing the category split in
+    lib/content/specs.ts exists to prevent. "Written workmanship warranty" is
+    true of every job; /warranty breaks the terms down by what is coated.
+  */
+  'Written workmanship warranty',
   'No upfront payment',
 ] as const
 

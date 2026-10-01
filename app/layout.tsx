@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
   title: 'Garage Epoxy Flooring Houston | Houston Superior Epoxy',
   description:
-    'Diamond-ground epoxy and polyaspartic floor systems for Houston garages, patios and commercial slabs. $2M insured, Limited Lifetime residential workmanship warranty, no upfront payment. Call (346) 782-0903.',
+    'Diamond-ground epoxy and polyaspartic floor systems for Houston garages, patios and commercial slabs. $2M insured, no upfront payment, and a Limited Lifetime workmanship warranty on qualifying residential garages. Call (346) 782-0903.',
   generator: 'v0.app',
   /*
     No `keywords`. Google has ignored <meta name="keywords"> for ranking for
