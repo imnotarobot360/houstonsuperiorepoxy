@@ -6,6 +6,7 @@ import { PageHero } from '@/components/page-hero'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { site } from '@/lib/site'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'warranty' as const
 const PATH = routes[KEY].path
@@ -152,6 +153,10 @@ export default function Page() {
         title="Ask to read the warranty before you commit"
         body="We will bring the written document to your free estimate along with our certificate of insurance. You should expect the same from every contractor you are considering."
       />
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
+      </Section>
 
       <Section>
         <RelatedLinks

@@ -19,6 +19,7 @@ import { faqNode, graph, serviceNode, webPageNode } from '@/lib/schema'
 import { sceneIllustrations } from '@/lib/site'
 
 import { AtAGlance, PageAnswer, PageTerms } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'repair' as const
 const PATH = routes[KEY].path
@@ -251,6 +252,10 @@ export default function Page() {
         title="Not sure whether your crack is cosmetic or structural"
         body="Text a photo with something for scale next to it. We will tell you what it looks like and what we would need to check onsite — and if it is a foundation matter rather than a coating one, we will say so."
       />
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
+      </Section>
 
       <Section>
         <BuyersGuideLink className="mb-12" />

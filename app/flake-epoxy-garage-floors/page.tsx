@@ -21,6 +21,7 @@ import { r, routes } from '@/lib/routes'
 import { finishSamples } from '@/lib/site'
 
 import { AtAGlance, PageAnswer, PageTerms } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'flake' as const
 const PATH = routes[KEY].path
@@ -291,6 +292,10 @@ export default function Page() {
       <Section>
         <Heading eyebrow="Questions" title="Flake system questions" />
         <FaqList items={faqs} />
+      </Section>
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
       </Section>
 
       <Section bleed>

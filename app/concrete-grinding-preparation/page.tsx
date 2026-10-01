@@ -26,6 +26,7 @@ import {
   PageTerms,
   SourcesAndTechnicalReferences,
 } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'grinding' as const
 const PATH = routes[KEY].path
@@ -335,6 +336,10 @@ export default function Page() {
       <Section>
         <Heading eyebrow="Questions" title="Preparation questions" />
         <FaqList items={faqs} />
+      </Section>
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
       </Section>
 
       <Section>

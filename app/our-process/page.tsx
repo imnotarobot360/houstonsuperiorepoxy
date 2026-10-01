@@ -8,6 +8,7 @@ import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 
 import { PageAnswer } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'process' as const
 const PATH = routes[KEY].path
@@ -94,6 +95,10 @@ export default function Page() {
         title="Ask us to walk you through it on your own slab"
         body="The inspection is where the sequence gets applied to your specific concrete — what it needs, how long each step will take, and what that costs. It is free and comes back itemized in writing."
       />
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
+      </Section>
 
       <Section>
         <RelatedLinks

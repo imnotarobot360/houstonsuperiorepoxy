@@ -5,6 +5,7 @@
 */
 
 import type { GlossaryKey } from '@/lib/content/authority'
+import type { RouteKey } from '@/lib/routes'
 
 export type Article = {
   slug: string
@@ -1763,3 +1764,79 @@ export const articles: Article[] = [
 ]
 
 export const articleBySlug = (slug: string) => articles.find((a) => a.slug === slug)
+
+/**
+ * Which guides each hub page sends readers to.
+ *
+ * WHY THIS EXISTS. An audit of the link graph found six articles with zero
+ * inbound links anywhere on the site, and eighteen of twenty-two unreachable
+ * from any service page — every hub linked to the /resources/ index and
+ * stopped there. A guide nothing links to is a guide nobody finds, however
+ * well it is written, and a topic cluster whose hub does not point at its
+ * spokes is a pile of pages rather than a cluster.
+ *
+ * KEYED AND TYPED so it cannot rot quietly. `ArticleSlug` is derived from the
+ * articles themselves, so renaming or deleting a guide breaks the build here
+ * rather than shipping a dead link. This mirrors `pageTerms` in
+ * lib/content/specs.ts, which does the same job for glossary entries.
+ *
+ * Every article appears at least once, which is the invariant worth keeping
+ * when the set changes.
+ */
+export type ArticleSlug = (typeof articles)[number]['slug']
+
+export const pageArticles: Partial<Record<RouteKey, readonly ArticleSlug[]>> = {
+  garageCoatings: [
+    'how-to-read-a-garage-floor-quote',
+    'how-much-does-2-car-garage-epoxy-cost-houston',
+    'do-you-have-to-grind-concrete-before-epoxy',
+    'one-day-vs-multi-day-garage-floor',
+    'how-long-does-epoxy-garage-floor-last',
+    'is-epoxy-flooring-slippery-when-wet',
+  ],
+  epoxyFlooring: [
+    'epoxy-vs-polyaspartic-houston',
+    'why-do-epoxy-garage-floors-peel',
+    'epoxy-flooring-houston-humidity',
+    'diy-epoxy-kit-vs-professional-installation',
+  ],
+  polyaspartic: [
+    'polyaspartic-vs-polyurea-coatings',
+    'epoxy-vs-polyaspartic-houston',
+    'best-garage-floor-coating-for-houston-heat',
+  ],
+  flake: [
+    'flake-vs-metallic-epoxy-floors',
+    'what-causes-hot-tire-pickup',
+    'is-epoxy-flooring-slippery-when-wet',
+  ],
+  metallic: ['flake-vs-metallic-epoxy-floors'],
+  colors: ['flake-vs-metallic-epoxy-floors'],
+  patio: ['is-epoxy-flooring-slippery-when-wet'],
+  removal: ['can-you-epoxy-over-existing-epoxy', 'why-do-epoxy-garage-floors-peel'],
+  grinding: [
+    'do-you-have-to-grind-concrete-before-epoxy',
+    'acid-etching-vs-diamond-grinding',
+    'concrete-moisture-testing-before-epoxy-houston',
+  ],
+  repair: [
+    'garage-floor-crack-repair-before-coating',
+    'concrete-moisture-testing-before-epoxy-houston',
+  ],
+  pricing: [
+    'how-much-does-2-car-garage-epoxy-cost-houston',
+    'how-much-does-3-car-garage-coating-cost-houston',
+    'how-to-read-a-garage-floor-quote',
+  ],
+  process: [
+    'one-day-garage-floor-coating-houston',
+    'one-day-vs-multi-day-garage-floor',
+    'how-long-does-epoxy-garage-floor-take',
+    'do-you-have-to-grind-concrete-before-epoxy',
+  ],
+  warranty: [
+    'how-long-does-epoxy-garage-floor-last',
+    'how-to-clean-epoxy-garage-floor',
+    'why-do-epoxy-garage-floors-peel',
+  ],
+}

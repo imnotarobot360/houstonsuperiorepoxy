@@ -19,6 +19,7 @@ import { faqNode, graph, serviceNode, webPageNode } from '@/lib/schema'
 import { r, routes } from '@/lib/routes'
 
 import { AtAGlance, PageAnswer, PageTerms } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'epoxyFlooring' as const
 const PATH = routes[KEY].path
@@ -259,6 +260,10 @@ export default function Page() {
       <Section bleed>
         <Heading eyebrow="Questions" title="Questions about hiring a contractor" />
         <FaqList items={faqs} />
+      </Section>
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
       </Section>
 
       <Section>

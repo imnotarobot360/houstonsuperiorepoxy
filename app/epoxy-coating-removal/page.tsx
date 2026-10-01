@@ -19,6 +19,7 @@ import { faqNode, graph, serviceNode, webPageNode } from '@/lib/schema'
 import { sceneIllustrations } from '@/lib/site'
 
 import { AtAGlance, PageAnswer, PageTerms } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'removal' as const
 const PATH = routes[KEY].path
@@ -253,6 +254,10 @@ export default function Page() {
         title="Send us photos of what your floor is doing"
         body="Text pictures of the worst areas and we will tell you which failure mode it looks like and what we would need to test onsite. Adhesion testing happens at the free estimate."
       />
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
+      </Section>
 
       <Section>
         <BuyersGuideLink className="mb-12" />

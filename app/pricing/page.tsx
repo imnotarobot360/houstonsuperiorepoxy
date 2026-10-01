@@ -10,6 +10,7 @@ import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { pricing } from '@/lib/site'
 
 import { PageAnswer } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'pricing' as const
 const PATH = routes[KEY].path
@@ -175,6 +176,10 @@ export default function Page() {
       </Section>
 
       <Estimate />
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
+      </Section>
 
       <Section>
         <RelatedLinks

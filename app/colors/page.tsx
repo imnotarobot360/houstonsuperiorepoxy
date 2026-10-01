@@ -22,6 +22,7 @@ import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { finishSamples } from '@/lib/site'
 
 import { PageAnswer } from '@/components/aeo'
+import { FurtherReading } from '@/components/further-reading'
 
 const KEY = 'colors' as const
 const PATH = routes[KEY].path
@@ -258,6 +259,10 @@ export default function Page() {
         title="We will bring sample boards to your estimate"
         body="Tell us the space and the direction you are leaning and we will bring a focused set of physical samples to look at on your own floor, under your own light. The visit is free."
       />
+
+      <Section>
+        <FurtherReading routeKey={KEY} />
+      </Section>
 
       <Section>
         <RelatedLinks
