@@ -109,7 +109,7 @@ const included = [
   'Added texture in the topcoat where slip resistance is required',
   'Zone or lane color changes as a separate itemized scope',
   'Coving and drain detail assessed for hygiene-critical spaces',
-  'Written 5-year workmanship warranty',
+  'Written Limited Lifetime residential workmanship warranty',
 ]
 
 const notes = [

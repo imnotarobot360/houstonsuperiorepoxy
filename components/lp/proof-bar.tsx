@@ -5,8 +5,8 @@ import { REVIEWS, reviewsEnabled } from '@/lib/pricing-config'
 /*
   Social-proof bar shown above Step 1 of the estimator (spec item 3).
 
-  It states only what is TRUE for this entity: the written 5-year workmanship
-  warranty, $2M insurance, no upfront payment, and the Greater Houston service
+  It states only what is TRUE for this entity: the written Limited Lifetime
+  residential workmanship warranty, $2M insurance, no upfront payment, and the Greater Houston service
   area (all from lib/site `assurances`).
 
   Reviews are GATED (see lib/pricing-config REVIEWS). A numeric Google rating and

@@ -64,7 +64,11 @@ export default function Page() {
             },
             {
               heading: 'Warranty',
-              paras: ['Our workmanship warranty runs 5 years and is described on the warranty page, with the operative terms stated in your signed quote. Manufacturer warranties on materials are separate, belong to the manufacturer, and vary by product.'],
+              paras: [
+                'Qualifying residential garage floor installations carry our Limited Lifetime workmanship warranty, described on the warranty page, with the operative terms stated in your signed quote and in the written warranty document provided with the work. “Lifetime” means the period during which the original purchaser owns the property at which the system was installed. It is a limited warranty covering qualifying workmanship-related failures, and it is subject to the exclusions set out in that document, which governs in the event of any conflict with this website.',
+                'The Limited Lifetime term applies to qualifying residential garage installations only. Exterior residential concrete is warranted under the approved exterior system, and commercial, warehouse and industrial projects carry a project-specific written warranty with the term stated in that project’s proposal.',
+                'Manufacturer warranties on materials are separate, belong to the manufacturer, and vary by product.',
+              ],
             },
             {
               heading: 'Photographs',

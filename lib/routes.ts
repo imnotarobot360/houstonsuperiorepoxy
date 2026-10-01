@@ -39,7 +39,7 @@ export const routes = {
     h1: 'Premium Garage Floor Coatings in Houston, TX',
     title: 'Garage Epoxy Flooring Houston | Houston Superior Epoxy',
     description:
-      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, 5-year workmanship warranty, no upfront payment.',
+      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, Limited Lifetime residential workmanship warranty, no upfront payment.',
     parent: null,
     label: 'Home',
   },
@@ -50,7 +50,7 @@ export const routes = {
     h1: 'Garage Floor Coatings in Houston',
     title: 'Garage Floor Coatings Houston | Flake & Polyaspartic Systems',
     description:
-      'Houston garage floor coatings built on diamond-ground concrete, full-broadcast flake and a polyaspartic topcoat. Hot-tire resistant, warrantied 5 years.',
+      'Houston garage floor coatings built on diamond-ground concrete, full-broadcast flake and a polyaspartic topcoat. Hot-tire resistant, backed by a Limited Lifetime residential workmanship warranty.',
     parent: null,
     label: 'Garage Floors',
   },
@@ -226,16 +226,16 @@ export const routes = {
     h1: 'About Houston Superior Epoxy',
     title: 'About Us | Houston Superior Epoxy',
     description:
-      'Houston Superior Epoxy is the concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, 5-year workmanship warranty.',
+      'Houston Superior Epoxy is the concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, Limited Lifetime residential workmanship warranty.',
     parent: null,
     label: 'About',
   },
   warranty: {
     path: '/warranty/',
-    h1: 'Our Workmanship Warranty',
-    title: 'Our 5-Year Workmanship Warranty | Houston Superior Epoxy',
+    h1: 'Your Floor. Protected for the Long Run.',
+    title: 'Limited Lifetime Garage Floor Warranty Houston | Houston Superior Epoxy',
     description:
-      'Every floor we install carries a written 5-year workmanship warranty, backed by $2M general liability and workers’ compensation coverage.',
+      'Qualifying Houston residential garage floor installations carry a written Limited Lifetime workmanship warranty, backed by $2M general liability and workers’ compensation coverage.',
     parent: null,
     label: 'Warranty',
   },

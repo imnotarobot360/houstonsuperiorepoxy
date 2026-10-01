@@ -8,6 +8,7 @@ import { CostFactorTable, LineItems } from '@/components/pricing-detail'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { pricing } from '@/lib/site'
+import { SYSTEM_WARRANTY, systemLayers } from '@/lib/content/system'
 
 import { PageAnswer } from '@/components/aeo'
 import { FurtherReading } from '@/components/further-reading'
@@ -182,6 +183,40 @@ export default function Page() {
           intro="Every line that can appear on your estimate, what drives it, and how it is broken out. No figures here yet — what is published is what we can stand behind today."
         />
         <LineItems />
+      </Section>
+
+      {/*
+        What a quoted residential garage actually buys, named.
+
+        It sits after the line items because that is where a reader has just
+        been told what each line is for and is asking what the whole thing
+        amounts to. Product names come from lib/content/system.ts so they
+        cannot drift from the cross-section on the service pages, and the
+        warranty line carries its own scope rather than inheriting the
+        headline's.
+      */}
+      <Section>
+        <Heading
+          eyebrow="What you are buying"
+          title="The system a residential garage quote covers"
+        />
+        <ul className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            ...systemLayers.map((l) => l.name),
+            `${SYSTEM_WARRANTY}, subject to the written terms`,
+            'No upfront payment',
+          ].map((item) => (
+            <li
+              key={item}
+              className="flex items-start gap-3 bg-background p-6 text-sm leading-relaxed text-muted-foreground"
+            >
+              <span aria-hidden="true" className="mt-1 shrink-0 font-mono text-xs text-primary">
+                —
+              </span>
+              <span className="text-pretty">{item}</span>
+            </li>
+          ))}
+        </ul>
       </Section>
 
       <Pricing />

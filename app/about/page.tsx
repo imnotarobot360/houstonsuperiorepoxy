@@ -36,7 +36,7 @@ const commitments = [
   },
   {
     tag: 'Warranty',
-    title: '5-year written workmanship warranty',
+    title: 'Limited Lifetime residential workmanship warranty',
     body: 'Provided in writing with every floor. A workmanship warranty covers our installation, which is a different thing from a product warranty covering the manufacturer’s material — worth understanding before you compare guarantees.',
   },
   {
@@ -157,7 +157,7 @@ export default function Page() {
       <PageHero
         routeKey={KEY}
         eyebrow="About us"
-        intro={`The concrete coatings division of ${site.parentCompany}, serving Greater Houston. $2M insured, with a written 5-year workmanship warranty on every floor.`}
+        intro={`The concrete coatings division of ${site.parentCompany}, serving Greater Houston. $2M insured, with a written Limited Lifetime workmanship warranty on qualifying residential garage installations.`}
       />
 
       <Section>
@@ -248,7 +248,7 @@ export default function Page() {
         <RelatedLinks
           heading="Continue reading"
           links={[
-            { label: routes.warranty.label, href: r('warranty'), blurb: 'What the 5-year warranty covers.' },
+            { label: routes.warranty.label, href: r('warranty'), blurb: 'What the Limited Lifetime warranty covers.' },
             { label: routes.reviews.label, href: r('reviews'), blurb: 'Read our Google reviews at the source.' },
             { label: routes.process.label, href: r('process'), blurb: 'The nine steps on every floor.' },
             { label: routes.serviceAreas.label, href: r('serviceAreas'), blurb: 'Where we work.' },

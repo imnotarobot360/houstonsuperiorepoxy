@@ -252,12 +252,12 @@ export const proofPoints: readonly {
   link?: string
 }[] = [
   { value: '$2M', label: 'Liability + workers’ comp' },
-  { value: '5-Year', label: 'Workmanship warranty' },
+  { value: 'Limited Lifetime', label: 'Residential workmanship warranty' },
 ]
 
 export const assurances = [
   '$2M general liability + workers’ comp',
-  '5-year workmanship warranty',
+  'Limited Lifetime residential workmanship warranty',
   'No upfront payment',
 ] as const
 
@@ -604,7 +604,7 @@ export const comparison = [
   },
   {
     point: 'Warranty',
-    ours: 'Written 5-year workmanship warranty',
+    ours: 'Written Limited Lifetime residential workmanship warranty',
     theirs: 'Product-only, prorated at best',
   },
 ] as const
@@ -766,7 +766,7 @@ export const faqs = [
   },
   {
     q: 'How long will the floor last?',
-    a: 'Our workmanship carries a written 5-year warranty. Beyond that, honest service life depends on preparation quality, the system specified, and how the floor is used — a lightly used residential garage and a forklift aisle are not the same question, and we would rather point you at the warranty we actually stand behind than publish a lifespan figure we cannot support. What we can tell you is that preparation, not the resin, is what determines it.',
+    a: 'Qualifying residential garage installations carry our written Limited Lifetime workmanship warranty, which covers installation-related failures for as long as the original purchaser owns the property, subject to the written terms and exclusions. Beyond that, honest service life depends on preparation quality, the system specified, and how the floor is used — a lightly used residential garage and a forklift aisle are not the same question, and we would rather point you at the warranty we actually stand behind than publish a lifespan figure we cannot support. What we can tell you is that preparation, not the resin, is what determines it.',
   },
   {
     q: 'Do you coat patios and outdoor kitchens?',

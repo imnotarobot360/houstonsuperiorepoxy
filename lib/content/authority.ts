@@ -132,7 +132,7 @@ export const entity = {
     'Coating adhesion is mechanical. Resin has to lock into the open pore structure of the concrete, so every slab is diamond-ground to remove laitance and the closed, power-troweled surface layer. Acid etching and pressure washing are not used as preparation methods because neither reliably opens a slab to a specified surface profile.',
 
   /* Credentials. */
-  credentials: `${site.company} carries $2M general liability insurance plus workers' compensation, and backs its installations with a written 5-year workmanship warranty. Certificates of insurance are available on request.`,
+  credentials: `${site.company} carries $2M general liability insurance plus workers' compensation, and backs qualifying residential garage installations with a written Limited Lifetime workmanship warranty. Certificates of insurance are available on request.`,
 
   /* Contact — always the same string. */
   contact: `Call or text ${site.phone}, or email ${site.email}.`,

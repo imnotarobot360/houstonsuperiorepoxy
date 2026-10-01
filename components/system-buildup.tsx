@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { systemLayers } from '@/lib/content/system'
 
 /*
   Hero visual — replaces what used to be an empty "hero project photo" slot.
@@ -40,14 +41,14 @@ type Layer = {
 const layers: Layer[] = [
   {
     n: '04',
-    name: 'Polyaspartic F61 clear topcoat',
+    name: systemLayers[3].name,
     note: 'Aliphatic, UV stable. This is the wearing surface.',
     depth: 'h-8',
     band: 'bg-[linear-gradient(100deg,color-mix(in_oklab,var(--color-foreground)_16%,transparent),color-mix(in_oklab,var(--color-foreground)_4%,transparent))]',
   },
   {
     n: '03',
-    name: 'Vinyl flake, broadcast to refusal',
+    name: systemLayers[2].name,
     note: 'Scraped and vacuumed even. Texture comes from the flake edges.',
     depth: 'h-12',
     band: 'bg-secondary',
@@ -55,14 +56,14 @@ const layers: Layer[] = [
   },
   {
     n: '02',
-    name: 'Citadel SLE-100 epoxy base coat',
+    name: systemLayers[1].name,
     note: 'Build and bond into the open concrete profile.',
     depth: 'h-10',
     band: 'bg-[linear-gradient(100deg,color-mix(in_oklab,var(--color-primary)_58%,transparent),color-mix(in_oklab,var(--color-primary)_32%,transparent))]',
   },
   {
     n: '01',
-    name: 'Diamond-ground concrete',
+    name: systemLayers[0].name,
     note: 'Mechanical profile. Not acid etch, not a pressure wash.',
     depth: 'h-16',
     band: 'bg-[repeating-linear-gradient(52deg,color-mix(in_oklab,var(--color-muted-foreground)_26%,transparent)_0_2px,transparent_2px_7px)]',

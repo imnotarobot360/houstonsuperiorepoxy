@@ -217,7 +217,7 @@ const faqs = [
   },
   {
     q: 'Does a longer warranty mean a better floor?',
-    a: 'Not by itself. A five-year warranty that states what it covers, what voids it and how to make a claim is more useful than a lifetime warranty with no document behind it. Read the exclusions before you compare the durations.',
+    a: 'Not by itself — the document matters more than the duration. A warranty that states exactly what it covers, what voids it and how to make a claim is worth more than a longer one with nothing behind it. That test applies to ours as much as anyone’s: qualifying residential garage installations carry our Limited Lifetime workmanship warranty, and the covered failures, the exclusions and the claim process are published rather than described only in a sales conversation. Read the exclusions on any warranty before you compare durations.',
   },
 ]
 
@@ -462,7 +462,7 @@ export default function Page() {
               },
               {
                 t: 'Warranty',
-                d: 'A written 5-year workmanship warranty, with its terms and exclusions set out in full.',
+                d: 'A written Limited Lifetime residential workmanship warranty, with its terms and exclusions set out in full.',
               },
               {
                 t: 'Payment',

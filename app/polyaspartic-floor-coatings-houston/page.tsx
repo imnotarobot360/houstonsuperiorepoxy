@@ -277,6 +277,48 @@ export default function Page() {
         <PageTerms routeKey={KEY} />
       </Section>
 
+      {/*
+        Deliberately placed after the chemistry comparison. A reader who has
+        just been walked through resin types is primed to pick a product and
+        stop — and the product is the part of this decision that fails least
+        often. This re-widens it to the things that actually decide whether the
+        floor is still bonded in ten years, which is also the honest argument
+        for why the warranty is worth anything.
+      */}
+      <Section>
+        <Heading
+          eyebrow="Beyond chemistry"
+          title="The coating system is only part of the decision"
+          intro="Two contractors can quote the same resin and deliver very different floors. These are the other things worth comparing."
+        />
+        <ul className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            'Concrete preparation',
+            'Installation process',
+            'Insurance',
+            'Workers’ compensation',
+            'Written warranty',
+            'Company accountability',
+          ].map((item) => (
+            <li
+              key={item}
+              className="bg-background p-6 text-sm font-medium leading-relaxed text-foreground"
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 text-sm leading-relaxed text-muted-foreground text-pretty">
+          Qualifying Houston Superior Epoxy residential garage installations include a Limited
+          Lifetime workmanship warranty against covered installation-related failures, subject to
+          the written terms and exclusions.{' '}
+          <Link href={r('warranty')} className="font-medium text-foreground underline underline-offset-4">
+            Read our warranty
+          </Link>
+          .
+        </p>
+      </Section>
+
       <Section bleed>
         <Heading eyebrow="Questions" title="Technical questions" />
         <FaqList items={faqs} />

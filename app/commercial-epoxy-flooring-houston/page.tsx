@@ -77,7 +77,7 @@ const operational = [
   'Certificate of insurance issued to your property manager on request',
   'Coordination with your building management and access requirements',
   'Line striping and traffic marking as a separate itemized scope',
-  'Written 5-year workmanship warranty on the installed floor',
+  'Written workmanship warranty on the installed floor, with the term stated in your project proposal',
 ]
 
 const planning = [

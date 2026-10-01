@@ -1,9 +1,12 @@
 'use client'
 
+import Link from 'next/link'
 import { Heart } from 'lucide-react'
 import type { FlakeBlend } from '@/lib/content/flake-blends'
 import type { InstalledLighting } from '@/lib/content/blend-visuals'
 import { useShortlist } from '@/components/shortlist/use-shortlist'
+import { SYSTEM_WARRANTY, systemLayers } from '@/lib/content/system'
+import { r } from '@/lib/routes'
 
 /*
   The column beside the garage: what has been chosen, and the physical thing it
@@ -70,7 +73,46 @@ export function SelectedColor({
 
       <LightingToggle lighting={lighting} onLighting={onLighting} />
 
+      <SystemSummary />
+
       <SaveFavourite slug={blend.slug} name={blend.name} />
+    </div>
+  )
+}
+
+/*
+  What the previewed floor actually is.
+
+  The visitor has just chosen a colour, which is the decorative layer and the
+  thinnest part of the decision. This names the three layers under it and the
+  warranty over it, so the choice reads as a system rather than a swatch.
+
+  Layer names come from lib/content/system.ts rather than being typed here:
+  they are factual claims about the installed product and they also render in
+  the cross-section on the service pages, so there is exactly one copy.
+*/
+function SystemSummary() {
+  return (
+    <div className="rounded-xl border border-border bg-card/40 p-5">
+      <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        Your Houston Superior Epoxy system
+      </p>
+      <dl className="mt-4 space-y-2.5">
+        {systemLayers.map((l) => (
+          <div key={l.step} className="flex gap-3 text-sm leading-snug">
+            <dt className="w-20 shrink-0 text-[0.7rem] uppercase tracking-[0.12em] text-muted-foreground">
+              {l.step}
+            </dt>
+            <dd className="text-foreground text-pretty">{l.name}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-4 border-t border-border pt-4 text-sm leading-relaxed text-muted-foreground text-pretty">
+        <Link href={r('warranty')} className="font-medium text-foreground underline underline-offset-4">
+          {SYSTEM_WARRANTY}
+        </Link>{' '}
+        on qualifying installations, subject to the written terms.
+      </p>
     </div>
   )
 }

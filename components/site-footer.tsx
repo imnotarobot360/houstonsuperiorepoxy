@@ -180,7 +180,7 @@ export function SiteFooter() {
             <p>
               © {year} {site.company}. All rights reserved.
             </p>
-            <p>Fully insured · $2M liability + workers&apos; comp · 5-year workmanship warranty</p>
+            <p>Fully insured · $2M liability + workers&apos; comp · Limited Lifetime residential workmanship warranty</p>
           </div>
         </div>
       </div>

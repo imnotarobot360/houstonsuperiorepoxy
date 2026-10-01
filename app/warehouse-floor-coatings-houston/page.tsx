@@ -75,7 +75,7 @@ const scope = [
   'System specified to the actual traffic, not a default build',
   'Traffic lane and walkway striping as its own scope',
   'Phased by bay or zone so operations continue',
-  'Written 5-year workmanship warranty',
+  'Written workmanship warranty, with the term stated in your project proposal',
 ]
 
 const detail = [

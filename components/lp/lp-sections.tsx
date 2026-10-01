@@ -120,13 +120,19 @@ export function LpSystem() {
           ))}
         </ol>
 
-        {/* Owner-confirmed facts only (mirrors lib/site.ts); no lifetime or performance claims. */}
+        {/*
+          Owner-confirmed facts only (mirrors lib/site.ts); no performance or
+          service-life claims. The warranty line names a term the written
+          warranty document has to match — it is not a durability claim about
+          how long the coating lasts, which is a different statement and one
+          this site does not make.
+        */}
         <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm font-medium text-muted-foreground">
           <li>$2M insured (liability + workers&apos; comp)</li>
           <li aria-hidden="true" className="text-border">
             |
           </li>
-          <li>5-year workmanship warranty</li>
+          <li>Limited Lifetime residential workmanship warranty</li>
           <li aria-hidden="true" className="text-border">
             |
           </li>

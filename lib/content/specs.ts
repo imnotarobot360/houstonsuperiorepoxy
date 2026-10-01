@@ -37,7 +37,34 @@ import type { RouteKey } from '@/lib/routes'
   strings per page would let them drift apart — and a warranty term that
   disagrees with itself across pages is worse than no warranty statement.
 */
-const WARRANTY = '5-year written workmanship warranty'
+/*
+  THREE WARRANTY STRINGS, NOT ONE, AND THE SPLIT IS THE POINT.
+
+  There used to be a single WARRANTY constant applied to all twelve systems
+  below — including commercial, warehouse and patio. That was tolerable while
+  the term was a flat five years. It is not tolerable now: the Limited Lifetime
+  term is a RESIDENTIAL GARAGE term, and letting a warehouse page inherit it
+  would publish a lifetime promise on industrial traffic that nobody has
+  agreed to underwrite.
+
+  So the category decides the string:
+
+    residential garage   -> Limited Lifetime, qualifying installations
+    exterior residential -> per the approved exterior system, no duration
+    commercial/industrial-> project-specific, no duration
+
+  NO DURATION is published for the latter two until those terms are approved.
+  Saying "written terms stated in your proposal" is accurate and commits the
+  business to nothing it has not signed.
+*/
+const WARRANTY_RESIDENTIAL =
+  'Limited Lifetime residential workmanship warranty on qualifying garage installations, provided in writing'
+
+const WARRANTY_EXTERIOR =
+  'Written workmanship warranty under the approved exterior system — the residential Limited Lifetime term does not extend to outdoor concrete'
+
+const WARRANTY_PROJECT =
+  'Project-specific written workmanship warranty, with the term stated in your proposal rather than assumed from a residential one'
 
 const PREPARATION = 'Mechanical diamond grinding with dust control. Never acid etching.'
 
@@ -79,7 +106,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'A typical residential garage is a multi-day installation because grinding, base coat, broadcast and topcoat each have to happen in sequence with cure time between them. The specific schedule for your floor is confirmed in writing before work starts.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Square footage, though not linearly — mobilisation is a fixed cost spread across the area',
       'Slab condition: existing coating removal, crack and spall repair, and stem wall work are separate scopes',
@@ -105,7 +132,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Installed as one layer within a multi-day system rather than as a standalone job. Sequence and schedule are confirmed in writing before work starts.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Number of coats and total film build specified',
       'Slab condition and how much repair precedes coating',
@@ -130,7 +157,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Applied as the final layer of a multi-day system. The fast cure shortens the wait between coats but does not compress the whole installation into one day.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Area and number of clear coats',
       'Whether anti-slip aggregate is suspended in the topcoat',
@@ -155,7 +182,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'A multi-day installation: grind, base coat, broadcast flake to refusal, scrape and vacuum the excess, then clear topcoat. Each stage needs the previous one cured.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Whether the broadcast is full — to refusal — or partial, which changes flake volume substantially',
       'Area, slab condition and repair scope',
@@ -180,7 +207,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'A multi-day installation, and the decorative coat cannot be rushed. Schedule confirmed in writing before work starts.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Complexity of the effect and the number of pigments involved',
       'Labour, which is the dominant factor — metallic is skill-intensive',
@@ -205,7 +232,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'A multi-day installation. Fewer stages than a broadcast floor, but cure time between coats still governs the schedule.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Area and number of coats',
       'How much slab levelling and repair is needed first, which a solid colour makes visible',
@@ -230,7 +257,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Scoped per project and phased around your operating hours. The written quote states the sequence and the areas released at each stage.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_PROJECT,
     whatDrivesCost: [
       'Total area and how many phases the work has to be split into',
       'Out-of-hours or weekend working to protect operations',
@@ -256,7 +283,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Phased across zones so the facility keeps operating. The written scope states which areas are released when.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_PROJECT,
     whatDrivesCost: [
       'Area, and how many phases operations require',
       'Joint treatment and crack repair, which on a warehouse slab is often the largest line',
@@ -282,7 +309,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'A multi-day installation, and outdoor work is weather-dependent — humidity and dew point affect cure, so dates can move.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_EXTERIOR,
     whatDrivesCost: [
       'Area and shape complexity — pool surrounds have far more edge per square foot',
       'Anti-slip aggregate, which outdoor surfaces should have',
@@ -306,7 +333,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Quoted as a separate stage ahead of the new floor. Duration depends on how many layers there are and how well they are bonded, which is why it is inspected before it is quoted.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Number of coats and how tenaciously they are bonded — a well-bonded old floor is harder to remove',
       'Coating type, since some soften and load the tooling',
@@ -331,7 +358,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'The first stage of every installation, sized to the slab area and condition.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Area and slab hardness',
       'How much existing coating or sealer has to come off first',
@@ -356,7 +383,7 @@ export const pageSpecs: Partial<Record<RouteKey, PageSpec>> = {
       'Quoted as a stage before coating, with duration set by the extent of the damage found at inspection.',
     returnToService: RETURN_TO_SERVICE,
     preparationMethod: PREPARATION,
-    warranty: WARRANTY,
+    warranty: WARRANTY_RESIDENTIAL,
     whatDrivesCost: [
       'Linear feet of cracking and total spalled area',
       'Depth of damage and whether edges need rebuilding',

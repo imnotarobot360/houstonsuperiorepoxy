@@ -68,7 +68,7 @@ const quoteRows = [
   },
   {
     point: 'Warranty',
-    ours: 'A written 5-year workmanship warranty you receive as a document.',
+    ours: 'A written Limited Lifetime residential workmanship warranty you receive as a document.',
     theirs: 'A verbal "lifetime" claim, or a manufacturer material warranty presented as if it covered labor.',
   },
   {

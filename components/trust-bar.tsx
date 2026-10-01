@@ -48,7 +48,7 @@ type Fact = {
 */
 const credentials: Fact[] = [
   { value: '$2M', label: 'Liability + workers’ comp', icon: ShieldCheck },
-  { value: '5-Year', label: 'Written workmanship warranty', icon: ShieldCheck },
+  { value: 'Limited Lifetime', label: 'Written residential workmanship warranty', icon: ShieldCheck },
   { value: '$0', label: 'Due upfront', icon: HandCoins },
   { value: 'Res. + Com.', label: 'Residential & commercial', icon: Building2 },
 ]

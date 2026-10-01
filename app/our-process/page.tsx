@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 import { FaqList, Heading, Prose, RelatedLinks, Section } from '@/components/blocks'
 import { CtaBand } from '@/components/cta-band'
 import { JsonLd } from '@/components/json-ld'
@@ -85,6 +87,31 @@ export default function Page() {
       </Section>
 
       <Process />
+
+      {/*
+        The warranty note sits immediately after the install sequence because
+        that is what earns it — the guarantee is a claim about the nine steps
+        above, not a separate marketing badge.
+      */}
+      <Section>
+        <div className="max-w-3xl border-l-2 border-primary pl-6">
+          <h2 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+            Built professionally. Backed for the long run.
+          </h2>
+          <p className="mt-4 leading-relaxed text-muted-foreground text-pretty">
+            Qualifying residential garage floor installations include our Limited Lifetime
+            workmanship warranty against covered installation-related failures, subject to the
+            written terms and exclusions.
+          </p>
+          <Link
+            href={r('warranty')}
+            className="mt-6 inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-primary underline underline-offset-4"
+          >
+            See our warranty
+            <ArrowRight size={15} aria-hidden="true" />
+          </Link>
+        </div>
+      </Section>
 
       <Section bleed>
         <Heading eyebrow="Questions" title="How the work runs" />
