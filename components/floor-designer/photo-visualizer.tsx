@@ -37,8 +37,12 @@ type Phase =
   | { kind: 'done'; file: File; previewUrl: string; resultUrl: string; blendSlug: string }
   | { kind: 'failed'; file: File; previewUrl: string; message: string; retryable: boolean }
 
-/* Failures an operator must fix are not worth offering a retry button for. */
-const TERMINAL = new Set(['not_configured', 'auth'])
+/*
+  Failures where a "Try again" button would be a lie: an operator must fix the
+  first two, and the third will refuse again until the window rolls over. The
+  message carries the wait instead.
+*/
+const TERMINAL = new Set(['not_configured', 'auth', 'rate_limited'])
 
 export function PhotoVisualizer({
   blend,

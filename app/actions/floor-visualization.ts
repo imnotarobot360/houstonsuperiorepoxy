@@ -1,9 +1,11 @@
 'use server'
 
+import { headers } from 'next/headers'
 import { put } from '@vercel/blob'
 import { flakeBlends } from '@/lib/content/flake-blends'
 import { checkPhotoParts } from '@/lib/visualizer/validation'
 import { resolveProvider, type VisualizationFailure } from '@/lib/visualizer/provider'
+import { checkAndRecord, clientIpFrom } from '@/lib/visualizer/rate-limit'
 
 /*
   Generates a floor visualization from a photo the visitor took of their own
@@ -29,24 +31,20 @@ import { resolveProvider, type VisualizationFailure } from '@/lib/visualizer/pro
   nothing is stored.
 
   ────────────────────────────────────────────────────────────────────────────
-  RATE LIMITING IS REQUIRED BEFORE A PROVIDER IS CONFIGURED, AND IS NOT DONE.
+  RATE LIMITING: per IP, with a global ceiling behind it, counted in Postgres.
+  See lib/visualizer/rate-limit.ts for why each of those was chosen, and why it
+  fails closed.
 
-  This is a public server action with no authentication. Today that is
-  harmless: with no provider set up it returns `not_configured` before reading
-  the file, so a scripted caller gets a string and costs nothing. The moment
-  FLOOR_VIZ_API_KEY exists, the same endpoint becomes a way for anyone to spend
-  the account's image-generation budget and fill private blob storage, one
-  cheap HTTP request at a time.
+  THE TABLE IS NOT CREATED YET. sql/visualization-rate-limit.sql holds the DDL
+  and has deliberately not been applied — applying it is a production database
+  change. Until it exists the limiter cannot read its store and refuses, so
+  photo previews are off rather than unmetered. Apply the SQL before setting
+  FLOOR_VIZ_API_KEY, in that order: the dangerous state is a configured
+  provider with no ceiling, never a missing table.
 
-  It is flagged here rather than guessed at because the shape of the limit is a
-  real decision — per IP, per session or per lead; what ceiling; what a blocked
-  visitor is told — and it needs somewhere to keep counters that survives
-  serverless invocations. The Postgres this project already uses is the obvious
-  home; an in-memory counter is not, because each instance would keep its own.
-
-  The lead form's defence is a honeypot (HONEYPOT_FIELD in lib/leads.ts), which
-  works there because bots fill forms blindly. It is not sufficient here, where
-  the attacker is calling the action directly.
+  The lead form's honeypot (HONEYPOT_FIELD in lib/leads.ts) is not a substitute
+  here. It works there because bots fill forms blindly; this endpoint is called
+  directly.
   ────────────────────────────────────────────────────────────────────────────
 */
 
@@ -59,11 +57,11 @@ export type VisualizationResponse =
       pathname: string | null
       blendSlug: string
     }
-  | { ok: false; code: VisualizationFailure | 'invalid'; message: string }
+  | { ok: false; code: VisualizationFailure | 'invalid' | 'rate_limited'; message: string }
 
 /* Visitor-facing text for each failure. Specific enough to act on, vague enough
    not to leak operational detail to the public. */
-const MESSAGES: Record<VisualizationFailure | 'invalid', string> = {
+const MESSAGES: Record<VisualizationFailure | 'invalid' | 'rate_limited' | 'rate_limited_unavailable', string> = {
   not_configured:
     'Photo previews are not switched on yet. The colour preview on this page still works, and we bring physical samples to every estimate.',
   auth: 'Photo previews are temporarily unavailable. Please use the colour preview for now — everything else on this page still works.',
@@ -73,6 +71,12 @@ const MESSAGES: Record<VisualizationFailure | 'invalid', string> = {
   timeout: 'That took too long to generate. Try again, or carry on with the colour preview.',
   error: 'Something went wrong generating the preview. You can try again, or carry on with the colour preview.',
   invalid: 'That file could not be used. Use a photo from your camera or gallery.',
+  rate_limited:
+    'You have generated a lot of previews in a short time. The colour preview on this page still works in the meantime.',
+  /* Fail-closed path: the limiter could not reach its store. Says nothing about
+     why, because the visitor cannot act on a database problem. */
+  rate_limited_unavailable:
+    'Photo previews are briefly unavailable. The colour preview on this page still works — please try again shortly.',
 }
 
 export async function generateFloorVisualization(formData: FormData): Promise<VisualizationResponse> {
@@ -106,6 +110,30 @@ export async function generateFloorVisualization(formData: FormData): Promise<Vi
   const provider = resolveProvider()
   if (!provider) {
     return { ok: false, code: 'not_configured', message: MESSAGES.not_configured }
+  }
+
+  /*
+    THE LIMIT IS CHECKED HERE, AFTER THE PROVIDER RESOLVES AND BEFORE THE CALL.
+
+    Order matters in both directions. Later than this and the spend has already
+    happened. Earlier — before resolveProvider — and every call on an
+    unconfigured deployment would write a counter row for a request that costs
+    nothing, turning a free short-circuit into database traffic and filling a
+    table of IP hashes for no reason.
+
+    It also records the attempt, so a request that is dispatched is always
+    counted even if the provider then fails.
+  */
+  const rate = await checkAndRecord(clientIpFrom(await headers()))
+  if (!rate.allowed) {
+    return {
+      ok: false,
+      code: 'rate_limited',
+      message:
+        rate.scope === 'unavailable'
+          ? MESSAGES.rate_limited_unavailable
+          : `${MESSAGES.rate_limited} Try again in about ${rate.retryAfterMinutes} minutes.`,
+    }
   }
 
   let result

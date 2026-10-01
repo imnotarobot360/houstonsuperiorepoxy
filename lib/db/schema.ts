@@ -125,3 +125,38 @@ export const estimateLeads = pgTable(
 )
 
 export type EstimateLead = typeof estimateLeads.$inferSelect
+
+/*
+  Rate-limit counters for the garage-photo visualizer.
+
+  ONE ROW PER DISPATCHED GENERATION, holding a salted hash of the caller's IP
+  and nothing else — no lead id, no photo reference, no user agent. The counter
+  needs to know "same caller", not "which caller", and a table that cannot
+  identify anybody is a table that cannot leak anybody.
+
+  Rows are pruned past the longest window (24h) opportunistically on write, so
+  this is a day of fingerprints rather than a browsing history. There is no cron
+  in this project, which is why the pruning lives in the write path.
+
+  SAME HAND-MAINTAINED CONTRACT AS THE TABLE ABOVE: DDL is applied through the
+  Neon MCP, not Drizzle Kit. The matching statements are in
+  sql/visualization-rate-limit.sql and have NOT been applied — until they are,
+  the limiter fails closed and the photo preview is refused, which is the
+  intended direction.
+*/
+export const visualizationRequests = pgTable(
+  'visualization_requests',
+  {
+    id: bigserial('id', { mode: 'number' }).primaryKey(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    ipHash: text('ip_hash').notNull(),
+  },
+  (t) => [
+    /* Serves the per-IP window query. */
+    index('visualization_requests_ip_idx').on(t.ipHash, t.createdAt.desc()),
+    /* Serves the global window count and the prune. */
+    index('visualization_requests_created_at_idx').on(t.createdAt.desc()),
+  ],
+)
+
+export type VisualizationRequest = typeof visualizationRequests.$inferSelect
