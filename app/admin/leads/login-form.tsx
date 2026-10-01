@@ -31,7 +31,7 @@ export function AdminLogin({ configured }: { configured: boolean }) {
 
   return (
     <div>
-      <p className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+      <p className="text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
         Houston Superior Epoxy
       </p>
       <h1 className="mt-1 font-serif text-2xl text-foreground">Lead inbox</h1>

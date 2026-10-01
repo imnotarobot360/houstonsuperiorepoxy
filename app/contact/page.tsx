@@ -116,7 +116,7 @@ export default function ContactPage() {
               className="group bg-background p-7 transition-colors hover:bg-secondary lg:p-8"
             >
               <c.icon size={20} className="text-primary" aria-hidden="true" />
-              <p className="mt-5 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="mt-5 text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
                 {c.label}
               </p>
               <p className="mt-2 font-serif text-xl tracking-tight text-foreground group-hover:text-primary">
@@ -142,7 +142,7 @@ export default function ContactPage() {
               <div className="flex gap-4">
                 <Clock size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
                 <div>
-                  <dt className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+                  <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
                     Working hours
                   </dt>
                   <dd className="mt-2 space-y-1 text-muted-foreground">
@@ -170,7 +170,7 @@ export default function ContactPage() {
               <div className="flex gap-4">
                 <MapPin size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
                 <div>
-                  <dt className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+                  <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
                     Service area
                   </dt>
                   <dd className="mt-2 leading-relaxed text-muted-foreground text-pretty">

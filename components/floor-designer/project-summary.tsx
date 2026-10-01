@@ -21,7 +21,7 @@ import { TYPICAL_SQFT, type CoatingCondition, type GarageSize } from '@/lib/pric
 function Fact({ label, value, onPrompt }: { label: string; value: string | null; onPrompt: () => void }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-[0.6rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+      <span className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </span>
       {value ? (
@@ -54,7 +54,7 @@ export function ProjectSummary({
 
   return (
     <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-      <p className="text-[0.6rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+      <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
         Your project
       </p>
 

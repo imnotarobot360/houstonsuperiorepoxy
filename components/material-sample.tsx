@@ -81,10 +81,10 @@ export function MaterialSample({
         className="object-cover"
       />
       <figcaption className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-x-2 gap-y-0.5 bg-background/80 px-3.5 py-2 backdrop-blur-sm">
-        <span className="text-[0.6rem] font-medium uppercase tracking-[0.2em] text-primary">
+        <span className="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-primary">
           {kind}
         </span>
-        <span className="text-[0.68rem] leading-snug text-muted-foreground text-pretty">
+        <span className="text-[0.7rem] leading-snug text-muted-foreground text-pretty">
           {caption}
         </span>
       </figcaption>

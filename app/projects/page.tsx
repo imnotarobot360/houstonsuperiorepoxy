@@ -197,7 +197,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
 
               return (
                 <div key={facet} className="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:gap-6">
-                  <h3 className="shrink-0 text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground sm:w-24">
+                  <h3 className="shrink-0 text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground sm:w-24">
                     {facetLabels[facet]}
                   </h3>
                   <ul className="flex flex-wrap gap-2">
@@ -232,7 +232,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
                             }`}
                           >
                             {o.label}
-                            <span className="font-mono text-[0.65rem] opacity-60">{o.count}</span>
+                            <span className="font-mono text-[0.7rem] opacity-60">{o.count}</span>
                             {selected ? (
                               <>
                                 <X size={11} aria-hidden="true" />
@@ -307,7 +307,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
                         />
                       ) : null}
                       <div className="flex flex-1 flex-col gap-2 p-7">
-                        <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                        <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                           {p.city}, TX · {p.squareFeet}
                         </span>
                         <span className="flex items-start justify-between gap-3 font-serif text-xl tracking-tight text-foreground">

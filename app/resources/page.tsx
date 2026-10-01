@@ -99,7 +99,7 @@ export default function Page() {
                 href={`${PATH}${a.slug}/`}
                 className="flex h-full flex-col gap-3 p-7 hover:bg-secondary lg:p-8"
               >
-                <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                   {a.kicker}
                 </span>
                 <span className="flex items-start justify-between gap-3 font-serif text-xl tracking-tight text-foreground text-pretty">

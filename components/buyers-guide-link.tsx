@@ -33,7 +33,7 @@ export function BuyersGuideLink({ className = '' }: { className?: string }) {
       className={`group flex flex-col gap-4 border border-border bg-card/40 p-7 transition-colors hover:border-primary/50 hover:bg-secondary sm:flex-row sm:items-center sm:justify-between sm:gap-8 lg:p-8 ${className}`}
     >
       <div className="max-w-2xl">
-        <p className="text-[0.65rem] uppercase tracking-[0.18em] text-primary">
+        <p className="text-[0.7rem] uppercase tracking-[0.18em] text-primary">
           Before you hire anyone
         </p>
         <p className="mt-3 font-serif text-xl tracking-tight text-foreground text-pretty">

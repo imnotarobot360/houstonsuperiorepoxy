@@ -65,19 +65,19 @@ export function CostFactorTable() {
             <tr className="border-y border-border">
               <th
                 scope="col"
-                className="py-4 pr-6 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-primary"
+                className="py-4 pr-6 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-primary"
               >
                 Factor
               </th>
               <th
                 scope="col"
-                className="py-4 pr-6 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-primary"
+                className="py-4 pr-6 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-primary"
               >
                 Impact
               </th>
               <th
                 scope="col"
-                className="py-4 text-[0.65rem] font-medium uppercase tracking-[0.2em] text-primary"
+                className="py-4 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-primary"
               >
                 Why
               </th>
@@ -150,7 +150,7 @@ export function LineItems() {
 
           <dl className="mt-7 grid max-w-4xl gap-7 sm:grid-cols-2 sm:gap-10">
             <div>
-              <dt className="text-[0.65rem] uppercase tracking-[0.2em] text-primary">
+              <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-primary">
                 What drives this line
               </dt>
               <dd className="mt-3">
@@ -168,7 +168,7 @@ export function LineItems() {
               </dd>
             </div>
             <div>
-              <dt className="text-[0.65rem] uppercase tracking-[0.2em] text-primary">
+              <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-primary">
                 How it appears on your quote
               </dt>
               <dd className="mt-3 text-sm leading-relaxed text-foreground/90 text-pretty">

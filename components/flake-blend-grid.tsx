@@ -116,7 +116,7 @@ export function FlakeBlendGrid() {
                               className="object-cover"
                             />
                           </div>
-                          <figcaption className="mt-1.5 text-[0.6rem] uppercase tracking-[0.14em] text-primary">
+                          <figcaption className="mt-1.5 text-[0.7rem] uppercase tracking-[0.14em] text-primary">
                             Installed — {installed.neighborhood}
                           </figcaption>
                         </figure>
@@ -129,7 +129,7 @@ export function FlakeBlendGrid() {
                           <h4 className="font-serif text-lg leading-none tracking-tight text-foreground">
                             {b.name}
                           </h4>
-                          <span className="text-[0.6rem] uppercase tracking-[0.16em] text-primary">
+                          <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                             {b.family}
                           </span>
                         </div>

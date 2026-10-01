@@ -469,7 +469,7 @@ function ProgressSteps({ steps }: { steps: { label: string; done: boolean }[] })
             >
               <span
                 aria-hidden
-                className={`grid size-4 place-items-center rounded-full border text-[0.55rem] ${
+                className={`grid size-5 place-items-center rounded-full border text-[0.7rem] ${
                   s.done
                     ? 'border-primary bg-primary text-primary-foreground'
                     : active
@@ -547,7 +547,7 @@ function EstimateCard({ estimate }: { estimate: ReturnType<typeof computeEstimat
 
   return (
     <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
+      <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-primary">
         Preliminary — {estimate.finishLabel}
       </p>
       <p className="mt-2 font-serif text-3xl tracking-tight text-foreground text-balance">

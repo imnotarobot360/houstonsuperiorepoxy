@@ -124,7 +124,7 @@ export function InstalledPreview({
         />
 
         {/* Label only. It sits beside the picture, never over the floor. */}
-        <p className="absolute bottom-3 left-3 rounded-md bg-background/85 px-2.5 py-1 text-[0.6rem] font-medium uppercase tracking-[0.14em] text-foreground backdrop-blur-sm">
+        <p className="absolute bottom-3 left-3 rounded-md bg-background/85 px-2.5 py-1 text-[0.7rem] font-medium uppercase tracking-[0.14em] text-foreground backdrop-blur-sm">
           {real ? 'Real Houston installation' : 'Installed floor preview'}
         </p>
 

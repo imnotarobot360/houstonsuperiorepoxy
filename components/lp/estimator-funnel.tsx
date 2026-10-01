@@ -511,7 +511,7 @@ export function EstimatorFunnel() {
           {/* Spec item 6: the estimate stays visible above the contact form. */}
           {result && (
             <div className="mb-6 rounded-md border border-border bg-muted/20 p-4 text-center">
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Your preliminary estimate
               </p>
               <p className="mt-1 font-serif text-2xl font-semibold text-primary">{result.headline}</p>
@@ -695,7 +695,7 @@ function FinishChoice({ selected, onSelect }: { selected: Finish | null; onSelec
                 <span className="flex items-center gap-2 text-sm font-semibold text-foreground">
                   {opt}
                   {opt === RECOMMENDED_FINISH && (
-                    <span className="rounded-full bg-primary px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide text-primary-foreground">
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-[0.7rem] font-bold uppercase tracking-wide text-primary-foreground">
                       Recommended
                     </span>
                   )}
@@ -841,7 +841,7 @@ function BookingStep({ leadId, name, zip }: { leadId: number | null; name: strin
         </h2>
 
         <div className="mt-5 rounded-md border border-primary/40 bg-primary/10 p-5">
-          <p className="text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
             Your inspection window
           </p>
           <p className="mt-1 text-lg font-bold text-foreground">{confirmedLabel}</p>
@@ -896,7 +896,7 @@ function BookingStep({ leadId, name, zip }: { leadId: number | null; name: strin
         </p>
       ) : (
         <div className="mt-5">
-          <p className="text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">Choose a day</p>
+          <p className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">Choose a day</p>
           <div
             role="tablist"
             aria-label="Inspection day"
@@ -926,7 +926,7 @@ function BookingStep({ leadId, name, zip }: { leadId: number | null; name: strin
             })}
           </div>
 
-          <p className="mt-5 text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="mt-5 text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
             Choose a window
           </p>
           <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">

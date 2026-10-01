@@ -87,7 +87,7 @@ export function SystemBuildup() {
           className="object-cover"
         />
         <figcaption className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-x-2 bg-background/80 px-4 py-2.5 backdrop-blur-sm">
-          <span className="text-[0.62rem] font-medium uppercase tracking-[0.22em] text-primary">
+          <span className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-primary">
             Material sample
           </span>
           <span className="text-[0.7rem] text-muted-foreground">
@@ -97,7 +97,7 @@ export function SystemBuildup() {
       </div>
 
       <div className="px-5 py-6 sm:px-7 sm:py-7">
-        <p className="text-[0.62rem] font-medium uppercase tracking-[0.24em] text-muted-foreground">
+        <p className="text-[0.7rem] font-medium uppercase tracking-[0.24em] text-muted-foreground">
           What goes on your slab
         </p>
         <p className="mt-2.5 font-serif text-lg leading-snug text-foreground text-pretty">
@@ -128,7 +128,7 @@ export function SystemBuildup() {
 
               <div className="min-w-0 flex-1 pt-0.5">
                 <div className="flex items-baseline gap-2.5">
-                  <span className="font-mono text-[0.66rem] text-primary">{l.n}</span>
+                  <span className="font-mono text-[0.7rem] text-primary">{l.n}</span>
                   <span className="text-sm font-medium leading-snug text-foreground text-pretty">
                     {l.name}
                   </span>

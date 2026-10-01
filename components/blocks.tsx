@@ -97,7 +97,7 @@ export function CardGrid({
       {items.map((it) => (
         <div key={it.title} className="bg-background p-7 lg:p-8">
           {it.tag && (
-            <p className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">{it.tag}</p>
+            <p className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">{it.tag}</p>
           )}
           <h3 className="mt-3 font-serif text-xl tracking-tight text-foreground">{it.title}</h3>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">{it.body}</p>
@@ -312,7 +312,7 @@ export function PendingBlock({
     <div
       className={`border border-dashed border-border bg-card/50 p-8 lg:p-10 ${className}`}
     >
-      <p className="text-[0.65rem] uppercase tracking-[0.18em] text-primary">In progress</p>
+      <p className="text-[0.7rem] uppercase tracking-[0.18em] text-primary">In progress</p>
       <h3 className="mt-3 font-serif text-xl tracking-tight text-foreground">{heading}</h3>
       <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground text-pretty">
         {body}

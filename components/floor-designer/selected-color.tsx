@@ -29,19 +29,19 @@ export function SelectedColor({
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <p className="text-[0.6rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
           Your selection
         </p>
         <h2 className="mt-1.5 font-serif text-3xl leading-none tracking-tight text-foreground">
           {blend.name}
         </h2>
-        <p className="mt-1.5 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
+        <p className="mt-1.5 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-primary">
           {blend.family} · {blend.tone}-tone
         </p>
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-[0.6rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+        <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
           Flake sample
         </p>
         {/*
@@ -97,7 +97,7 @@ function LightingToggle({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-[0.6rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+      <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
         Garage lighting
       </p>
       <div role="group" aria-label="Preview lighting" className="flex gap-1 rounded-lg border border-border p-1">

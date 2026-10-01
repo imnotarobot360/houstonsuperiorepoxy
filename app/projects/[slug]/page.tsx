@@ -260,7 +260,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <dl className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {spec.map((row) => (
             <div key={row.label} className="bg-background p-6">
-              <dt className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+              <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                 {row.label}
               </dt>
               <dd className="mt-2.5 text-sm leading-relaxed text-foreground text-pretty">
@@ -433,7 +433,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               href={service.path}
               className="flex flex-col gap-2 bg-background p-8 transition-colors hover:bg-secondary"
             >
-              <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+              <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                 The service
               </span>
               <span className="flex items-start justify-between gap-3 font-serif text-xl tracking-tight text-foreground">
@@ -451,7 +451,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               href={cityPath}
               className="flex flex-col gap-2 bg-background p-8 transition-colors hover:bg-secondary"
             >
-              <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+              <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                 The area
               </span>
               <span className="flex items-start justify-between gap-3 font-serif text-xl tracking-tight text-foreground">
@@ -467,7 +467,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               href={r('serviceAreas')}
               className="flex flex-col gap-2 bg-background p-8 transition-colors hover:bg-secondary"
             >
-              <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+              <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                 The area
               </span>
               <span className="flex items-start justify-between gap-3 font-serif text-xl tracking-tight text-foreground">

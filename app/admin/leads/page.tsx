@@ -48,7 +48,7 @@ export default async function AdminLeadsPage() {
     <main className="mx-auto max-w-4xl px-6 py-12">
       <header className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
         <div>
-          <p className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+          <p className="text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
             Houston Superior Epoxy
           </p>
           <h1 className="mt-1 font-serif text-3xl text-foreground">Lead inbox</h1>

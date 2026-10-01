@@ -60,7 +60,7 @@ export function SiteHeader() {
             <span className="text-base font-semibold uppercase tracking-[0.1em] text-foreground">
               Houston
             </span>
-            <span className="mt-0.5 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-primary">
+            <span className="mt-0.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-primary">
               Superior Epoxy
             </span>
           </span>

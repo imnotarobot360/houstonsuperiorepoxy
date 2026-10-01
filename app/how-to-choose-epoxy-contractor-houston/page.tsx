@@ -324,7 +324,7 @@ export default function Page() {
                     {c.title}
                   </h3>
                   {c.common ? (
-                    <p className="mt-2 text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+                    <p className="mt-2 text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
                       Common practice — most established firms meet this
                     </p>
                   ) : null}
@@ -333,7 +333,7 @@ export default function Page() {
 
               <div className="flex flex-col gap-4 sm:pl-9">
                 <div>
-                  <p className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                  <p className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                     What good looks like
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-foreground/85 text-pretty">
@@ -341,7 +341,7 @@ export default function Page() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[0.65rem] uppercase tracking-[0.16em] text-foreground/60">
+                  <p className="text-[0.7rem] uppercase tracking-[0.16em] text-foreground/60">
                     Warning sign
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
@@ -470,7 +470,7 @@ export default function Page() {
               },
             ].map((item) => (
               <div key={item.t} className="bg-background p-7">
-                <dt className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                   {item.t}
                 </dt>
                 <dd className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">

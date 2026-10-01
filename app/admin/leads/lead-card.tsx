@@ -22,7 +22,7 @@ const statusStyle = (s: string, active: boolean) =>
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-[0.6rem] uppercase tracking-[0.14em] text-muted-foreground">{label}</dt>
+      <dt className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">{label}</dt>
       <dd className="mt-0.5 text-sm text-foreground">{children}</dd>
     </div>
   )
@@ -162,7 +162,7 @@ export function LeadCard({ lead }: { lead: Lead }) {
         <div className="mt-4 flex items-center gap-2 border-l-2 border-primary bg-primary/5 px-3 py-2">
           <Calendar size={16} className="text-primary" aria-hidden="true" />
           <div>
-            <p className="text-[0.6rem] uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
               Inspection booked
             </p>
             <p className="text-sm font-medium text-foreground">{lead.appointmentSlotLabel}</p>
@@ -183,7 +183,7 @@ export function LeadCard({ lead }: { lead: Lead }) {
 
       {lead.details ? (
         <div className="mt-4">
-          <p className="text-[0.6rem] uppercase tracking-[0.14em] text-muted-foreground">Details</p>
+          <p className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">Details</p>
           <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-foreground">
             {lead.details}
           </p>
@@ -192,7 +192,7 @@ export function LeadCard({ lead }: { lead: Lead }) {
 
       {lead.photoPathnames?.length ? (
         <div className="mt-4">
-          <p className="text-[0.6rem] uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[0.7rem] uppercase tracking-[0.14em] text-muted-foreground">
             Photos ({lead.photoPathnames.length})
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
@@ -226,7 +226,7 @@ export function LeadCard({ lead }: { lead: Lead }) {
       </div>
 
       {attribution.length ? (
-        <p className="mt-3 font-mono text-[0.65rem] leading-relaxed text-muted-foreground">
+        <p className="mt-3 font-mono text-[0.7rem] leading-relaxed text-muted-foreground">
           {attribution.join(' · ')}
         </p>
       ) : null}

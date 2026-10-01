@@ -36,7 +36,7 @@ export function ServiceArea() {
                 href={`/service-areas/${c.slug}/`}
                 className="group flex h-full flex-col gap-3 p-7 transition-colors hover:bg-secondary lg:p-8"
               >
-                <span className="flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                <span className="flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                   <MapPin size={12} aria-hidden="true" />
                   {c.county}
                 </span>

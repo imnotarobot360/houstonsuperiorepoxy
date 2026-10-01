@@ -189,7 +189,7 @@ export function Gallery() {
                       className="border-0 border-b border-dashed"
                     />
                     <div className="flex flex-1 flex-col gap-1.5 p-6">
-                      <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                      <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                         {project.city}, TX
                       </span>
                       <span className="flex items-start justify-between gap-3 font-serif text-lg tracking-tight text-foreground">
@@ -236,7 +236,7 @@ export function Gallery() {
                     category instead. The `note` underneath carries the
                     photography-pending meaning explicitly.
                   */}
-                  <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                  <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                     Illustration · not our work
                   </span>
                   <span className="font-serif text-lg tracking-tight text-foreground">

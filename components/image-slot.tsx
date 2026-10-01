@@ -90,7 +90,7 @@ export function ImageSlot({
           className="h-auto w-full object-cover"
         />
         {caption ? (
-          <figcaption className="absolute inset-x-0 bottom-0 bg-background/80 px-3.5 py-2 text-[0.68rem] text-muted-foreground backdrop-blur-sm">
+          <figcaption className="absolute inset-x-0 bottom-0 bg-background/80 px-3.5 py-2 text-[0.7rem] text-muted-foreground backdrop-blur-sm">
             {caption}
           </figcaption>
         ) : null}
@@ -125,7 +125,7 @@ export function ImageSlot({
     >
       <ImageIcon size={22} className="text-primary/70" aria-hidden="true" />
       <p className="text-[0.7rem] uppercase tracking-[0.16em] text-foreground/70">{label}</p>
-      <p className="max-w-[20rem] text-[0.65rem] leading-relaxed text-muted-foreground text-pretty">
+      <p className="max-w-[20rem] text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
         Project photography from recent Houston-area installations is being added.
       </p>
     </div>

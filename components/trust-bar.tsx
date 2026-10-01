@@ -85,7 +85,7 @@ function FactCell({ fact }: { fact: Fact }) {
           aria-hidden="true"
           className={`shrink-0 text-primary ${fact.fill ? 'fill-primary' : ''}`}
         />
-        <span className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+        <span className="text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
           {fact.label}
         </span>
       </dt>

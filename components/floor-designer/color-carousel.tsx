@@ -92,7 +92,7 @@ export function ColorCarousel({
                 >
                   {blend.name}
                 </span>
-                <span className="text-[0.65rem] uppercase tracking-[0.12em] text-muted-foreground">
+                <span className="text-[0.7rem] uppercase tracking-[0.12em] text-muted-foreground">
                   {blend.family}
                 </span>
               </span>

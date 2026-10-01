@@ -78,7 +78,7 @@ export function QuickAnswer({
         answer rather than as the first paragraph of an essay.
       */}
       <div className="mt-6 border-y border-border bg-card/40 px-6 py-7 sm:px-8">
-        <p className="text-[0.65rem] uppercase tracking-[0.2em] text-primary">Short answer</p>
+        <p className="text-[0.7rem] uppercase tracking-[0.2em] text-primary">Short answer</p>
         <p className="mt-4 text-lg leading-relaxed text-foreground/90 text-pretty">{answer}</p>
       </div>
     </div>
@@ -157,7 +157,7 @@ export function Byline({
     <div className={`border-y border-border bg-card/30 ${className}`}>
       <div className="flex flex-col gap-6 px-6 py-7 sm:px-8 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
         <div className="max-w-xl">
-          <p className="text-[0.65rem] uppercase tracking-[0.2em] text-primary">
+          <p className="text-[0.7rem] uppercase tracking-[0.2em] text-primary">
             {hasName ? 'Written and reviewed by' : attribution.label}
           </p>
           {/*
@@ -189,7 +189,7 @@ export function Byline({
           <dl className="flex shrink-0 gap-10 text-sm lg:gap-12">
             {hasPublished ? (
               <div>
-                <dt className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+                <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
                   Published
                 </dt>
                 {/*
@@ -204,7 +204,7 @@ export function Byline({
             ) : null}
             {hasReviewed ? (
               <div>
-                <dt className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">
+                <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-muted-foreground">
                   Last reviewed
                 </dt>
                 <dd className="mt-2 font-mono text-xs text-foreground/80">
@@ -242,7 +242,7 @@ export function KeyTakeaways({
 
   return (
     <div className="max-w-3xl">
-      <h2 className="text-[0.65rem] uppercase tracking-[0.2em] text-primary">{heading}</h2>
+      <h2 className="text-[0.7rem] uppercase tracking-[0.2em] text-primary">{heading}</h2>
       <ul className="mt-5 flex flex-col gap-3">
         {items.map((item) => (
           <li key={item} className="flex gap-3 text-sm leading-relaxed text-foreground/90">
@@ -290,7 +290,7 @@ export function ComparisonTable({
         className="overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
       >
         <table className="w-full min-w-[40rem] border-collapse text-left">
-          <caption className="mb-5 text-left text-[0.65rem] uppercase tracking-[0.2em] text-primary">
+          <caption className="mb-5 text-left text-[0.7rem] uppercase tracking-[0.2em] text-primary">
             {caption}
           </caption>
           <thead>
@@ -361,7 +361,7 @@ export function ProfessionalRecommendation({
     <div className="max-w-3xl border border-border bg-card/50 p-8 lg:p-10">
       <div className="flex items-center gap-3">
         <Quote size={16} aria-hidden="true" className="shrink-0 text-primary" />
-        <h3 className="text-[0.65rem] uppercase tracking-[0.2em] text-primary">
+        <h3 className="text-[0.7rem] uppercase tracking-[0.2em] text-primary">
           Professional recommendation
         </h3>
       </div>
@@ -800,7 +800,7 @@ export function RelatedProjects({
                 href={`/projects/${p.slug}/`}
                 className="flex h-full flex-col gap-2 p-6 transition-colors hover:bg-secondary"
               >
-                <span className="text-[0.65rem] uppercase tracking-[0.16em] text-primary">
+                <span className="text-[0.7rem] uppercase tracking-[0.16em] text-primary">
                   {p.city} · {p.spaceType}
                 </span>
                 <span className="font-serif text-lg tracking-tight text-foreground text-pretty">
@@ -880,7 +880,7 @@ export function PageTerms({ routeKey, heading }: { routeKey: RouteKey; heading?:
 function SpecRow({ label, value }: { label: string; value: string | readonly string[] }) {
   return (
     <div className="grid gap-2 border-b border-border py-5 sm:grid-cols-[13rem_1fr] sm:gap-8">
-      <dt className="text-[0.65rem] uppercase tracking-[0.2em] text-primary">{label}</dt>
+      <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-primary">{label}</dt>
       <dd className="text-sm leading-relaxed text-foreground/90">
         {Array.isArray(value) ? (
           <ul className="flex flex-col gap-2">

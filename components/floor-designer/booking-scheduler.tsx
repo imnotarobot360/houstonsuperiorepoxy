@@ -31,7 +31,7 @@ export function BookingScheduler({
   if (confirmed) {
     return (
       <div className="rounded-xl border border-primary/40 bg-primary/5 p-6">
-        <p className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
+        <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-primary">
           You&apos;re on the schedule
         </p>
         <h3 className="mt-3 font-serif text-2xl tracking-tight text-foreground text-balance">
@@ -80,7 +80,7 @@ export function BookingScheduler({
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <p className="text-[0.65rem] font-medium uppercase tracking-[0.16em] text-primary">
+        <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-primary">
           Last step
         </p>
         <h3 className="mt-2 font-serif text-2xl tracking-tight text-foreground text-balance">

@@ -21,7 +21,7 @@ export function Systems() {
                   alt={s.sample.alt}
                   caption={s.sample.caption}
                 />
-                <span className="absolute top-4 left-4 bg-background/85 px-3 py-1.5 text-[0.65rem] uppercase tracking-[0.16em] text-foreground backdrop-blur-sm">
+                <span className="absolute top-4 left-4 bg-background/85 px-3 py-1.5 text-[0.7rem] uppercase tracking-[0.16em] text-foreground backdrop-blur-sm">
                   {s.best}
                 </span>
               </div>
