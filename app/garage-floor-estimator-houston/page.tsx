@@ -3,6 +3,7 @@ import { EstimatorFunnel } from '@/components/lp/estimator-funnel'
 import { EstimatorErrorBoundary } from '@/components/lp/estimator-error-boundary'
 import { EstimatorFallback } from '@/components/lp/estimator-fallback'
 import { EventDebugger } from '@/components/lp/event-debugger'
+import { LpCallBar } from '@/components/lp/lp-call-bar'
 import { ProofBar } from '@/components/lp/proof-bar'
 import { LpHeader } from '@/components/lp/lp-header'
 import { LpHero } from '@/components/lp/lp-hero'
@@ -61,6 +62,13 @@ export default function GarageFloorEstimatorPage() {
       <LpBeforeAfter />
       <LpSystem />
       <LpServiceArea />
+
+      {/*
+        Pinned on phones only, where the header has no room for the number.
+        It is the page's second phone affordance and its second route into the
+        estimator — neither leaves the funnel.
+      */}
+      <LpCallBar />
 
       {/* Development-only tracking inspector; renders null in production builds. */}
       <EventDebugger />
