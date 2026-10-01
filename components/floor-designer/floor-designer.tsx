@@ -22,7 +22,7 @@ import { BookingScheduler } from './booking-scheduler'
 import { ColorCarousel } from './color-carousel'
 import { InstalledPreview } from './installed-preview'
 import { MobileProjectBar, ProjectSummary } from './project-summary'
-import { SelectedColor } from './selected-color'
+import { SelectedColor, SystemSummary } from './selected-color'
 
 /*
   The /floor-designer experience.
@@ -254,6 +254,14 @@ export function FloorDesigner({
         */}
         <CatalogTextLink enabled={catalogEnabled} />
       </section>
+
+      {/*
+        AFTER the picker, deliberately. See the note on SystemSummary: in the
+        column beside the preview it pushed the colour rail half a screen down
+        on a phone, and nothing is allowed between the preview and the picker
+        on this page.
+      */}
+      <SystemSummary />
 
       {/* ------------------------------------------------------------------ Summary */}
       <ProjectSummary

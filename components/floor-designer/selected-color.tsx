@@ -73,8 +73,6 @@ export function SelectedColor({
 
       <LightingToggle lighting={lighting} onLighting={onLighting} />
 
-      <SystemSummary />
-
       <SaveFavourite slug={blend.slug} name={blend.name} />
     </div>
   )
@@ -87,27 +85,37 @@ export function SelectedColor({
   thinnest part of the decision. This names the three layers under it and the
   warranty over it, so the choice reads as a system rather than a swatch.
 
+  IT RENDERS BELOW THE COLOUR RAIL, NOT IN THE COLUMN BESIDE THE PREVIEW. It
+  lived in that column first and cost 357px there on a phone, pushing the
+  colour picker — the only thing this page exists to do — 377px further down,
+  about half a screen. Measured against main: rail top 1588 -> 1965 at 375px.
+  Nothing on this page may come between the preview and the picker.
+
+  So it reads as a footnote to the choice rather than a precondition for it,
+  and because it now spans the full width it lays the layers out across the
+  row instead of down it.
+
   Layer names come from lib/content/system.ts rather than being typed here:
   they are factual claims about the installed product and they also render in
   the cross-section on the service pages, so there is exactly one copy.
 */
-function SystemSummary() {
+export function SystemSummary() {
   return (
-    <div className="rounded-xl border border-border bg-card/40 p-5">
+    <div className="rounded-xl border border-border bg-card/40 p-5 sm:p-6">
       <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
         Your Houston Superior Epoxy system
       </p>
-      <dl className="mt-4 space-y-2.5">
+      <dl className="mt-5 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
         {systemLayers.map((l) => (
-          <div key={l.step} className="flex gap-3 text-sm leading-snug">
-            <dt className="w-20 shrink-0 text-[0.7rem] uppercase tracking-[0.12em] text-muted-foreground">
+          <div key={l.step} className="flex flex-col gap-1">
+            <dt className="text-[0.7rem] uppercase tracking-[0.12em] text-muted-foreground">
               {l.step}
             </dt>
-            <dd className="text-foreground text-pretty">{l.name}</dd>
+            <dd className="text-sm leading-snug text-foreground text-pretty">{l.name}</dd>
           </div>
         ))}
       </dl>
-      <p className="mt-4 border-t border-border pt-4 text-sm leading-relaxed text-muted-foreground text-pretty">
+      <p className="mt-5 border-t border-border pt-5 text-sm leading-relaxed text-muted-foreground text-pretty">
         <Link href={r('warranty')} className="font-medium text-foreground underline underline-offset-4">
           {SYSTEM_WARRANTY}
         </Link>{' '}
