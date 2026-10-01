@@ -108,6 +108,22 @@ const faqs = [
     q: 'Do you offer financing?',
     a: 'Contact us to discuss payment arrangements for your specific project. Since no payment is due upfront, there is nothing to arrange before the work is scheduled.',
   },
+  {
+    q: 'How much does garage floor coating cost per square foot in Houston?',
+    /*
+      HIGH-VOLUME QUERY AND THE RISKIEST ONE TO ANSWER. A per-square-foot rate
+      was published here once and the owner withdrew the confirmation — see the
+      note in lib/site.ts. This answers the question properly by explaining why
+      the unit itself misleads on a residential garage, rather than by quoting a
+      rate or by dodging. Like every answer on this page it goes into FAQPage
+      structured data, so a figure here is a price claim made to Google.
+    */
+    a: 'A per-square-foot rate is the wrong unit for a residential garage, which is why we do not quote one. Most of the cost sits in work that does not scale with area: grinding the slab, repairing cracks and spalls, and removing any failed coating all take roughly the same effort per square foot on a small floor as a large one, while mobilisation and setup are fixed. Two garages of identical size can differ by thousands because one has a sound bare slab and the other has a failing coating over damaged concrete. We quote the actual scope, itemized, after seeing the floor.',
+  },
+  {
+    q: 'Does a 3-car garage cost proportionally more than a 2-car?',
+    a: 'Not proportionally, no. The fixed parts of the job — mobilisation, setup, containment, equipment — are much the same whichever size you have, so the cost per square foot generally falls as the floor gets larger. What moves the number more than the extra area is whether the larger slab brings extra condition problems with it, which bigger garages often do simply because there is more concrete for cracks, oil and moisture to show up in. We have written separately about what drives the number on each size.',
+  },
 ]
 
 export default function Page() {
