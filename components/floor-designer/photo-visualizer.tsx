@@ -25,9 +25,14 @@ import { checkPhoto, PHOTO_ACCEPT } from '@/lib/visualizer/validation'
   can see what the customer was shown. Nothing about the image is logged.
 */
 
+/*
+  There is no 'ready' state between picking a file and generating. Choosing a
+  photo starts the work immediately — an intermediate "now press Generate" step
+  is a second tap for no decision, and the visitor has already made the only
+  choice that matters by selecting the photo.
+*/
 type Phase =
   | { kind: 'empty' }
-  | { kind: 'ready'; file: File; previewUrl: string }
   | { kind: 'working'; file: File; previewUrl: string }
   | { kind: 'done'; file: File; previewUrl: string; resultUrl: string; blendSlug: string }
   | { kind: 'failed'; file: File; previewUrl: string; message: string; retryable: boolean }
