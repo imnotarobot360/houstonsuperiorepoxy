@@ -106,7 +106,15 @@ export default function Page() {
         intro={`Preview any of our ${activeBlends.length} stocked flake blends on a garage floor, see how each reads in bright and dim light, then get an honest starting estimate and book a free onsite inspection — all in one place.`}
       />
 
-      <Section bleed>
+      {/*
+        pt-8 only below lg. The shared Section pads py-20, which puts 80px of
+        dead space between the end of the intro and the tool on a phone — and
+        on this page the tool IS the content, sitting directly under a hero
+        that already describes it. Desktop keeps the site-wide lg:py-24, so
+        this is a phone-only tightening rather than a page that spaces itself
+        differently from every other one.
+      */}
+      <Section bleed className="pt-8">
         {/*
           FloorDesigner is a client component and FLAKECOLOR_URL is server-only,
           so the flag is read here and passed down — see lib/catalog.ts.
