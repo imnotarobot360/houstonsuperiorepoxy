@@ -21,36 +21,47 @@ import { site } from '@/lib/site'
   Hidden from sm up because the header shows the full number there, and two
   copies of it on one screen is just clutter.
 
-  No spacer is needed: the root layout already reserves pb-16 below lg, which
-  is more than this bar's height.
 */
 export function LpCallBar() {
   return (
-    <div
-      /*
-        Tells the delegated tracker this tap came from the LP bar rather than
-        the LP header, which is the only other phone affordance on the page.
-      */
-      data-analytics-location="lp_call_bar"
-      className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 border-t border-border bg-background/95 backdrop-blur-md sm:hidden"
-    >
-      <a
-        href={site.phoneHref}
-        className="flex items-center justify-center gap-2 py-4 text-sm font-semibold text-foreground"
-      >
-        <Phone size={16} aria-hidden="true" />
-        {site.phone}
-      </a>
+    <>
       {/*
-        Same-page jump, so the funnel is never left. The estimator section
-        carries scroll-mt-24 to clear the fixed header on arrival.
+        Reserves the bar's height — py-4 (32) + text-sm's 20px line box + the
+        1px top border — at the bar's own breakpoint, so the page ends above
+        it rather than behind it.
+
+        The breakpoint is the point. The root layout used to pad <body> by a
+        flat 64px below lg, which on this page held a dead strip open from sm
+        to lg, where this bar does not render at all.
       */}
-      <a
-        href="#estimate"
-        className="flex items-center justify-center bg-primary py-4 text-sm font-semibold text-primary-foreground"
+      <div aria-hidden className="h-[53px] sm:hidden" />
+
+      <div
+        /*
+          Tells the delegated tracker this tap came from the LP bar rather than
+          the LP header, which is the only other phone affordance on the page.
+        */
+        data-analytics-location="lp_call_bar"
+        className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 border-t border-border bg-background/95 backdrop-blur-md sm:hidden"
       >
-        Get my estimate
-      </a>
-    </div>
+        <a
+          href={site.phoneHref}
+          className="flex items-center justify-center gap-2 py-4 text-sm font-semibold text-foreground"
+        >
+          <Phone size={16} aria-hidden="true" />
+          {site.phone}
+        </a>
+        {/*
+          Same-page jump, so the funnel is never left. The estimator section
+          carries scroll-mt-24 to clear the fixed header on arrival.
+        */}
+        <a
+          href="#estimate"
+          className="flex items-center justify-center bg-primary py-4 text-sm font-semibold text-primary-foreground"
+        >
+          Get my estimate
+        </a>
+      </div>
+    </>
   )
 }

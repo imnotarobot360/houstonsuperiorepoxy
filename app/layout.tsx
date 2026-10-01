@@ -88,8 +88,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`bg-background ${inter.variable} ${playfair.variable}`}>
-      {/* pb-16 on mobile clears the fixed call bar. */}
-      <body className="antialiased pb-16 lg:pb-0">
+      {/*
+        NO BOTTOM PADDING HERE ON PURPOSE. This used to carry pb-16 lg:pb-0 to
+        clear the fixed call bar, but one number cannot describe four different
+        bars: the call bar is 53px and hides at lg, the floor designer's is
+        65px (so 64 left it covering a pixel of content), the shortlist bar
+        stacks on top of the call bar, and the landing page's hides at sm —
+        which left a 64px dead strip on tablets there.
+
+        Each bar now renders its own in-flow spacer, with the same height and
+        the same breakpoint as the bar itself. A page reserves space for the
+        bars it actually has, and a bar cannot drift away from its clearance.
+      */}
+      <body className="antialiased">
         {/* GTM <noscript> must be the first thing inside <body> per Google. */}
         <GoogleTagManagerNoscript />
         {/*

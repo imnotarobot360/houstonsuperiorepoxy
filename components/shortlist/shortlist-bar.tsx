@@ -39,9 +39,12 @@ export function ShortlistBar() {
     Reserve space for the bar at the foot of the page.
 
     The bar is `fixed`, so it is out of flow and sits on top of whatever the
-    page ends with. globals.css already pads the body by 64px to clear the
-    mobile call bar; this ADDS the bar's own height on top, so the last section
-    of /colors/ stays reachable instead of hiding under it.
+    page ends with. This reserves its own height and nothing else: the call bar
+    it stacks on renders its own spacer, so adding anything for that one here
+    would reserve it twice.
+
+    (It used to add a hardcoded 64, back when the root layout padded <body> by
+    that for every bar on the site.)
 
     Measured rather than hardcoded because the height differs between the two
     layouts and changes as chips wrap on desktop. Restored on unmount, so
@@ -51,9 +54,8 @@ export function ShortlistBar() {
     const el = ref.current
     if (!el) return
 
-    const base = 64
     const apply = () => {
-      document.body.style.paddingBottom = `${base + el.offsetHeight}px`
+      document.body.style.paddingBottom = `${el.offsetHeight}px`
     }
     apply()
 
@@ -81,7 +83,13 @@ export function ShortlistBar() {
       ref={ref}
       role="region"
       aria-label="Your blend shortlist"
-      className="fixed inset-x-0 bottom-14 z-40 border-t border-border bg-background/95 backdrop-blur-md lg:bottom-0"
+      /*
+        Sits exactly on top of the mobile call bar, whose height is 53px — the
+        same number that bar reserves for itself, so the two spacers and the
+        two offsets agree. On lg the call bar is gone and this drops to the
+        floor.
+      */
+      className="fixed inset-x-0 bottom-[53px] z-40 border-t border-border bg-background/95 backdrop-blur-md lg:bottom-0"
     >
       {/* ------------------------------------------------ mobile: one row */}
       <div className="flex items-center gap-3 px-5 py-3 lg:hidden">

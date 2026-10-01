@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { TYPICAL_SQFT, type CoatingCondition, type GarageSize } from '@/lib/pricing-config'
 
@@ -106,8 +107,43 @@ export function MobileProjectBar({
   size: GarageSize | null
   onContinue: () => void
 }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  /*
+    Reserve the bar's height at the foot of the page.
+
+    This one pads <body> rather than rendering an in-flow spacer the way the
+    call bars do, because of WHERE it is mounted: the designer renders it
+    inside <main>, so a spacer would sit above the site footer and leave the
+    footer's last line under the bar. Padding the body puts the space at the
+    end of the document, which is the only place that helps.
+
+    Measured rather than hardcoded, and offsetHeight is 0 once lg:hidden takes
+    the bar out, so the reservation follows the bar across the breakpoint.
+    Restored on unmount, so leaving the page leaves the body as it was found.
+  */
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const apply = () => {
+      document.body.style.paddingBottom = `${el.offsetHeight}px`
+    }
+    apply()
+
+    const observer = new ResizeObserver(apply)
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+      document.body.style.paddingBottom = ''
+    }
+  }, [])
+
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:hidden">
+    <div
+      ref={ref}
+      className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:hidden"
+    >
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-foreground">{blendName}</p>
         <p className="truncate text-xs text-muted-foreground">
