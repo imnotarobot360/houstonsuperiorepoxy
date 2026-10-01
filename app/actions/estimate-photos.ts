@@ -4,7 +4,8 @@ import { put } from '@vercel/blob'
 import { eq } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { estimateLeads } from '@/lib/db/schema'
-import { PHOTO_MAX_BYTES, PHOTO_MAX_COUNT, PHOTO_TYPES } from '@/lib/leads'
+import { PHOTO_MAX_COUNT } from '@/lib/leads'
+import { checkPhoto } from '@/lib/visualizer/validation'
 
 /*
   Attaches floor photos to an EXISTING lead, after it has already been captured.
@@ -33,7 +34,17 @@ export async function attachEstimatePhotos(
 
   const added: string[] = []
   for (const file of files) {
-    if (!PHOTO_TYPES.includes(file.type) || file.size > PHOTO_MAX_BYTES) continue
+    /*
+      Same checker the browser ran, so a photo accepted there is not silently
+      discarded here. A rejection is now logged with the reason rather than
+      vanishing into a `continue` — "the upload did nothing" was impossible to
+      diagnose precisely because this line said nothing when it dropped a file.
+    */
+    const check = checkPhoto(file)
+    if (!check.ok) {
+      console.log(`[v0] lead #${leadId}: photo rejected (${check.reason.code})`)
+      continue
+    }
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(-80)
     try {
       const blob = await put(`estimates/${Date.now()}-${safeName}`, file, {

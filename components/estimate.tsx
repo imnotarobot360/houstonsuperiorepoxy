@@ -9,15 +9,14 @@ import {
   CONDITIONS,
   CONTACT_METHODS,
   HONEYPOT_FIELD,
-  PHOTO_MAX_BYTES,
   PHOTO_MAX_COUNT,
-  PHOTO_TYPES,
   SPACES,
   SYSTEMS,
   TIMEFRAMES,
   leadSchema,
   type LeadFieldErrors,
 } from '@/lib/leads'
+import { checkPhoto, PHOTO_ACCEPT } from '@/lib/visualizer/validation'
 import { site } from '@/lib/site'
 
 export function Estimate() {
@@ -68,12 +67,17 @@ export function Estimate() {
     let rejected: string | undefined
 
     for (const file of Array.from(incoming)) {
-      if (!PHOTO_TYPES.includes(file.type)) {
-        rejected = 'Photos need to be JPG, PNG, WebP or HEIC.'
-        continue
-      }
-      if (file.size > PHOTO_MAX_BYTES) {
-        rejected = `Each photo needs to be under ${PHOTO_MAX_BYTES / 1024 / 1024} MB.`
+      /*
+        One shared checker, not a second opinion. This used to compare
+        file.type against PHOTO_TYPES directly, which rejected two things an
+        iPhone routinely produces: a type carrying parameters, and no type at
+        all. The message then said the photo needed to be a JPG about a file
+        that was a JPG. checkPhoto normalises both and falls back to the
+        extension — and the server runs the same function.
+      */
+      const check = checkPhoto(file)
+      if (!check.ok) {
+        rejected = check.reason.message
         continue
       }
       accepted.push(file)
@@ -593,7 +597,7 @@ export function Estimate() {
                   name="photos"
                   type="file"
                   multiple
-                  accept={PHOTO_TYPES.join(',')}
+                  accept={PHOTO_ACCEPT}
                   onChange={(e) => addPhotos(e.target.files)}
                   className="block w-full cursor-pointer border border-dashed border-input bg-background px-4 py-3 text-sm text-muted-foreground file:mr-4 file:cursor-pointer file:border-0 file:bg-secondary file:px-4 file:py-2 file:text-xs file:text-foreground"
                 />

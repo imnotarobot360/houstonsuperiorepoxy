@@ -28,6 +28,7 @@ import {
 } from '@/lib/lead-score'
 import { sendCapiEvent } from '@/lib/meta'
 import { pushLeadToCrm } from '@/lib/crm'
+import { checkPhoto } from '@/lib/visualizer/validation'
 import { site } from '@/lib/site'
 import { buildCustomerSms, firstNameFrom, sendCustomerSms } from '@/lib/sms'
 
@@ -497,7 +498,12 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
 
   const photoPathnames: string[] = []
   for (const file of files) {
-    if (!PHOTO_TYPES.includes(file.type) || file.size > PHOTO_MAX_BYTES) continue
+    /* Same shared checker as the browser — see estimate-photos.ts. */
+    const check = checkPhoto(file)
+    if (!check.ok) {
+      console.log(`[v0] photo rejected on submit (${check.reason.code})`)
+      continue
+    }
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(-80)
     try {
       const blob = await put(`estimates/${Date.now()}-${safeName}`, file, {

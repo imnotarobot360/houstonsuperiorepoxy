@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { PHOTO_MAX_BYTES, PHOTO_TYPES } from '../lib/leads'
-import { checkPhotoParts, formatMegabytes } from '../lib/visualizer/validation'
+import { checkPhotoParts, formatMegabytes, PHOTO_ACCEPT } from '../lib/visualizer/validation'
 
 /*
   Photo validation. These run against the SAME function the server action calls,
@@ -66,4 +66,54 @@ test('the size ceiling is the estimator ceiling, not a second one', () => {
 test('formats megabytes for a human', () => {
   assert.equal(formatMegabytes(10 * 1024 * 1024), '10 MB')
   assert.equal(formatMegabytes(2.5 * 1024 * 1024), '2.5 MB')
+})
+
+/* ----------------------------------------- what an iPhone actually sends */
+
+test('a file with NO type is accepted when the extension says it is a photo', () => {
+  /*
+    THE BUG THIS FILE EXISTS TO PREVENT RECURRING. iOS and several cloud
+    pickers hand over a perfectly good HEIC or JPEG with type: "". The
+    estimator refused those and told the customer "Photos need to be JPG, PNG,
+    WebP or HEIC" about a file that was one — reported as "I select a picture
+    and nothing happens".
+  */
+  for (const name of ['IMG_0421.HEIC', 'photo.jpg', 'garage.JPEG', 'shot.png', 'x.webp']) {
+    assert.equal(checkPhotoParts('', 2048, name).ok, true, `${name} should be accepted with no type`)
+  }
+})
+
+test('a file with no type AND no usable extension is still refused', () => {
+  /* The fallback is a hint, not a bypass. */
+  const result = checkPhotoParts('', 2048, 'scan.pdf')
+  assert.equal(result.ok, false)
+  if (result.ok) return
+  assert.equal(result.reason.code, 'type')
+})
+
+test('no type and no name at all is refused rather than assumed', () => {
+  assert.equal(checkPhotoParts('', 2048).ok, false)
+})
+
+test('an explicit wrong type is not rescued by a photo-looking name', () => {
+  /*
+    Extension only speaks when the browser is silent. A file the browser says
+    is a PDF stays a PDF even if it is called holiday.jpg.
+  */
+  assert.equal(checkPhotoParts('application/pdf', 2048, 'holiday.jpg').ok, false)
+})
+
+test('the size limit still applies to an extension-matched file', () => {
+  const result = checkPhotoParts('', PHOTO_MAX_BYTES + 1, 'IMG_0421.HEIC')
+  assert.equal(result.ok, false)
+  if (result.ok) return
+  assert.equal(result.reason.code, 'size')
+})
+
+test('the accept attribute offers extensions as well as types', () => {
+  /* A picker that cannot map HEIC to a MIME type greys the file out unless the
+     extension is listed — selecting it becomes impossible. */
+  assert.match(PHOTO_ACCEPT, /\.heic/)
+  assert.match(PHOTO_ACCEPT, /\.jpg/)
+  assert.match(PHOTO_ACCEPT, /image\/jpeg/)
 })
