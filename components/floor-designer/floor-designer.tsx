@@ -53,7 +53,7 @@ import { SelectedColor, SystemSummary } from './selected-color'
 
 const DEFAULT_SLUG = 'cabin-fever' // balanced mid-tone; /colors/ cites it as a strong dirt-hiding pick
 
-type Phase = 'design' | 'booking'
+type Phase = 'design' | 'booking' | 'sent'
 
 type FieldErrors = Record<string, string>
 
@@ -183,7 +183,14 @@ export function FloorDesigner({
         setFirstName(name.trim().split(/\s+/)[0] || 'there')
         setLeadId(result.leadId)
         trackMeta('Lead', { content_name: 'Floor Designer' }, result.meta?.eventId ?? leadEventId)
-        setPhase('booking')
+        /*
+          'sent' rather than 'booking' when the lead could not be stored. The
+          scheduler writes the chosen slot onto the lead row, so with no row
+          there is nothing to book against — offering a calendar would take a
+          time from someone and then lose it. They are told we will call
+          instead, which is true: the owner has the email.
+        */
+        setPhase(result.unsaved ? 'sent' : 'booking')
         formRef.current?.reset()
         requestAnimationFrame(() =>
           document.getElementById('designer-flow')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
@@ -199,6 +206,32 @@ export function FloorDesigner({
     return (
       <div id="designer-flow">
         <BookingScheduler leadId={leadId} firstName={firstName} />
+      </div>
+    )
+  }
+
+  /*
+    The lead reached the owner by email but was not stored, so there is no
+    record to attach an appointment to. This says what is true — we have your
+    details, we will call you — rather than offering a scheduler that would
+    silently fail, and gives the phone number so the visitor is never waiting
+    on us alone.
+  */
+  if (phase === 'sent') {
+    return (
+      <div id="designer-flow" className="rounded-2xl border border-border bg-card/40 p-8 sm:p-10">
+        <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-primary">Request received</p>
+        <h2 className="mt-3 font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
+          Thanks, {firstName} — we have your details.
+        </h2>
+        <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground text-pretty">
+          We will call you to arrange the free onsite inspection. If you would rather not wait, call
+          or text us on{' '}
+          <a href={site.phoneHref} className="font-medium text-foreground underline underline-offset-4">
+            {site.phone}
+          </a>{' '}
+          and we will pick it up straight away.
+        </p>
       </div>
     )
   }

@@ -21,7 +21,7 @@ const WEBHOOK_URL = process.env.CRM_WEBHOOK_URL ?? ''
 export const crmConfigured = WEBHOOK_URL.length > 0
 
 export type CrmPayload = {
-  leadId: number
+  leadId: number | null
   submittedAt: string
   name: string
   phone: string

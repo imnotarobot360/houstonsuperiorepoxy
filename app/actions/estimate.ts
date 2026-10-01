@@ -28,6 +28,7 @@ import {
 } from '@/lib/lead-score'
 import { sendCapiEvent } from '@/lib/meta'
 import { pushLeadToCrm } from '@/lib/crm'
+import { site } from '@/lib/site'
 import { buildCustomerSms, firstNameFrom, sendCustomerSms } from '@/lib/sms'
 
 /*
@@ -46,7 +47,16 @@ export type LeadResult =
   | {
       ok: true
       duplicate: boolean
-      leadId: number
+      /*
+        NULL WHEN THE LEAD COULD NOT BE STORED. The database is no longer
+        assumed to exist: if the insert fails the submission still succeeds,
+        provided the owner was emailed, and this is null to say so. Callers
+        must treat it as "no record to attach anything to" — see the booking
+        guard in components/floor-designer/floor-designer.tsx.
+      */
+      leadId: number | null
+      /* True when the lead reached the owner by email but was NOT persisted. */
+      unsaved?: boolean
       photoCount: number
       leadScore: LeadScore
       meta?: LeadMeta
@@ -76,7 +86,7 @@ function gaClientIdFromCookie(raw: string | undefined) {
   returned success while sending nothing at all — see the call site below.
 */
 async function notifyAndRecord(
-  leadId: number,
+  leadId: number | null,
   lead: ReturnType<typeof leadSchema.parse>,
   formData: FormData,
   photoCount: number,
@@ -110,6 +120,13 @@ async function notifyAndRecord(
       server log the owner cannot read — which is exactly how this went
       unnoticed. `notify_error` is what /admin/leads renders as a warning.
     */
+    /*
+      With no row to annotate there is nothing to record — but the email has
+      still been attempted, and its outcome is what the caller needs to decide
+      whether this submission reached anybody at all.
+    */
+    if (leadId == null) return result.sent
+
     if (result.sent) {
       await db
         .update(estimateLeads)
@@ -136,8 +153,11 @@ async function notifyAndRecord(
         .set({ notifiedAt: null, notifyError: detail.slice(0, 500) })
         .where(eq(estimateLeads.id, leadId))
     }
+
+    return result.sent
   } catch (error) {
-    console.log('[v0] lead notification failed but lead was saved:', error)
+    console.log('[v0] lead notification failed:', error)
+    return false
   }
 }
 
@@ -152,7 +172,7 @@ async function notifyAndRecord(
   Postgres, so none of these may turn a captured lead into an error.
 */
 async function runPostSubmitIntegrations(args: {
-  leadId: number
+  leadId: number | null
   lead: ReturnType<typeof leadSchema.parse>
   formData: FormData
   photoCount: number
@@ -392,8 +412,23 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
     Checked before uploading photos so a duplicate does not also duplicate the
     stored files.
   */
+  /*
+    GUARDED, LIKE THE INSERT BELOW, AND FOR THE SAME REASON.
+
+    This is the FIRST database call in the submission path, so when Postgres is
+    unreachable it is the one that throws — before the insert's own guard is
+    ever reached. Found by submitting the form against a dead database rather
+    than by reading the types, which type-checked perfectly while the whole
+    path still 500'd.
+
+    Losing the dedupe check costs a possible duplicate lead. Losing the lead
+    costs a customer. When the database is gone the right trade is obvious:
+    treat it as "no duplicate found" and carry on to the email fallback.
+  */
   const since = new Date(Date.now() - DEDUPE_WINDOW_MINUTES * 60_000)
-  const [existing] = await db
+  let existing: { id: number; photoPathnames: string[] | null; notifiedAt: Date | null } | undefined
+  try {
+    ;[existing] = await db
     .select({
       id: estimateLeads.id,
       photoPathnames: estimateLeads.photoPathnames,
@@ -407,6 +442,12 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
     .where(and(eq(estimateLeads.dedupeKey, key), gte(estimateLeads.createdAt, since)))
     .orderBy(desc(estimateLeads.createdAt))
     .limit(1)
+  } catch (error) {
+    console.log(
+      '[v0] dedupe check skipped — database unreachable:',
+      error instanceof Error ? error.message : 'unknown',
+    )
+  }
 
   if (existing) {
     /*
@@ -475,7 +516,23 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
 
   const [cookieStore, headerStore] = await Promise.all([cookies(), headers()])
 
-  const inserted = await db
+  /*
+    THE INSERT IS NO LONGER ALLOWED TO THROW.
+
+    It used to be a bare await, on the reasoning — stated below — that the
+    database is the system of record. That reasoning holds right up until there
+    is no database, at which point an unreachable Postgres turned a customer
+    who had just typed their phone number into an error message, and the lead
+    was not stored, not emailed, not queued, not recoverable from anywhere.
+
+    So a failure here now costs the ROW, not the LEAD. The owner is still
+    emailed below, and if that fails too the visitor is told plainly to call
+    rather than thanked for a submission nobody received.
+  */
+  let inserted: { id: number }[] = []
+  let persistError: string | null = null
+  try {
+    inserted = await db
     .insert(estimateLeads)
     .values({
       /*
@@ -536,8 +593,20 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
       userAgent: headerStore.get('user-agent')?.slice(0, 400) ?? null,
     })
     .returning({ id: estimateLeads.id })
+  } catch (error) {
+    persistError = error instanceof Error ? error.message : 'unknown'
+    console.log(
+      `[v0] LEAD NOT PERSISTED (${persistError}) — falling back to email only for ${lead.name} / ${lead.phone}`,
+    )
+  }
 
-  const leadId = inserted[0].id
+  /*
+    Null when the row could not be written. Everything downstream already
+    tolerates it: the notifier skips its write-back, the integrations log
+    without an id, and the UI skips the scheduling step because there is no
+    record for an appointment to attach to.
+  */
+  const leadId: number | null = inserted[0]?.id ?? null
 
   /*
     Notify the owner. Deliberately AFTER the insert and deliberately awaited but
@@ -561,10 +630,11 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
     so a false positive is still recoverable there rather than lost.
   */
   let meta: LeadMeta | undefined
+  let notified = false
   if (spamSuspected) {
-    console.log(`[v0] lead #${leadId} flagged ${LEAD_STATUS_SPAM}; notification suppressed`)
+    console.log(`[v0] lead ${leadId ?? '(unsaved)'} flagged ${LEAD_STATUS_SPAM}; notification suppressed`)
   } else {
-    await notifyAndRecord(leadId, lead, formData, photoPathnames.length, score.score)
+    notified = await notifyAndRecord(leadId, lead, formData, photoPathnames.length, score.score)
     /*
       Fan out to Meta CAPI, the CRM webhook and the SMS seam. Kept off the spam
       path so flagged submissions never reach a third party, and awaited so none
@@ -581,11 +651,38 @@ export async function submitEstimate(formData: FormData): Promise<LeadResult> {
     })
   }
 
+  /*
+    THE ONE CASE WHERE SUCCESS WOULD BE A LIE.
+
+    No row was written AND no email was sent, so this person's details exist
+    nowhere. Telling them "we have got your request" would be the worst
+    possible outcome: they stop looking for a contractor and wait for a call
+    that cannot come, because nobody knows they exist.
+
+    A spam-flagged submission is deliberately excluded. Those are not emailed
+    by design, and the flag is reviewable — when there is a database. Without
+    one a flagged submission is genuinely lost, which is why the suppression
+    branch above now logs it as unsaved.
+  */
+  if (leadId == null && !notified && !spamSuspected) {
+    console.log(`[v0] LEAD LOST — no database row and no notification for ${lead.name} / ${lead.phone}`)
+    return {
+      ok: false,
+      fieldErrors: {},
+      formError:
+        'We could not record your request just now. Please call or text us on ' +
+        site.phone +
+        ' and we will pick it up straight away — sorry about that.',
+    }
+  }
+
   return {
     ok: true,
     duplicate: false,
     meta,
     leadId,
+    /* Lets the UI skip the scheduling step, which has no row to attach to. */
+    unsaved: leadId == null,
     photoCount: photoPathnames.length,
     leadScore: score.score,
   }

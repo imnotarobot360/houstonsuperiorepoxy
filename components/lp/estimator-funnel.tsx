@@ -332,7 +332,18 @@ export function EstimatorFunnel() {
 
       /* Browser Lead — same event id the server used, so Meta dedups the pair.
          Only non-PII custom params ride along. */
-      trackMetaOnce(`lead-${res.leadId}`, 'Lead', { lead_id: res.leadId, ...eventParams }, eventId)
+      /*
+        `leadId` is null when the lead reached the owner by email but could not
+        be stored. The conversion still happened and must still be reported, so
+        the dedup key falls back to the shared event id and the lead_id param
+        is omitted rather than sent as null.
+      */
+      trackMetaOnce(
+        `lead-${res.leadId ?? eventId}`,
+        'Lead',
+        { ...(res.leadId != null ? { lead_id: res.leadId } : {}), ...eventParams },
+        eventId,
+      )
       track('form_submit', { location: 'estimator' })
 
       /* Reflect the server CAPI outcome in the dev event debugger. */

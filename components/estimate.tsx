@@ -163,7 +163,20 @@ export function Estimate() {
       const result = await submitEstimate(data)
 
       if (!result.ok) {
-        setErrors(result.fieldErrors as LeadFieldErrors)
+        /*
+          formError was being dropped. It is the channel for failures that
+          belong to no single field — and the submission path now has one that
+          matters: the lead could not be recorded anywhere, so the visitor is
+          asked to call instead. Setting only fieldErrors made that case look
+          like nothing had happened at all, which is the worst way to lose
+          somebody who has just typed their number in.
+
+          It renders through errors.form, the same slot the catch below uses.
+        */
+        setErrors({
+          ...(result.fieldErrors as LeadFieldErrors),
+          ...(result.formError ? { form: result.formError } : {}),
+        })
         track('form_error', {
           location: 'estimate_form',
           error_fields: Object.keys(result.fieldErrors).join(','),

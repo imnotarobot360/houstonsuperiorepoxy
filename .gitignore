@@ -20,3 +20,6 @@ tsconfig.tsbuildinfo
 
 .vercel
 .env*
+
+# Compiled output for the test runner — disposable.
+.test-build/

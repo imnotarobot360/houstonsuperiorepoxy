@@ -177,7 +177,8 @@ const TO = (process.env.LEAD_NOTIFY_TO ?? site.email)
   .filter(Boolean)
 
 export type LeadEmailPayload = {
-  leadId: number
+  /* Null when the lead could not be persisted — see submitEstimate. */
+  leadId: number | null
   name: string
   phone: string
   email?: string | null
@@ -502,7 +503,7 @@ function warrantyPhrase(space?: string | null): string {
 }
 
 export type CustomerEstimatePayload = {
-  leadId: number
+  leadId: number | null
   to: string
   firstName: string
   estimateHeadline?: string | null
@@ -608,7 +609,7 @@ export async function sendCustomerEstimate(
 
   <p style="margin:22px 0 0;padding-top:14px;border-top:1px solid #eee;font-size:12px;color:#888">
     ${escapeHtml(site.company)} · ${escapeHtml(site.canonical.replace(/^https?:\/\//, ''))}<br>
-    Reference #${payload.leadId}
+    Reference ${payload.leadId == null ? '— not assigned' : '#' + payload.leadId}
   </p>
 </div>`
 
@@ -691,6 +692,15 @@ export async function notifyNewLead(lead: LeadEmailPayload): Promise<NotifyResul
 
   const html = `
 <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:560px">
+  ${
+    lead.leadId == null
+      ? `<p style="margin:0 0 16px;padding:12px 14px;border:2px solid #b42318;border-radius:8px;background:#fef3f2;font-size:14px;line-height:1.5;color:#7a271a">
+           <strong>THIS LEAD WAS NOT SAVED.</strong> The database was unreachable, so this email is
+           the only record of it. Save the details below somewhere before closing this message —
+           they are not in the admin inbox and cannot be recovered from it.
+         </p>`
+      : ''
+  }
   <p style="margin:0 0 4px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#888">
     New estimate request
   </p>
@@ -756,7 +766,7 @@ export async function notifyNewLead(lead: LeadEmailPayload): Promise<NotifyResul
       resend.emails.send({
         from: sender,
         to: TO,
-        subject: `${priorityLabel ? `[${priorityLabel}] ` : ''}New estimate: ${subjectBits || lead.name}`,
+        subject: `${lead.leadId == null ? '[NOT SAVED] ' : ''}${priorityLabel ? `[${priorityLabel}] ` : ''}New estimate: ${subjectBits || lead.name}`,
         text: summary,
         html,
         /*
