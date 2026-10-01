@@ -23,6 +23,8 @@ import { ColorCarousel } from './color-carousel'
 import { InstalledPreview } from './installed-preview'
 import { MobileProjectBar, ProjectSummary } from './project-summary'
 import { SelectedColor, SystemSummary } from './selected-color'
+import { PhotoVisualizer } from './photo-visualizer'
+import { buildDesignerLeadFields } from '@/lib/visualizer/lead-fields'
 
 /*
   The /floor-designer experience.
@@ -55,6 +57,9 @@ const DEFAULT_SLUG = 'cabin-fever' // balanced mid-tone; /colors/ cites it as a 
 
 type Phase = 'design' | 'booking' | 'sent'
 
+/* Which preview the visitor is looking at. 'stylized' is the default. */
+type PreviewMode = 'stylized' | 'photo'
+
 type FieldErrors = Record<string, string>
 
 /*
@@ -73,6 +78,16 @@ export function FloorDesigner({
   const [slug, setSlug] = useState(DEFAULT_SLUG)
   const [lighting, setLighting] = useState<InstalledLighting>('bright')
   const [showReal, setShowReal] = useState(true)
+  const [previewMode, setPreviewMode] = useState<PreviewMode>('stylized')
+  /*
+    Carried into the lead so whoever calls back knows whether this person
+    showed us their garage — and whether the preview worked. Never holds image
+    data, only the private-storage pathname.
+  */
+  const [visualization, setVisualization] = useState<{ pathname: string | null; attempted: boolean }>({
+    pathname: null,
+    attempted: false,
+  })
   const [size, setSize] = useState<GarageSize | null>(null)
   const [condition, setCondition] = useState<CoatingCondition | null>(null)
   const [timeframe, setTimeframe] = useState<Timeframe>('As Soon as Possible')
@@ -145,17 +160,30 @@ export function FloorDesigner({
     data.set('area', size ?? '')
     data.set('floorCondition', condition ?? '')
     data.set('timeframe', timeframe)
-    data.set(
-      'details',
-      `Floor Designer — leaning toward the "${blend.name}" flake blend (${blend.family}, ${blend.tone}-tone). Finish: ${RECOMMENDED_FINISH}. Viewed in ${lighting === 'one-bulb' ? 'dim/one-bulb' : 'bright'} lighting.`,
-    )
     data.set('smsConsent', smsConsent ? 'on' : '')
 
-    /* Powers the customer-facing estimate email (see app/actions/estimate.ts). */
-    if (estimate) {
-      data.set('estimate_headline', estimate.headline)
-      data.set('finish_label', estimate.finishLabel)
-      if (estimate.squareFeet != null) data.set('estimate_sqft', String(estimate.squareFeet))
+    /*
+      The designer's contribution to the lead — the details sentence and the
+      estimate fields that power the customer email — is built by a pure,
+      tested function rather than assembled inline here. It reports the
+      estimate's status verbatim from computeEstimate and never re-derives a
+      price. See lib/visualizer/lead-fields.ts.
+    */
+    for (const [key, value] of Object.entries(
+      buildDesignerLeadFields({
+        blendName: blend.name,
+        blendFamily: blend.family,
+        blendTone: blend.tone,
+        finish: RECOMMENDED_FINISH,
+        lighting,
+        garageSize: size,
+        slabCondition: condition,
+        estimate,
+        visualizationPathname: visualization.pathname,
+        visualizationAttempted: visualization.attempted,
+      }),
+    )) {
+      data.set(key, value)
     }
 
     /* Shared Meta event id so the Pixel Lead and the server CAPI Lead dedup. */
@@ -252,15 +280,30 @@ export function FloorDesigner({
         <h2 id="step-color" className="sr-only">
           Choose your floor colour
         </h2>
-        <InstalledPreview
-          slug={blend.slug}
-          name={blend.name}
-          lighting={lighting}
-          neighbours={neighbours}
-          realPhoto={realPhoto}
-          showReal={showReal}
-          onToggleReal={setShowReal}
-        />
+        <div className="flex flex-col gap-4">
+          {/*
+            The stylized garage is the DEFAULT and stays one tap away. It needs
+            no upload, no provider and no round trip, and it shows the blend
+            under controlled light — so it is what a visitor lands on. The photo
+            path trades that reliability for the one thing it cannot offer, the
+            visitor's own garage, and is opt-in for exactly that reason.
+          */}
+          <PreviewModeTabs mode={previewMode} onMode={setPreviewMode} />
+
+          {previewMode === 'stylized' ? (
+            <InstalledPreview
+              slug={blend.slug}
+              name={blend.name}
+              lighting={lighting}
+              neighbours={neighbours}
+              realPhoto={realPhoto}
+              showReal={showReal}
+              onToggleReal={setShowReal}
+            />
+          ) : (
+            <PhotoVisualizer blend={blend} onVisualization={setVisualization} />
+          )}
+        </div>
         <SelectedColor blend={blend} lighting={lighting} onLighting={setLighting} />
       </section>
 
@@ -631,6 +674,59 @@ function EstimateCard({ estimate }: { estimate: ReturnType<typeof computeEstimat
       <p className="mt-5 border-t border-border pt-5 text-xs leading-relaxed text-muted-foreground text-pretty">
         {estimate.disclaimer}
       </p>
+    </div>
+  )
+}
+
+/*
+  The preview switch.
+
+  A tablist rather than a pair of buttons, because these are two views of the
+  same thing and a screen-reader user should hear them that way. Keyboard
+  support is the native button behaviour plus arrow keys, which is what a
+  visitor who cannot use a pointer will reach for first.
+*/
+function PreviewModeTabs({
+  mode,
+  onMode,
+}: {
+  mode: PreviewMode
+  onMode: (m: PreviewMode) => void
+}) {
+  const tabs: { value: PreviewMode; label: string }[] = [
+    { value: 'stylized', label: 'Stylized garage' },
+    { value: 'photo', label: 'My garage photo' },
+  ]
+
+  return (
+    <div
+      role="tablist"
+      aria-label="Choose how to preview this blend"
+      className="flex gap-1 self-start rounded-lg border border-border p-1"
+      onKeyDown={(e) => {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+        e.preventDefault()
+        onMode(mode === 'stylized' ? 'photo' : 'stylized')
+      }}
+    >
+      {tabs.map((t) => {
+        const active = t.value === mode
+        return (
+          <button
+            key={t.value}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            tabIndex={active ? 0 : -1}
+            onClick={() => onMode(t.value)}
+            className={`min-h-10 rounded-md px-4 text-xs font-medium transition-colors ${
+              active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {t.label}
+          </button>
+        )
+      })}
     </div>
   )
 }

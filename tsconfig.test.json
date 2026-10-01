@@ -1,0 +1,30 @@
+{
+  /*
+    Compiles the tests and the modules they import to plain JS so `node --test`
+    can run them.
+
+    WHY NOT A TEST RUNNER: adding vitest or tsx means a new dependency and a
+    network install for a repo that had no test tooling at all. `tsc` is already
+    a devDependency here, and node has had a test runner built in since 18, so
+    this needs neither. The output directory is gitignored and disposable.
+  */
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": ".test-build",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es2022",
+    "jsx": "react-jsx",
+    "declaration": false,
+    "sourceMap": false,
+    /* The app is type-checked by `tsc --noEmit` against tsconfig.json; this
+       pass only needs to produce runnable JS. */
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": false
+  },
+  /* Only the tests and what they reach — not the whole app, which would drag
+     in JSX components this runner has no business compiling. */
+  "include": ["tests/**/*.ts", "lib/**/*.ts"],
+  "exclude": ["node_modules", ".next", ".test-build"]
+}

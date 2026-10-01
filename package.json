@@ -8,7 +8,10 @@
     "start": "next start",
     "textures": "node scripts/build-flake-textures.mjs",
     "indexnow": "node scripts/indexnow-ping.mjs",
-    "indexnow:dry": "node scripts/indexnow-ping.mjs --dry-run"
+    "indexnow:dry": "node scripts/indexnow-ping.mjs --dry-run",
+    "typecheck": "tsc --noEmit",
+    "test:build": "tsc -p tsconfig.test.json",
+    "test": "npm run test:build && node --require ./tests/alias.cjs --test .test-build/tests/"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
