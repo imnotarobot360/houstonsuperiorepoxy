@@ -131,14 +131,34 @@ export async function checkAndRecord(ip: string): Promise<RateDecision> {
     await db.insert(visualizationRequests).values({ ipHash })
 
     /*
-      Opportunistic pruning, on the same connection that just did the work.
-      There is no cron in this project, and a table that only grows is a slow
-      leak of exactly the identifiers this design went to trouble to minimise.
+      Pruning, AWAITED — not floated.
+
+      The obvious shape here is `void db.delete(...)`, firing the cleanup and
+      returning immediately. This codebase has already learned twice why that
+      does not work: see app/actions/estimate.ts and app/actions/appointment.ts,
+      where the note is that a serverless function freezes once it returns a
+      response and kills any promise still in flight. A floated prune would
+      therefore mostly never run, and this table would grow forever — which
+      quietly undoes the whole reason it stores a short-lived hash instead of an
+      address.
+
+      Awaiting costs a few milliseconds on a request that is about to wait
+      ~30 seconds for an image, so it is sampled rather than skipped: roughly
+      one call in twenty does the delete, which is ample for a table this size
+      and keeps the cost off the other nineteen.
+
+      Non-fatal on its own: a failed cleanup must not refuse a request that has
+      already passed the limit.
     */
-    void db
-      .delete(visualizationRequests)
-      .where(lt(visualizationRequests.createdAt, new Date(now - GLOBAL_WINDOW_MS)))
-      .catch(() => {})
+    if (Math.random() < 0.05) {
+      try {
+        await db
+          .delete(visualizationRequests)
+          .where(lt(visualizationRequests.createdAt, new Date(now - GLOBAL_WINDOW_MS)))
+      } catch (error) {
+        console.log('[viz] prune failed:', error instanceof Error ? error.message : 'unknown')
+      }
+    }
 
     return { allowed: true }
   } catch (error) {
