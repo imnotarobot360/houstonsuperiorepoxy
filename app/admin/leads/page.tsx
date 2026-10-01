@@ -1,5 +1,6 @@
 import { desc } from 'drizzle-orm'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { isAdminAuthed, isAdminConfigured } from '@/lib/admin-auth'
 import { db } from '@/lib/db'
 import { estimateLeads } from '@/lib/db/schema'
@@ -27,7 +28,11 @@ export const metadata: Metadata = {
 */
 export const dynamic = 'force-dynamic'
 
-export default async function AdminLeadsPage() {
+export default async function AdminLeadsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ archived?: string }>
+}) {
   const configured = isAdminConfigured()
   const authed = configured && (await isAdminAuthed())
 
@@ -39,7 +44,19 @@ export default async function AdminLeadsPage() {
     )
   }
 
-  const leads = await db.select().from(estimateLeads).orderBy(desc(estimateLeads.createdAt))
+  const all = await db.select().from(estimateLeads).orderBy(desc(estimateLeads.createdAt))
+
+  /*
+    Archived leads are hidden rather than deleted — test submissions and
+    misfires need somewhere to go, and a delete button on a table of customer
+    phone numbers and photographs of people's homes is one misclick from an
+    un-undoable mistake. See the note on STATUSES in actions.ts.
+
+    Readable behind ?archived=1 so the decision is always reversible.
+  */
+  const showArchived = (await searchParams).archived === '1'
+  const archived = all.filter((l) => l.status === 'archived')
+  const leads = showArchived ? archived : all.filter((l) => l.status !== 'archived')
 
   const newCount = leads.filter((l) => l.status === 'new').length
   const emailConfigured = Boolean(process.env.RESEND_API_KEY)
@@ -74,9 +91,35 @@ export default async function AdminLeadsPage() {
       */}
       <EmailStatus configured={emailConfigured} />
 
+      {/* Only shown when there is something archived, so it is not clutter. */}
+      {archived.length > 0 && (
+        <p className="mt-8 text-sm text-muted-foreground">
+          {showArchived ? (
+            <>
+              Showing {archived.length} archived lead{archived.length === 1 ? '' : 's'}.{' '}
+              <Link href="/admin/leads" className="font-medium text-foreground underline underline-offset-4">
+                Back to the list
+              </Link>
+            </>
+          ) : (
+            <>
+              {archived.length} archived lead{archived.length === 1 ? '' : 's'} hidden.{' '}
+              <Link
+                href="/admin/leads?archived=1"
+                className="font-medium text-foreground underline underline-offset-4"
+              >
+                Show them
+              </Link>
+            </>
+          )}
+        </p>
+      )}
+
       {leads.length === 0 ? (
         <p className="mt-10 text-sm leading-relaxed text-muted-foreground">
-          No leads yet. Submissions from the estimate form will appear here immediately.
+          {showArchived
+            ? 'Nothing archived.'
+            : 'No leads yet. Submissions from the estimate form will appear here immediately.'}
         </p>
       ) : (
         <ul className="mt-8 flex flex-col gap-4">

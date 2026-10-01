@@ -64,7 +64,19 @@ export async function logout() {
   whitelist is the ONLY thing stopping arbitrary strings being written by a
   direct POST. Do not remove it.
 */
-const STATUSES = ['new', 'contacted', 'quoted', 'won', 'lost']
+/*
+  'archived' is not a pipeline stage — it is "take this off my list". Test
+  submissions, duplicates and misfires need somewhere to go, and before this
+  the only options were to leave them in the list forever or delete the row.
+
+  ARCHIVING RATHER THAN DELETING IS DELIBERATE. This table holds customer
+  names, phone numbers and photographs of the inside of people's homes. A
+  delete button on that is a permanent, un-undoable mistake one misclick away,
+  and the row costs nothing to keep. Archived leads are hidden from the list
+  and still readable behind ?archived=1, so a wrong call is a click to reverse
+  rather than a customer lost.
+*/
+const STATUSES = ['new', 'contacted', 'quoted', 'won', 'lost', 'archived']
 
 /*
   Re-send the owner notification for a lead already in the database.

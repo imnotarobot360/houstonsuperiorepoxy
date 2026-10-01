@@ -9,7 +9,8 @@ import { resendLeadNotification, setLeadStatus } from './actions'
 
 type Lead = InferSelectModel<typeof estimateLeads>
 
-const STATUSES = ['new', 'contacted', 'quoted', 'won', 'lost'] as const
+/* 'archived' is last because it removes the lead from the list — see actions.ts. */
+const STATUSES = ['new', 'contacted', 'quoted', 'won', 'lost', 'archived'] as const
 
 /* Only `new` is highlighted — it is the one status that demands action. */
 const statusStyle = (s: string, active: boolean) =>
