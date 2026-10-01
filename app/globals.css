@@ -104,3 +104,29 @@
     scroll-behavior: auto !important;
   }
 }
+
+/*
+  iOS SAFARI ZOOMS THE WHOLE PAGE WHEN A FOCUSED FIELD IS UNDER 16px, and it
+  does not zoom back out afterwards. Every text field, select and textarea on
+  this site is text-sm (14px), so tapping "Name" on the estimate form zoomed the
+  page in and left the visitor pinching to carry on — on the one form the
+  business depends on.
+
+  Set here rather than on 258 className strings across seven files, because the
+  rule is about the device and not about any one form, and a new field added
+  tomorrow would otherwise reintroduce it.
+
+  UNLAYERED ON PURPOSE. Tailwind v4 puts utilities in a cascade layer, and an
+  unlayered rule beats a layered one whatever the specificity — so this wins
+  over .text-sm without !important and without inflating selectors.
+
+  Phones only. Above 640px the 14px field is a deliberate design choice and
+  nothing zooms, so desktop keeps it.
+*/
+@media (max-width: 640px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
