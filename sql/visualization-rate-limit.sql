@@ -1,9 +1,14 @@
 -- Rate-limit counters for the garage-photo visualizer.
 --
--- NOT YET APPLIED. Apply this before setting FLOOR_VIZ_API_KEY: until the
--- table exists the limiter fails closed, so photo previews are refused rather
--- than running unmetered. That ordering is deliberate — the dangerous state is
--- a configured provider with no ceiling, not a missing table.
+-- APPLIED to the production database on 2026-10-01, reported by the owner.
+-- Kept in the repository as the record of what was run, and because it is
+-- idempotent — every statement is "if not exists", so re-running it against a
+-- new environment is safe and is how this table should be created again.
+--
+-- The ordering it was written to enforce still stands for any new environment:
+-- create the table BEFORE setting FLOOR_VIZ_API_KEY. Until the table exists
+-- the limiter fails closed, so previews are refused rather than unmetered, and
+-- the dangerous state is a configured provider with no ceiling.
 --
 -- Mirrors `visualizationRequests` in lib/db/schema.ts. If you change one,
 -- change the other in the same commit.

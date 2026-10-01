@@ -138,11 +138,10 @@ export type EstimateLead = typeof estimateLeads.$inferSelect
   this is a day of fingerprints rather than a browsing history. There is no cron
   in this project, which is why the pruning lives in the write path.
 
-  SAME HAND-MAINTAINED CONTRACT AS THE TABLE ABOVE: DDL is applied through the
-  Neon MCP, not Drizzle Kit. The matching statements are in
-  sql/visualization-rate-limit.sql and have NOT been applied — until they are,
-  the limiter fails closed and the photo preview is refused, which is the
-  intended direction.
+  SAME HAND-MAINTAINED CONTRACT AS THE TABLE ABOVE: DDL is applied by hand, not
+  by Drizzle Kit. The matching statements are in sql/visualization-rate-limit.sql
+  and were applied to production on 2026-10-01. If you change this definition,
+  change that file and the database in the same commit.
 */
 export const visualizationRequests = pgTable(
   'visualization_requests',
