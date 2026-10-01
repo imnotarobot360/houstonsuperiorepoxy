@@ -126,3 +126,36 @@ test('every field is a string, because FormData carries nothing else', () => {
     assert.equal(typeof value, 'string', `${key} must be a string`)
   }
 })
+
+/* ------------------------------------------------- the 2000-character cliff */
+
+test('the details line stays well inside the limit that would REJECT the lead', () => {
+  /*
+    lib/leads.ts validates `details` with z.string().max(2000), and zod's max
+    REJECTS rather than truncates — so a details line that outgrows 2000
+    characters does not lose its tail, it fails the whole submission and the
+    lead is never captured.
+
+    The preview reference is appended last, which would make it the first
+    casualty of a truncating limit and the trigger of a rejecting one. This
+    builds the longest plausible line — longest blend name, longest enum
+    values, a full blob pathname — and asserts there is real headroom.
+  */
+  const worst = buildDesignerLeadFields({
+    blendName: 'Stonehenge Charcoal Pearl',
+    blendFamily: 'Cool Grey',
+    blendTone: 'mid',
+    finish: 'Full-Broadcast Flake System',
+    lighting: 'one-bulb',
+    garageSize: 'Other / Not Sure',
+    slabCondition: 'Existing Epoxy or Coating',
+    estimate: computeEstimate({ ...BASE, garageSize: 'Other / Not Sure' }),
+    visualizationPathname: 'visualizations/1730000000000-stonehenge-charcoal-pearl-a1b2c3d4e5f6.png',
+    visualizationAttempted: true,
+  })
+
+  assert.ok(
+    worst.details.length < 1000,
+    `details is ${worst.details.length} characters; the lead is rejected above 2000, so losing half the headroom means something needs splitting out of this line`,
+  )
+})
