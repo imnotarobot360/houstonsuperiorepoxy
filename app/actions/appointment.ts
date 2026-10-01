@@ -51,6 +51,12 @@ export async function bookAppointment(leadId: number, slotId: string): Promise<B
       phone: estimateLeads.phone,
       email: estimateLeads.email,
       zip: estimateLeads.zip,
+      /*
+        Selected only to pick the warranty sentence in the confirmation email.
+        A patio or warehouse booking must not be told the residential term —
+        see warrantyPhrase in lib/email.ts.
+      */
+      space: estimateLeads.space,
     })
     .from(estimateLeads)
     .where(eq(estimateLeads.id, leadId))
@@ -101,6 +107,7 @@ export async function bookAppointment(leadId: number, slotId: string): Promise<B
         to: lead.email,
         firstName: firstNameFrom(lead.name),
         slotLabel: slot.label,
+        space: lead.space ?? null,
       })
     } catch (error) {
       console.log(`[v0] lead #${leadId}: appointment customer email threw:`, error)

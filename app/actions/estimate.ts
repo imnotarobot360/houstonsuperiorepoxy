@@ -266,6 +266,12 @@ async function runPostSubmitIntegrations(args: {
       squareFeet: Number.isFinite(parsedSqft) ? parsedSqft : null,
       finish: clamp(formData.get('finish_label'), 120),
       zip: lead.zip ?? null,
+      /*
+        Chooses the warranty sentence. A patio or warehouse lead must not be
+        promised the residential term in an email nobody can edit afterwards —
+        see warrantyPhrase in lib/email.ts.
+      */
+      space: lead.space ?? null,
     })
     if (!result.sent && result.reason === 'send_failed') {
       console.log(`[v0] lead #${leadId}: customer estimate email not sent (${result.detail})`)

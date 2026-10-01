@@ -478,6 +478,29 @@ export type CustomerEmailResult =
   | { sent: true; id: string | null }
   | { sent: false; reason: 'not_configured' | 'no_email' | 'no_verified_domain' | 'send_failed'; detail?: string }
 
+/*
+  The warranty sentence, chosen by what the lead actually wants coated.
+
+  AN EMAIL CANNOT BE EDITED AFTER IT IS SENT, which makes these two templates
+  the worst place on the whole property to state a warranty term loosely. A
+  lead can pick "Patio / pool deck", "Commercial / retail" or
+  "Warehouse / industrial" (see SPACES in lib/leads.ts), and the residential
+  Limited Lifetime term does not apply to any of them — promising it to a
+  warehouse owner in writing, automatically, is exactly the leak the category
+  split in lib/content/specs.ts exists to prevent.
+
+  Only "Garage" gets the named term. Everything else — including "Basement"
+  and "Other", which are not garages and not necessarily residential — gets
+  the honest neutral sentence, which commits to a written warranty without
+  naming a duration nobody has agreed to. An absent space is treated as
+  unknown, not as a garage.
+*/
+function warrantyPhrase(space?: string | null): string {
+  return space === 'Garage'
+    ? 'a written Limited Lifetime residential workmanship warranty'
+    : 'a written workmanship warranty, with the term confirmed in your written estimate'
+}
+
 export type CustomerEstimatePayload = {
   leadId: number
   to: string
@@ -486,6 +509,8 @@ export type CustomerEstimatePayload = {
   squareFeet?: number | null
   finish?: string | null
   zip?: string | null
+  /* Drives warrantyPhrase above — see the note there before removing it. */
+  space?: string | null
 }
 
 export async function sendCustomerEstimate(
@@ -531,7 +556,7 @@ export async function sendCustomerEstimate(
     sqftLine ? sqftLine : null,
     payload.finish ? `System: ${payload.finish}` : null,
     ``,
-    `This is a preliminary figure. The next step is a free onsite inspection where we confirm the slab condition and give you a firm written estimate — with no upfront payment and a written Limited Lifetime residential workmanship warranty.`,
+    `This is a preliminary figure. The next step is a free onsite inspection where we confirm the slab condition and give you a firm written estimate — with no upfront payment and ${warrantyPhrase(payload.space)}.`,
     ``,
     `Book your free inspection: ${site.bookingUrl}`,
     `Questions? Call or text ${site.phone} or just reply to this email.`,
@@ -564,8 +589,8 @@ export async function sendCustomerEstimate(
 
   <p style="margin:0 0 18px;font-size:15px;line-height:1.5;color:#333">
     This is a preliminary figure. The next step is a <strong>free onsite inspection</strong> where we
-    confirm the slab condition and give you a firm written estimate — with no upfront payment and a
-    written Limited Lifetime residential workmanship warranty.
+    confirm the slab condition and give you a firm written estimate — with no upfront payment and
+    ${escapeHtml(warrantyPhrase(payload.space))}.
   </p>
 
   <p style="margin:0 0 22px">
@@ -898,6 +923,8 @@ export type CustomerAppointmentPayload = {
   to: string
   firstName: string
   slotLabel: string
+  /* Drives warrantyPhrase above — see the note there before removing it. */
+  space?: string | null
 }
 
 /*
@@ -935,7 +962,7 @@ export async function sendCustomerAppointmentConfirmation(
     ``,
     `${payload.slotLabel}`,
     ``,
-    `We'll arrive within that window to confirm your slab condition, moisture and prep needs, then put a firm scope and price in writing — no upfront payment, with a written Limited Lifetime residential workmanship warranty.`,
+    `We'll arrive within that window to confirm your slab condition, moisture and prep needs, then put a firm scope and price in writing — no upfront payment, with ${warrantyPhrase(payload.space)}.`,
     ``,
     `Need to change the time? Just call or text ${site.phone} or reply to this email.`,
     ``,
@@ -957,8 +984,8 @@ export async function sendCustomerAppointmentConfirmation(
 
   <p style="margin:0 0 18px;font-size:15px;line-height:1.5;color:#333">
     We&apos;ll arrive within that window to confirm your slab condition, moisture and prep needs, then
-    put a firm scope and price in writing — with <strong>no upfront payment</strong> and a written
-    Limited Lifetime residential workmanship warranty.
+    put a firm scope and price in writing — with <strong>no upfront payment</strong> and
+    ${escapeHtml(warrantyPhrase(payload.space))}.
   </p>
 
   <p style="margin:0 0 4px;font-size:14px;color:#333">
