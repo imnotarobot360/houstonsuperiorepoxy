@@ -205,7 +205,9 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
                       <Link
                         href={archiveHref(PATH, others)}
                         aria-current={filter[facet] ? undefined : 'true'}
-                        className={`inline-flex items-center border px-3.5 py-1.5 text-xs transition-colors ${
+                        /* min-h-10: py-1.5 on a text-xs line box is 30px, and
+                           this whole row is nothing but tap targets. */
+                        className={`inline-flex min-h-10 items-center border px-3.5 py-1.5 text-xs transition-colors ${
                           filter[facet]
                             ? 'border-border text-muted-foreground hover:border-primary hover:text-primary'
                             : 'border-primary bg-primary/10 text-primary'
@@ -225,7 +227,7 @@ export default async function Page({ searchParams }: { searchParams: SearchParam
                               selected ? others : { ...filter, [facet]: o.value },
                             )}
                             aria-current={selected ? 'true' : undefined}
-                            className={`inline-flex items-center gap-1.5 border px-3.5 py-1.5 text-xs transition-colors ${
+                            className={`inline-flex min-h-10 items-center gap-1.5 border px-3.5 py-1.5 text-xs transition-colors ${
                               selected
                                 ? 'border-primary bg-primary/10 text-primary'
                                 : 'border-border text-muted-foreground hover:border-primary hover:text-primary'

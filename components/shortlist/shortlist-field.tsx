@@ -55,7 +55,12 @@ export function ShortlistField() {
               type="button"
               onClick={() => toggle(b.slug)}
               aria-label={`Remove ${b.name} from your shortlist`}
-              className="inline-flex items-center gap-1.5 border border-border px-3 py-1.5 text-xs text-foreground transition-colors hover:border-primary hover:text-primary"
+              /*
+                min-h-10 rather than more padding: py-1.5 on a text-xs line
+                box comes to 30px, and this is the control that throws a blend
+                away, so it should not be the smallest thing on the form.
+              */
+              className="inline-flex min-h-10 items-center gap-1.5 border border-border px-3 py-1.5 text-xs text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               {b.name}
               <span aria-hidden="true">&times;</span>

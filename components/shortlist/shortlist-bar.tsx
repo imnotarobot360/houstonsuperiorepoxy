@@ -121,7 +121,9 @@ export function ShortlistBar() {
         <Link
           href="/schedule/"
           data-analytics-cta="shortlist_to_estimate"
-          className="flex shrink-0 items-center gap-1.5 bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          /* min-h-10: py-2.5 on a text-xs line box is 36px, and this is the
+             bar's only way onward. */
+          className="flex min-h-10 shrink-0 items-center gap-1.5 bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
         >
           Bring these
           <ArrowUpRight size={14} aria-hidden="true" />

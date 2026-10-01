@@ -281,7 +281,9 @@ export function FloorDesigner({
                       type="button"
                       aria-pressed={active}
                       onClick={() => setSize(s)}
-                      className={`rounded-lg border px-3 py-2 text-sm transition-colors ${
+                      /* min-h-10: py-2 on a text-sm line box lands at 38px,
+                         two short of every other control on the page. */
+                      className={`inline-flex min-h-10 items-center rounded-lg border px-3 py-2 text-sm transition-colors ${
                         active
                           ? 'border-primary bg-primary/10 text-foreground'
                           : 'border-border text-muted-foreground hover:text-foreground'
