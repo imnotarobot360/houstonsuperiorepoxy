@@ -5,6 +5,7 @@ import { JsonLd } from '@/components/json-ld'
 import { PageHero } from '@/components/page-hero'
 import { FloorDesigner } from '@/components/floor-designer/floor-designer'
 import { catalogEnabled } from '@/lib/catalog'
+import { isProviderConfigured } from '@/lib/visualizer/provider'
 import { activeBlends, flakeBlends } from '@/lib/content/flake-blends'
 import { coverPhoto, projectForBlend } from '@/lib/content/projects'
 import { r, routes } from '@/lib/routes'
@@ -118,8 +119,19 @@ export default function Page() {
         {/*
           FloorDesigner is a client component and FLAKECOLOR_URL is server-only,
           so the flag is read here and passed down — see lib/catalog.ts.
+
+          Same shape for the photo visualizer: FLOOR_VIZ_API_KEY is server-only
+          and must never reach the browser, so the question "is a provider
+          configured" is answered here and only the ANSWER is sent down. Read
+          at render on the server, which for this static page means a redeploy
+          is needed after setting the variables — already the documented
+          expectation in lib/visualizer/provider.ts.
         */}
-        <FloorDesigner catalogEnabled={catalogEnabled} installed={installed} />
+        <FloorDesigner
+          catalogEnabled={catalogEnabled}
+          installed={installed}
+          photoPreviewEnabled={isProviderConfigured()}
+        />
       </Section>
 
       <Section>

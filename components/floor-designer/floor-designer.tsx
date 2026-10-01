@@ -70,10 +70,18 @@ type FieldErrors = Record<string, string>
 export function FloorDesigner({
   catalogEnabled = false,
   installed = {},
+  photoPreviewEnabled = false,
 }: {
   catalogEnabled?: boolean
   /* Real installed floors by blend slug — assembled server-side, see the page. */
   installed?: Record<string, InstalledPhoto>
+  /*
+    Whether an image-generation provider is configured. DEFAULTS TO FALSE so a
+    caller that forgets to pass it hides the tab rather than showing a dead one
+    — the safe direction for a control that cannot work without a server-side
+    key. Resolved in app/floor-designer/page.tsx.
+  */
+  photoPreviewEnabled?: boolean
 }) {
   const [slug, setSlug] = useState(DEFAULT_SLUG)
   const [lighting, setLighting] = useState<InstalledLighting>('bright')
@@ -288,9 +296,16 @@ export function FloorDesigner({
             path trades that reliability for the one thing it cannot offer, the
             visitor's own garage, and is opt-in for exactly that reason.
           */}
-          <PreviewModeTabs mode={previewMode} onMode={setPreviewMode} />
+          {/*
+            THE TAB ONLY EXISTS WHEN IT CAN DO SOMETHING. Without a provider
+            the photo path can only ever answer "not switched on yet", and a
+            control that never works teaches visitors that controls on this
+            site do not work — a worse outcome than not offering it. The
+            stylized preview is unaffected either way.
+          */}
+          {photoPreviewEnabled && <PreviewModeTabs mode={previewMode} onMode={setPreviewMode} />}
 
-          {previewMode === 'stylized' ? (
+          {!photoPreviewEnabled || previewMode === 'stylized' ? (
             <InstalledPreview
               slug={blend.slug}
               name={blend.name}
