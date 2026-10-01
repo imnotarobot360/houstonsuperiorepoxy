@@ -6,6 +6,8 @@ import {
   type LucideIcon,
   ShieldCheck,
 } from 'lucide-react'
+import Link from 'next/link'
+import { r } from '@/lib/routes'
 import { trackRecord } from '@/lib/site'
 
 /*
@@ -48,7 +50,17 @@ type Fact = {
 */
 const credentials: Fact[] = [
   { value: '$2M', label: 'Liability + workers’ comp', icon: ShieldCheck },
-  { value: 'Limited Lifetime', label: 'Written residential workmanship warranty', icon: ShieldCheck },
+  /*
+    Links to /warranty: this is the one credential in the row whose meaning a
+    visitor cannot get from four words. "Limited Lifetime" is only honest if
+    the definition of whose lifetime is one tap away.
+  */
+  {
+    value: 'Limited Lifetime',
+    label: 'Written residential workmanship warranty',
+    icon: ShieldCheck,
+    href: r('warranty'),
+  },
   { value: '$0', label: 'Due upfront', icon: HandCoins },
   { value: 'Res. + Com.', label: 'Residential & commercial', icon: Building2 },
 ]
@@ -95,17 +107,32 @@ function FactCell({ fact }: { fact: Fact }) {
     </>
   )
 
+  /*
+    INTERNAL AND EXTERNAL LINKS ARE NOT RENDERED THE SAME WAY. This branch was
+    written when the only linkable fact was an outbound Google reviews profile,
+    so it hardcoded target="_blank". The warranty credential now links to
+    /warranty — throwing a visitor into a second tab to read our own page is
+    not what that attribute is for, and it loses the back button.
+  */
+  const external = fact.href?.startsWith('http')
+
   return (
     <div className="bg-card/40 px-5 py-7 lg:px-6">
       {fact.href ? (
-        <a
-          href={fact.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block transition-colors hover:text-primary"
-        >
-          {inner}
-        </a>
+        external ? (
+          <a
+            href={fact.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block transition-colors hover:text-primary"
+          >
+            {inner}
+          </a>
+        ) : (
+          <Link href={fact.href} className="block transition-colors hover:text-primary">
+            {inner}
+          </Link>
+        )
       ) : (
         inner
       )}
