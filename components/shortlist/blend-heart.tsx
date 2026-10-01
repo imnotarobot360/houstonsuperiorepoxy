@@ -43,7 +43,7 @@ export function BlendHeart({ slug, name }: { slug: string; name: string }) {
       title={
         saved ? `Remove ${name}` : isFull ? 'Shortlist is full (4 max)' : `Save ${name}`
       }
-      className={`flex size-9 shrink-0 items-center justify-center border transition-colors ${
+      className={`flex size-10 shrink-0 items-center justify-center border transition-colors ${
         saved
           ? 'border-primary bg-primary/10 text-primary'
           : 'border-border text-muted-foreground hover:border-primary hover:text-primary'

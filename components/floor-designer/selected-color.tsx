@@ -114,7 +114,7 @@ function LightingToggle({
               type="button"
               aria-pressed={active}
               onClick={() => onLighting(value)}
-              className={`flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`flex-1 rounded-md px-3 py-3 text-xs font-medium transition-colors ${
                 active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
               }`}
             >

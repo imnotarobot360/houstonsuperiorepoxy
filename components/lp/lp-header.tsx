@@ -22,9 +22,19 @@ export function LpHeader() {
           className="h-9 w-auto sm:h-10"
         />
         <div className="flex items-center gap-3 sm:gap-4">
+          {/*
+            THE TAP TARGET IS GROWN WITH AN OVERLAY, NOT WITH PADDING. At 375px
+            this header has 328px of inner width and the logo (109) plus this
+            group (203) already fill it exactly, so any padding that adds
+            layout width pushes the estimate button off the row. The
+            pseudo-element is centred on the icon and costs nothing in flow,
+            which turns a 16px glyph into a 44px target. It reaches a little
+            into the gap beside the button; the button is the later sibling, so
+            it still wins a tap that lands on it.
+          */}
           <a
             href={site.phoneHref}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+            className="relative inline-flex items-center gap-2 text-sm font-semibold text-foreground transition-colors before:absolute before:left-1/2 before:top-1/2 before:size-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-primary sm:before:hidden"
           >
             <Phone size={16} aria-hidden="true" />
             <span className="hidden sm:inline">{site.phone}</span>
