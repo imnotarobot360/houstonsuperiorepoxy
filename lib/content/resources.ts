@@ -1274,9 +1274,33 @@ export const articles: Article[] = [
           'We do not republish those figures here, because they belong to the product and they change between formulations. We will hand you the sheet for the system we are proposing.',
         ],
       },
+      /*
+        The closing section, and the point the whole article has been building
+        to: this piece exists because people arrive trying to pick a resin, and
+        the resin is the part of the decision that fails least often. Ending on
+        the six things that actually decide the outcome is the honest answer to
+        the question they asked.
+
+        The warranty is named here with its scope attached. This article is
+        read by patio and commercial visitors as well as garage owners — see
+        the category split in lib/content/specs.ts — so "qualifying residential
+        garage installations" is doing necessary work, not hedging.
+      */
+      {
+        heading: 'The coating system is only part of the decision',
+        paras: [
+          'Two contractors can quote the same resin and deliver very different floors. By the time you are comparing product names you have usually settled the smallest variable in the job, so it is worth stepping back to the ones that are still open: concrete preparation, the installation process, insurance, workers’ compensation, the written warranty, and whether there is a company left to call if something goes wrong.',
+          'Those six are also the reason a warranty means anything. A guarantee is only as good as the preparation underneath it and the business standing behind it, which is why we publish what ours covers and what it excludes rather than describing it as a selling point. Qualifying residential garage installations include a Limited Lifetime workmanship warranty against covered installation-related failures, subject to the written terms and exclusions; exterior and commercial work carries its own written terms.',
+        ],
+      },
     ],
     related: [
       { label: 'Polyaspartic floor coatings in Houston', href: '/polyaspartic-floor-coatings-houston/' },
+      /*
+        The closing section names the warranty, so the reader gets somewhere to
+        go and read the terms rather than taking the sentence on trust.
+      */
+      { label: 'Our workmanship warranty', href: '/warranty/' },
       {
         label: 'Epoxy vs polyaspartic in Houston',
         href: '/resources/epoxy-vs-polyaspartic-houston/',
