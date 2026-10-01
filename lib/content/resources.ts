@@ -349,6 +349,10 @@ export const articles: Article[] = [
     ],
     related: [
       { label: 'How long an epoxy garage floor takes', href: '/resources/how-long-does-epoxy-garage-floor-take/' },
+      {
+        label: 'One-day vs multi-day garage floor',
+        href: '/resources/one-day-vs-multi-day-garage-floor/',
+      },
       { label: 'Polyaspartic floor coatings', href: '/polyaspartic-floor-coatings-houston/' },
       { label: 'How we install a floor', href: '/our-process/' },
       { label: 'Book an estimate', href: '/schedule/' },
@@ -407,6 +411,10 @@ export const articles: Article[] = [
     ],
     related: [
       { label: 'When a one-day install is realistic', href: '/resources/one-day-garage-floor-coating-houston/' },
+      {
+        label: 'One-day vs multi-day garage floor',
+        href: '/resources/one-day-vs-multi-day-garage-floor/',
+      },
       { label: 'How we install a floor', href: '/our-process/' },
       { label: 'Epoxy coating removal & resurfacing', href: '/epoxy-coating-removal/' },
       { label: 'Book an estimate', href: '/schedule/' },
@@ -594,6 +602,10 @@ export const articles: Article[] = [
       },
     ],
     related: [
+      {
+        label: 'Do you have to grind concrete before epoxy?',
+        href: '/resources/do-you-have-to-grind-concrete-before-epoxy/',
+      },
       { label: 'Concrete grinding & surface preparation', href: '/concrete-grinding-preparation/' },
       { label: 'Garage floor crack & spall repair', href: '/garage-floor-repair/' },
       { label: 'How we install a floor', href: '/our-process/' },
@@ -818,6 +830,10 @@ export const articles: Article[] = [
       },
     ],
     related: [
+      {
+        label: 'Do you have to grind concrete before epoxy?',
+        href: '/resources/do-you-have-to-grind-concrete-before-epoxy/',
+      },
       { label: 'Epoxy coating removal & resurfacing', href: '/epoxy-coating-removal/' },
       {
         label: 'Acid etching vs diamond grinding',
@@ -1543,6 +1559,205 @@ export const articles: Article[] = [
         href: '/resources/how-to-clean-epoxy-garage-floor/',
       },
       { label: 'Why epoxy garage floors peel', href: '/resources/why-do-epoxy-garage-floors-peel/' },
+    ],
+  },
+
+  /*
+    DELIBERATELY NOT A SECOND "acid etching vs diamond grinding".
+    That article answers which METHOD prepares concrete properly. This one
+    answers the question upstream of it — whether the step can be skipped at
+    all — which is what someone asks when a cheap quote does not mention
+    preparation. It links down to the method comparison rather than restating
+    it, and to the peel article rather than re-listing failure modes.
+  */
+  {
+    slug: 'do-you-have-to-grind-concrete-before-epoxy',
+    title: 'Do You Have to Grind Concrete Before Epoxy? | Houston Superior Epoxy',
+    h1: 'Do you have to grind concrete before epoxy?',
+    description:
+      'Preparation is the step quotes leave out and homeowners cannot inspect afterwards. Here is what grinding does, and what happens on a slab that never got it.',
+    kicker: 'The step that decides whether a floor lasts',
+    question: 'Does concrete have to be ground before an epoxy floor is installed?',
+    quickAnswer:
+      'Yes, for a coating meant to last. Concrete leaves the finishing process with a weak, closed surface that coatings cannot key into, and no amount of product quality compensates for being stuck to it. Mechanical preparation removes that layer and opens a profile. A quote that does not describe how the slab will be prepared has left out the step that decides the outcome.',
+    takeaways: [
+      'A new slab carries laitance — a weak, powdery layer left at the surface by finishing — and a coating bonded to it is bonded to something already loose.',
+      'Troweling closes the surface. Grinding reopens it so the coating has a profile to lock into.',
+      'Preparation is invisible once the floor is down, which is exactly why it is the easiest line for a cheap quote to drop.',
+      'Grinding also exposes what is wrong with the slab — cracks, contamination, soft patches — while there is still time to deal with it.',
+      'The question to ask is not whether a contractor grinds, but whether they grind the whole floor, edges and corners included.',
+    ],
+    terms: ['laitance', 'concrete surface profile', 'epoxy', 'spall'],
+    serviceLink: {
+      label: 'Garage floor coatings in Houston',
+      href: '/garage-floor-coatings-houston/',
+    },
+    showReferences: true,
+    published: '2026-10-01',
+    reviewed: '2026-10-01',
+    sections: [
+      {
+        heading: 'What is wrong with a slab that looks fine',
+        paras: [
+          'A finished concrete floor looks like a good surface to paint. It is not. Finishing brings fine particles and water to the top, and they set as laitance — a thin, weak layer that is part of the slab in appearance only. A coating applied over it bonds to the laitance, and the laitance is barely bonded to anything.',
+          'Troweling compounds it by closing the surface. A closed slab behaves a little like a sealed worktop: liquid sits on it rather than soaking in. A coating needs the opposite, somewhere to key into.',
+        ],
+      },
+      {
+        heading: 'What grinding actually changes',
+        paras: [
+          'Mechanical grinding takes the laitance off and leaves an open, matte surface with a measurable texture. That texture is the concrete surface profile, and it is what the coating grips.',
+          'The difference is not subtle under the floor, even though it is invisible once the floor is finished. It is the difference between a coating held on by the slab and a coating held on by the slab’s weakest few thousandths of an inch.',
+        ],
+      },
+      {
+        heading: 'What grinding also tells you',
+        paras: [
+          'Preparation is diagnostic as well as mechanical. Grinding exposes hairline cracks that were invisible under the sheen, spalled or soft areas that need repair, and oil that has soaked deeper than the surface stain suggested.',
+          'Finding those while the slab is still bare is the point. Every one of them is cheaper and better dealt with before coating than after, and coating over any of them simply schedules the failure for later.',
+        ],
+      },
+      {
+        heading: 'What happens when it is skipped',
+        paras: [
+          'A floor that was never mechanically prepared can look perfect on handover. The failure shows up later, as flakes lifting at the edges, sheets peeling where a tyre turns, or a coating that comes away with the tape when something is masked off it.',
+          'That pattern is the first and most common of the reasons coatings fail, and it is worth reading about separately, because the other four are also things a homeowner can ask about in advance.',
+        ],
+      },
+      {
+        heading: 'Grinding is the method, not just the idea',
+        paras: [
+          'Acid etching is sometimes offered as an equivalent. It is not, and the reasons are specific enough to be worth their own page — the short version is that acid reacts with the surface rather than removing it, and what it leaves behind is not the same thing as a ground profile.',
+          'We prepare every slab mechanically, with dust control, and we do not acid etch. If a quote is vague about preparation, that vagueness is the most useful thing in it.',
+        ],
+      },
+    ],
+    related: [
+      {
+        label: 'Acid etching vs diamond grinding',
+        href: '/resources/acid-etching-vs-diamond-grinding/',
+      },
+      { label: 'Why epoxy garage floors peel', href: '/resources/why-do-epoxy-garage-floors-peel/' },
+      {
+        label: 'Why cracks are repaired before coating',
+        href: '/resources/garage-floor-crack-repair-before-coating/',
+      },
+      { label: 'How to read a garage floor quote', href: '/resources/how-to-read-a-garage-floor-quote/' },
+      { label: 'Our process', href: '/our-process/' },
+    ],
+  },
+
+  /*
+    DELIBERATELY NOT A SECOND "one-day garage floor" article.
+    That one answers whether a single day is REALISTIC on a given slab. This
+    one answers the quality question people ask next — whether a floor built in
+    a day is as good as one built over several — which is a different search
+    and a different worry. Feasibility stays over there and is linked.
+  */
+  {
+    slug: 'one-day-vs-multi-day-garage-floor',
+    title: 'One-Day vs Multi-Day Garage Floor: Is Faster Worse? | Houston Superior Epoxy',
+    h1: 'One-day vs multi-day garage floor: is the fast one worse?',
+    description:
+      'A one-day floor is not a rushed version of a multi-day one. The schedule follows the chemistry that was specified, and the slab decides which is available.',
+    kicker: 'What the schedule does and does not tell you',
+    question: 'Is a one-day garage floor as good as a multi-day installation?',
+    quickAnswer:
+      'It can be. The schedule is a consequence of which coatings were specified, not a measure of care: fast-cure systems genuinely allow grinding, coating and flaking in a single day. What makes a floor good is the preparation and the system, and neither is improved by taking longer. The slab, not the calendar, decides which schedule is available.',
+    takeaways: [
+      'A one-day floor is fast because of the chemistry specified, not because steps were dropped.',
+      'A multi-day build is usually a different system, often an epoxy base that has to cure before the next coat.',
+      'Neither schedule can shorten preparation. Grinding takes as long as the slab takes.',
+      'Moisture, damage and an old coating can each rule out a single day regardless of what anyone would prefer.',
+      'Return-to-service timing depends on the installed system and on cure-day conditions, so it belongs in writing for your floor rather than as a number on a web page.',
+    ],
+    comparison: {
+      caption: 'What actually differs between the two schedules',
+      columns: ['Dimension', 'One-day install', 'Multi-day install'],
+      rows: [
+        [
+          'Why it takes that long',
+          'Fast-cure chemistry allows the next coat the same day.',
+          'A coat has to cure before the next one goes down.',
+        ],
+        ['Preparation', 'Identical. Grinding is not the step that gets compressed.', 'Identical.'],
+        [
+          'What decides availability',
+          'A sound, dry slab with no surprises underneath.',
+          'Moisture, damage, an old coating, or a system that needs the time.',
+        ],
+        [
+          'Disruption',
+          'Garage emptied and returned within the day.',
+          'Garage out of use across the whole sequence.',
+        ],
+        [
+          'What it says about quality',
+          'Nothing on its own. Ask about preparation and the system instead.',
+          'Nothing on its own, for the same reason.',
+        ],
+      ],
+    },
+    terms: ['polyaspartic', 'epoxy', 'full-broadcast'],
+    serviceLink: {
+      label: 'Garage floor coatings in Houston',
+      href: '/garage-floor-coatings-houston/',
+    },
+    showReferences: true,
+    published: '2026-10-01',
+    reviewed: '2026-10-01',
+    sections: [
+      {
+        heading: 'Where the worry comes from',
+        paras: [
+          'The instinct that faster means worse is reasonable, and in most trades it is right. It does not transfer cleanly here, because the thing that takes time in a coating is not labour. It is cure.',
+          'A system built around fast-cure chemistry reaches the point where the next coat can go down in hours rather than overnight. Nothing was skipped to get there; a different product was specified.',
+        ],
+      },
+      {
+        heading: 'What cannot be compressed either way',
+        paras: [
+          'Preparation takes as long as the slab takes. Grinding a floor with edges, corners and a threshold is the same work whether the coating that follows cures in two hours or twelve, and it is the step that decides whether the floor lasts.',
+          'Repairs are the same. A crack that needs opening and filling takes the time it takes, and a one-day schedule that skips it has not saved anybody anything.',
+        ],
+      },
+      {
+        heading: 'What actually rules out a single day',
+        paras: [
+          'The slab decides. Moisture moving up through the concrete, an existing coating that has to come off, or damage found once grinding starts can each turn a one-day plan into a multi-day one.',
+          'That is why we will not commit to a single day before seeing the floor. When it is realistic we say so, and the conditions that make it realistic are worth understanding before anyone quotes you a schedule.',
+        ],
+      },
+      {
+        heading: 'The question worth asking instead',
+        paras: [
+          'Ask what system is going down and how the slab will be prepared. Those two answers tell you more about how the floor will age than the number of days ever will.',
+          'If a quote leads with speed and is vague about preparation, the speed is the wrong thing to be reading. Our guide to reading a quote sets out what should be itemised.',
+        ],
+      },
+      {
+        heading: 'When you can use the floor again',
+        paras: [
+          'Foot traffic returns before vehicles, and both depend on the installed system and on the temperature and humidity during cure. We give those times in writing at the final walkthrough, for the floor that was actually installed.',
+          'We do not publish them as fixed figures here, because a number that ignores the product and the weather is not information. It is a guess that happens to be printed.',
+        ],
+      },
+    ],
+    related: [
+      {
+        label: 'When a one-day garage floor is realistic',
+        href: '/resources/one-day-garage-floor-coating-houston/',
+      },
+      {
+        label: 'How long an epoxy garage floor takes',
+        href: '/resources/how-long-does-epoxy-garage-floor-take/',
+      },
+      {
+        label: 'Do you have to grind concrete before epoxy?',
+        href: '/resources/do-you-have-to-grind-concrete-before-epoxy/',
+      },
+      { label: 'How to read a garage floor quote', href: '/resources/how-to-read-a-garage-floor-quote/' },
+      { label: 'Our process', href: '/our-process/' },
     ],
   },
 ]
