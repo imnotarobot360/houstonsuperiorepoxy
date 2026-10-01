@@ -45,10 +45,16 @@ export function SelectedColor({
           Flake sample
         </p>
         {/*
-          The manufacturer's photograph of the loose flake, shown large. Not
-          cropped to a swatch: the chip mix IS the product, and squeezing it
-          below about 180px starts hiding the small accent chips that make one
-          blend different from its neighbour.
+          The manufacturer's photograph of the loose flake. Not cropped to a
+          swatch: the chip mix IS the product, and shrinking it too far hides
+          the small accent chips that tell one blend from its neighbour.
+
+          THE CAP IS RESPONSIVE BECAUSE THE COLUMN IS. On desktop this sits in
+          a 35% column where 15rem is proportionate. On a phone that column
+          goes full width and the cap did not, so the sample rendered 240px
+          tall against a 222px garage preview — the supporting detail came out
+          LARGER than the product shot it supports, which is the wrong way
+          round on the one screen where you cannot see both at once.
         */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -56,7 +62,7 @@ export function SelectedColor({
           alt={blend.alt}
           width={240}
           height={240}
-          className="w-full max-w-[15rem] rounded-xl border border-border object-cover"
+          className="w-full max-w-[10rem] rounded-xl border border-border object-cover sm:max-w-[15rem]"
         />
       </div>
 

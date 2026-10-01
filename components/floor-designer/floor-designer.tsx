@@ -454,9 +454,14 @@ function ProgressSteps({ steps }: { steps: { label: string; done: boolean }[] })
         const active = i === current
         return (
           <li key={s.label} className="flex items-center gap-2">
-            {i > 0 && (
-              <span aria-hidden className="h-px w-5 bg-border" />
-            )}
+            {/*
+              HIDDEN BELOW sm BECAUSE THE STRIP WRAPS THERE. Four steps do not
+              fit on one line at 375px, and the connector renders BEFORE its
+              step, so the second row opened with a dash joining it to nothing.
+              Without connectors the wrap reads as four chips, which is fine;
+              with them it read as broken.
+            */}
+            {i > 0 && <span aria-hidden className="hidden h-px w-5 bg-border sm:block" />}
             <span
               className={`flex items-center gap-1.5 ${
                 s.done ? 'text-foreground' : active ? 'text-primary' : 'text-muted-foreground'
