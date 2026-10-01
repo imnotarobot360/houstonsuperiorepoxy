@@ -691,6 +691,10 @@ export const articles: Article[] = [
     ],
     related: [
       { label: 'Polyaspartic floor coatings in Houston', href: '/polyaspartic-floor-coatings-houston/' },
+      {
+        label: 'Polyaspartic vs polyurea: how the terms relate',
+        href: '/resources/polyaspartic-vs-polyurea-coatings/',
+      },
       { label: 'Epoxy flooring contractors in Houston', href: '/epoxy-flooring-houston/' },
       { label: 'Full-broadcast flake garage floors', href: '/flake-epoxy-garage-floors/' },
     ],
@@ -1163,6 +1167,7 @@ export const articles: Article[] = [
       'Polyaspartics are aliphatic, which is why they belong on top of a floor rather than underneath.',
       'Fast cure is the shared trait, and it narrows the installer\u2019s working window regardless of the label.',
       'Ask which specific product is going on your floor and request its data sheet, rather than comparing category names.',
+      'An epoxy base under a polyaspartic topcoat is a normal, manufacturer-supported build, not a compromise \u2014 the preparation and the whole system decide the outcome, not the label on one layer.',
     ],
     comparison: {
       caption: 'How the terms relate',
@@ -1195,12 +1200,13 @@ export const articles: Article[] = [
         ],
       ],
     },
-    terms: ['polyaspartic', 'aliphatic', 'epoxy'],
+    terms: ['polyaspartic', 'aliphatic', 'epoxy', 'full-broadcast', 'laitance'],
     serviceLink: {
       label: 'Polyaspartic floor coatings in Houston',
       href: '/polyaspartic-floor-coatings-houston/',
     },
     showReferences: true,
+    reviewed: '2026-10-01',
     sections: [
       {
         heading: 'Why the comparison is framed wrong',
@@ -1217,7 +1223,35 @@ export const articles: Article[] = [
         ],
       },
       {
-        heading: 'What to ask instead',
+        heading: 'What about an epoxy base under a polyaspartic topcoat?',
+        paras: [
+          'Some marketing argues that any epoxy in the build is a weak link, and that an all-polyaspartic floor is therefore the better product. That is stated more confidently than the chemistry supports. Epoxy, polyurea, polyaspartic and hybrid builds all have legitimate uses, and manufacturers publish UV-stable polyaspartics specifically as topcoats over epoxy and polyurea base coats.',
+          'The build we use most often is a diamond-ground slab, a Citadel SLE-100 epoxy base coat, flake broadcast to refusal, and a Polyaspartic F61 clear topcoat. The epoxy does the bonding and carries the body of the system; the aliphatic polyaspartic is on top because that is the layer sunlight reaches. Each material sits where its properties are useful.',
+          'None of that makes an all-polyaspartic floor wrong, and we are not going to claim it does. What it makes wrong is judging a floor by one word on a quote. A single-coat polyaspartic over a badly prepared slab will fail sooner than a well-built epoxy-and-polyaspartic system, and the reverse is equally true. The system and the preparation decide the outcome, not the label on one layer.',
+        ],
+      },
+      {
+        heading: 'Why preparation decides more than the product name',
+        paras: [
+          'A coating can only be as good as its grip on the concrete. A new slab carries laitance, the weak powdery layer finishing leaves at the surface, and a troweled floor is closed enough that liquid sits on it rather than keying into it. Grinding removes that layer and opens a profile for the coating to lock into.',
+          'This is the step easiest to skip and hardest for a homeowner to inspect once the floor is down, which is exactly why it is worth asking about beforehand. We prepare every slab mechanically and do not acid etch.',
+        ],
+      },
+      {
+        heading: 'Seven questions to ask any garage floor contractor',
+        paras: [
+          'These work on us as well as on anyone else quoting your floor. Someone who answers all seven without hedging is telling you how they actually work. Someone who answers in category names is telling you something too.',
+          '1. What coating is actually touching my concrete? The bonding layer matters more than the one you can see, and "polyurea system" does not answer the question.',
+          '2. How will you prepare the slab? Listen for a mechanical method. Preparation is where most of the real difference between two quotes sits.',
+          '3. Are you grinding the whole floor, including edges and corners? Partial preparation is a common shortcut, and the untouched edge is usually where a coating lifts first.',
+          '4. What profile are you opening the concrete to? The concrete surface profile is the specification describing how aggressively a slab was ground. A contractor who works to one can tell you which.',
+          '5. What is the base coat, by product name, and may I see its data sheet? A named product can be looked up. A category cannot.',
+          '6. Is the exposed top layer aliphatic? That single property is what holds colour in sunlight, and it is worth confirming if any part of the floor sees daylight.',
+          '7. What does the warranty cover, the product or the workmanship? Those are different guarantees from different parties, and most coating failures are installation failures rather than product defects.',
+        ],
+      },
+      {
+        heading: 'What to ask instead of comparing category names',
         paras: [
           'Ask which specific product is going on your floor, and ask for its current technical data sheet. That document contains the actual properties, the actual cure schedule and the actual recommended use.',
           'We do not republish those figures here, because they belong to the product and they change between formulations. We will hand you the sheet for the system we are proposing.',
@@ -1230,7 +1264,19 @@ export const articles: Article[] = [
         label: 'Epoxy vs polyaspartic in Houston',
         href: '/resources/epoxy-vs-polyaspartic-houston/',
       },
-      { label: 'Metallic epoxy floors', href: '/metallic-epoxy-floors/' },
+      {
+        label: 'Acid etching vs diamond grinding',
+        href: '/resources/acid-etching-vs-diamond-grinding/',
+      },
+      {
+        label: 'Best garage floor coating for Houston heat',
+        href: '/resources/best-garage-floor-coating-for-houston-heat/',
+      },
+      {
+        label: 'How much does a 2-car garage floor cost in Houston?',
+        href: '/resources/how-much-does-2-car-garage-epoxy-cost-houston/',
+      },
+      { label: 'How to read a garage floor quote', href: '/resources/how-to-read-a-garage-floor-quote/' },
     ],
   },
 
@@ -1293,6 +1339,10 @@ export const articles: Article[] = [
         href: '/resources/epoxy-flooring-houston-humidity/',
       },
       { label: 'What causes hot tire pickup', href: '/resources/what-causes-hot-tire-pickup/' },
+      {
+        label: 'Polyaspartic vs polyurea: how the terms relate',
+        href: '/resources/polyaspartic-vs-polyurea-coatings/',
+      },
       { label: 'Polyaspartic floor coatings in Houston', href: '/polyaspartic-floor-coatings-houston/' },
     ],
   },
