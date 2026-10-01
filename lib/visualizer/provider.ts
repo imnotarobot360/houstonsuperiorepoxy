@@ -280,6 +280,14 @@ export function resolveProvider(): VisualizationProvider | null {
   time on the server, but a deployment is still needed for the values to exist
   in the running environment.
 
+  BEFORE SETTING THE KEY, ADD RATE LIMITING. generateFloorVisualization is a
+  public, unauthenticated action. While nothing is configured it short-circuits
+  and costs nothing, so the endpoint is harmless today — but the key is exactly
+  what turns it into a way for anyone to spend the image-generation budget and
+  fill private storage from a script. See the block comment in
+  app/actions/floor-visualization.ts for why this was flagged rather than
+  guessed at.
+
   AFTER CONFIGURING, VERIFY BEFORE ANNOUNCING. Upload a real garage photo
   through /floor-designer and confirm: a result comes back, the room is
   recognisably the same room, and only the floor changed. The response parsing

@@ -27,6 +27,27 @@ import { resolveProvider, type VisualizationFailure } from '@/lib/visualizer/pro
   ORIGINAL upload is not stored at all — only the generated result, and only so
   the office can see what the customer was shown. If no result is generated,
   nothing is stored.
+
+  ────────────────────────────────────────────────────────────────────────────
+  RATE LIMITING IS REQUIRED BEFORE A PROVIDER IS CONFIGURED, AND IS NOT DONE.
+
+  This is a public server action with no authentication. Today that is
+  harmless: with no provider set up it returns `not_configured` before reading
+  the file, so a scripted caller gets a string and costs nothing. The moment
+  FLOOR_VIZ_API_KEY exists, the same endpoint becomes a way for anyone to spend
+  the account's image-generation budget and fill private blob storage, one
+  cheap HTTP request at a time.
+
+  It is flagged here rather than guessed at because the shape of the limit is a
+  real decision — per IP, per session or per lead; what ceiling; what a blocked
+  visitor is told — and it needs somewhere to keep counters that survives
+  serverless invocations. The Postgres this project already uses is the obvious
+  home; an in-memory counter is not, because each instance would keep its own.
+
+  The lead form's defence is a honeypot (HONEYPOT_FIELD in lib/leads.ts), which
+  works there because bots fill forms blindly. It is not sufficient here, where
+  the attacker is calling the action directly.
+  ────────────────────────────────────────────────────────────────────────────
 */
 
 export type VisualizationResponse =
@@ -118,7 +139,10 @@ export async function generateFloorVisualization(formData: FormData): Promise<Vi
   */
   let pathname: string | null = null
   try {
-    const blob = await put(`visualizations/${Date.now()}-${blend.slug}.png`, bytes, {
+    /* Extension follows the provider's actual type — hardcoding .png here
+       stored JPEG results under a lying filename. */
+    const ext = result.imageType === 'image/jpeg' ? 'jpg' : result.imageType.split('/')[1] || 'png'
+    const blob = await put(`visualizations/${Date.now()}-${blend.slug}.${ext}`, bytes, {
       access: 'private',
       addRandomSuffix: true,
       contentType: result.imageType,
