@@ -285,4 +285,17 @@ export function resolveProvider(): VisualizationProvider | null {
   recognisably the same room, and only the floor changed. The response parsing
   in httpProvider() is written to a generic shape and has never run against a
   live API, so expect to adjust it for the provider actually chosen.
+
+  KNOWN GAP — HEIC. Validation accepts image/heic and image/heif because the
+  estimator's photo upload already does, and because that is what an iPhone
+  produces by default. Most hosted image APIs do NOT decode HEIC, so the first
+  real iPhone upload is likely to come back as `rejected`.
+
+  That is not papered over here, because guessing at a conversion is worse than
+  naming the problem: whoever wires up a provider has to decide between picking
+  one that accepts HEIC, transcoding to JPEG before the call (sharp is already a
+  dependency, but its HEIC support depends on how libvips was built, so this
+  needs testing rather than assuming), or narrowing PHOTO_TYPES for this path
+  and telling iPhone users to change their camera format. The failure is at
+  least honest and specific in the meantime.
 */
