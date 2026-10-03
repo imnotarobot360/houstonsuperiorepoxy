@@ -74,6 +74,12 @@ export type ProviderConfig = {
   endpoint: string
   apiKey: string
   model?: string
+  /*
+    Sent as `quality` when the provider understands it. OpenAI's gpt-image-1
+    takes low | medium | high and the difference is minutes of the customer's
+    attention and real money per image.
+  */
+  quality?: string
   timeoutMs: number
 }
 
@@ -87,6 +93,20 @@ export function readProviderConfig(): ProviderConfig | null {
     endpoint,
     apiKey,
     model: env('FLOOR_VIZ_MODEL'),
+    /*
+      DEFAULTS TO LOW, DELIBERATELY.
+
+      This is a sales preview that already carries "AI visualization — for
+      preview only" on its face, viewed mostly on a phone, and its job is to
+      answer "what would this blend look like in my garage" — not to be
+      inspected at full resolution. High quality costs noticeably more per
+      image and keeps somebody staring at a spinner for the privilege.
+
+      Raise it with FLOOR_VIZ_QUALITY if the output turns out too rough on real
+      customer photos; that is a judgement to make by eye, on real garages,
+      rather than by picking the biggest number up front.
+    */
+    quality: env('FLOOR_VIZ_QUALITY') ?? 'low',
     /* 60s default: image generation is slow, and a visitor is watching a spinner. */
     timeoutMs: Number.isFinite(timeoutRaw) && timeoutRaw > 0 ? timeoutRaw : 60_000,
   }
@@ -151,6 +171,7 @@ function httpProvider(config: ProviderConfig): VisualizationProvider {
         body.set('image', new Blob([request.photo], { type: request.photoType }), 'garage.jpg')
         body.set('prompt', buildPrompt(request.blend, request.note))
         if (config.model) body.set('model', config.model)
+        if (config.quality) body.set('quality', config.quality)
 
         const response = await fetch(config.endpoint, {
           method: 'POST',

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { afterEach, beforeEach, test } from 'node:test'
-import { resolveProvider } from '../lib/visualizer/provider'
+import { readProviderConfig, resolveProvider } from '../lib/visualizer/provider'
 
 /*
   The HTTP adapter's behaviour, with fetch stubbed.
@@ -247,4 +247,34 @@ test('the prompt is sent with the image', async () => {
   assert.ok(body, 'expected a body')
   assert.match(String(body!.get('prompt')), /ONLY the concrete floor/)
   assert.ok(body!.get('image'), 'the photo must be attached')
+})
+
+/* ---------------------------------------------------------------- quality */
+
+test('quality defaults to low and is sent with the request', () => {
+  /*
+    A sales preview on a phone, already labelled "for preview only". Low is
+    faster for the customer and cheaper per image; high buys detail nobody is
+    inspecting at that size.
+  */
+  configure()
+  assert.equal(readProviderConfig()!.quality, 'low')
+})
+
+test('quality is overridable without a code change', () => {
+  configure()
+  process.env.FLOOR_VIZ_QUALITY = 'high'
+  assert.equal(readProviderConfig()!.quality, 'high')
+  delete process.env.FLOOR_VIZ_QUALITY
+})
+
+test('the quality field reaches the provider', async () => {
+  configure()
+  let body: FormData | undefined
+  stub(async (_input?: unknown, init?: any) => {
+    body = init?.body
+    return new Response(new Uint8Array([1]), { status: 200, headers: { 'content-type': 'image/png' } })
+  })
+  await resolveProvider()!.generate(request())
+  assert.equal(String(body!.get('quality')), 'low')
 })
