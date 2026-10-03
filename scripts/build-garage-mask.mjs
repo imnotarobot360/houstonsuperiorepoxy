@@ -119,6 +119,8 @@ const STEPS = [
 
 const FEATHER = 1.2
 
+let smoothedColumns = 0
+
 const { data, info } = await sharp(SRC).removeAlpha().raw().toBuffer({ resolveWithObject: true })
 const { width: W, height: H, channels: C } = info
 
@@ -369,6 +371,66 @@ for (let x = 0; x < W; x++) {
   }
 }
 
+/*
+  ------------------------------------------- 1d. median-smooth the floor line
+
+  The region grow finds the right boundary but a noisy one. Along the left
+  cabinets it jitters about five pixels column to column — measured at 0.59
+  mean second difference, against 0.03 along the garage door, so twenty times
+  rougher in the one place a straight edge is most expected. The eye reads that
+  wobble as a bad cut-out even when it cannot name it.
+
+  A MEDIAN, NOT A BLUR. The boundary genuinely steps twenty pixels at the
+  cabinet corner near x=340, and an averaging filter would round that real
+  corner into a ramp while only half-fixing the noise. A median leaves a step
+  alone as long as the runs either side are longer than half its window, and
+  removes exactly the single-column spikes that make up the jitter.
+
+  The window is deliberately modest. Wide enough to swallow the noise, narrow
+  enough that genuine detail — a toe-kick, the lip where the slab meets the
+  door track — survives.
+
+  Moving the line DOWN costs a sliver of floor and shows original slab, which
+  is invisible. Moving it UP would paint texture onto a cabinet, which is the
+  defect this whole pass exists to remove. A median cannot overshoot its local
+  range, so it can never introduce that.
+*/
+const SMOOTH_WINDOW = 21
+
+{
+  const sHalf = Math.floor(SMOOTH_WINDOW / 2)
+  const top = new Array(W).fill(-1)
+  const bottom = new Array(W).fill(-1)
+  for (let x = 0; x < W; x++) {
+    for (let y = 0; y < H; y++) if (seen[y * W + x]) { top[x] = y; break }
+    for (let y = H - 1; y >= 0; y--) if (seen[y * W + x]) { bottom[x] = y; break }
+  }
+
+  const smoothed = new Array(W)
+  for (let x = 0; x < W; x++) {
+    if (top[x] < 0) { smoothed[x] = -1; continue }
+    const win = []
+    for (let d = -sHalf; d <= sHalf; d++) {
+      const t = top[Math.max(0, Math.min(W - 1, x + d))]
+      if (t >= 0) win.push(t)
+    }
+    win.sort((p, q) => p - q)
+    smoothed[x] = win[Math.floor(win.length / 2)]
+  }
+
+  let moved = 0
+  for (let x = 0; x < W; x++) {
+    if (top[x] < 0 || smoothed[x] < 0) continue
+    if (smoothed[x] === top[x]) continue
+    moved++
+    /* Repaint the column from the smoothed line to the bottom it already had. */
+    for (let y = Math.min(top[x], smoothed[x]); y <= bottom[x]; y++) {
+      seen[y * W + x] = y >= smoothed[x] ? 1 : 0
+    }
+  }
+  smoothedColumns = moved
+}
+
 /* ------------------------------------------------------ 2. subtract the steps */
 const poly = STEPS.map(([fx, fy]) => [fx * W, fy * H])
 const inPoly = (x, y) => {
@@ -477,6 +539,6 @@ await sharp(rgba, { raw: { width: W, height: H, channels: 4 } })
   .png({ compressionLevel: 9 })
   .toFile(OUT)
 
-console.log(`region grow: ${filled} px, shadow climb: ${climbed} px, steps carved: ${carved}`)
+console.log(`region grow: ${filled} px, shadow climb: ${climbed} px, steps carved: ${carved}, columns smoothed: ${smoothedColumns}`)
 console.log(`mask: ${W}x${H}, floor = ${((floorPx / (W * H)) * 100).toFixed(1)}% -> ${OUT}`)
 console.log(`  ${Math.round(fs.statSync(OUT).size / 1024)} KB`)
