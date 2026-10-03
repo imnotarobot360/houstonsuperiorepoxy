@@ -50,7 +50,19 @@ export function perIpLimit(): number {
   return limitFrom('VIZ_RATE_PER_IP', 12)
 }
 export function globalLimit(): number {
-  return limitFrom('VIZ_RATE_GLOBAL', 300)
+  /*
+    LOWERED FROM 300 ON 2026-10-03, THE DAY THE PROVIDER WENT LIVE.
+
+    300 was picked before a key existed, when the number was theoretical. It is
+    not any more: this is a public page and every generation is a paid API
+    call, so the daily ceiling is the maximum a stranger with a script can
+    spend in a day. 50 is ample for real customers on a site of this size and
+    turns the worst case from "a bill" into "an annoyance".
+
+    Raise it with VIZ_RATE_GLOBAL once real usage is known — the env var wins
+    over this default, so it needs no code change.
+  */
+  return limitFrom('VIZ_RATE_GLOBAL', 50)
 }
 
 export type RateDecision =
