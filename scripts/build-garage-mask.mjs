@@ -91,13 +91,30 @@ const CEILING = 0.458
   there and the step is wall, already excluded, so the extra reach costs nothing
   and closes the corner where the two meet.
 */
+/*
+  THE LOWER EDGE FOLLOWS THE BOTTOM OF THE STEP, NOT THE MIDDLE OF ITS RISER.
+
+  It used to run (0.862,0.523) -> (0.889,0.540) -> (0.958,0.578), which cut
+  ACROSS the step's front faces: measured against the master, that left the
+  boundary about 24px too high at the left end. The result was floor texture
+  painted over the bottom band of a vertical surface, laid out in floor
+  perspective — the specific wrongness that reads as "not shaved properly".
+
+  The points below trace where the step actually meets the slab, read off the
+  master at 1536x1024: (1323,560), (1417,580), (1463,592).
+
+  Biased a few pixels LOW on purpose. The two errors are not equal: coating
+  part of a step is obvious and wrong, while a hairline of bare slab at its
+  base reads as contact shadow and is close to invisible. When in doubt,
+  exclude more.
+*/
 const STEPS = [
-  [0.862, 0.452],
+  [0.86, 0.452],
   [1.0, 0.452],
-  [1.0, 0.578],
-  [0.958, 0.578],
-  [0.889, 0.540],
-  [0.862, 0.523],
+  [1.0, 0.58],
+  [0.952, 0.58],
+  [0.922, 0.57],
+  [0.86, 0.551],
 ]
 
 const FEATHER = 1.2
