@@ -214,10 +214,86 @@ function project(h, x, y) {
 }
 
 /** Successive halvings of the texture, for per-pixel level-of-detail sampling. */
-async function mipmaps(file) {
+/*
+  CONTRAST-PRESERVING MIPMAPS.
+
+  A plain downscale averages chips toward the mean, and every halving takes
+  more of the material with it. Measured on Cabin Fever: the flake sample has a
+  luminance standard deviation of 44.6 and 6.7% of pixels darker than 80. The
+  rendered floor came back at 27.8 near and 10.7 far, with the dark fraction
+  falling to 1.6% and then to ZERO. The black chips — a quarter of what that
+  blend IS — simply stopped existing, and the floor read as dirty concrete.
+
+  That is what correct point-sampling does, and it is still wrong. A real
+  photograph of a flake floor keeps its speckle at that distance: the chips sit
+  in clear coat with thickness and shadow, so they do not average to grey the
+  way a flat pattern does. Filtering that models the pattern as flat throws
+  away the one thing a customer is choosing.
+
+  So each level is re-expanded about its own mean until it holds RETAIN of the
+  source level's deviation. Gain is capped, because at the smallest levels the
+  deviation is so low that an uncapped correction would amplify filtering noise
+  into sparkle.
+
+  This does NOT invent detail. It cannot — the chips are gone by then. It
+  restores the amount of CONTRAST the material has, which is what survives in a
+  photograph, and leaves hue and mean brightness untouched.
+*/
+const RETAIN = 1
+const MAX_GAIN = 2.5
+
+/*
+  FLATTEN THE TILE'S LOW FREQUENCIES BEFORE BUILDING THE PYRAMID.
+
+  The tile wraps cleanly — measured, the seam differs from its own interior by
+  9.7 against a 7.4 baseline, so there is no hard edge. What was showing as a
+  GRID across the floor is the tile's own large-scale brightness variation
+  repeating ten times: patches a few percent lighter or darker than their
+  neighbours. Individually invisible, but the eye locks onto anything periodic,
+  and ten copies of a faint blotch read as tiling.
+
+  It only became visible once the contrast was restored — the mush was hiding
+  it, which is not the same as it not being there.
+
+  So the tile is divided by a heavily blurred copy of itself and rescaled to
+  its original mean. That removes everything slower than a chip and leaves the
+  chips untouched: the blur is far wider than any flake, so flake-scale detail
+  passes through unchanged while the drift that causes the grid is normalised
+  away.
+
+  Done here rather than in the texture builder so it costs no re-quilting, and
+  because this is where the consequence shows up.
+*/
+async function flattenTile(file) {
+  const { data, info } = await sharp(file).removeAlpha().raw().toBuffer({ resolveWithObject: true })
+  /* Wide enough to be well below flake frequency: a chip is ~25px, this is ~128. */
+  const sigma = Math.max(8, Math.round(info.width / 16))
+  const { data: lowData } = await sharp(file)
+    .removeAlpha()
+    .blur(sigma)
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+
+  let mean = 0
+  for (let i = 0; i < data.length; i += 3) mean += 0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]
+  mean /= data.length / 3
+
+  const out = Buffer.alloc(data.length)
+  for (let i = 0; i < data.length; i += 3) {
+    const low = 0.2126 * lowData[i] + 0.7152 * lowData[i + 1] + 0.0722 * lowData[i + 2]
+    /* Ratio correction, so hue is untouched and only level is normalised. */
+    const k = low > 1 ? mean / low : 1
+    out[i] = Math.max(0, Math.min(255, Math.round(data[i] * k)))
+    out[i + 1] = Math.max(0, Math.min(255, Math.round(data[i + 1] * k)))
+    out[i + 2] = Math.max(0, Math.min(255, Math.round(data[i + 2] * k)))
+  }
+  return sharp(out, { raw: { width: info.width, height: info.height, channels: 3 } }).png().toBuffer()
+}
+
+async function mipmaps(fileOnDisk) {
+  const file = await flattenTile(fileOnDisk)
   const levels = []
-  let img = sharp(file)
-  let { width } = await img.metadata()
+  let { width } = await sharp(file).metadata()
   while (width >= 8) {
     const { data, info } = await sharp(file)
       .resize(width, width, { kernel: 'lanczos3' })
@@ -229,6 +305,43 @@ async function mipmaps(file) {
     levels.push({ size: info.width, lin })
     width = Math.floor(width / 2)
   }
+
+  /*
+    Deviation is measured on LUMINANCE, not per channel. Scaling channels
+    independently would stretch them apart and shift the blend's colour; what
+    needs restoring is light-and-dark, not saturation.
+  */
+  const devOf = (lin) => {
+    let sum = 0
+    for (let i = 0; i < lin.length; i += 3) sum += 0.2126 * lin[i] + 0.7152 * lin[i + 1] + 0.0722 * lin[i + 2]
+    const n = lin.length / 3
+    const mean = sum / n
+    let acc = 0
+    for (let i = 0; i < lin.length; i += 3) {
+      const y = 0.2126 * lin[i] + 0.7152 * lin[i + 1] + 0.0722 * lin[i + 2]
+      acc += (y - mean) * (y - mean)
+    }
+    return { mean, dev: Math.sqrt(acc / n) }
+  }
+
+  const base = devOf(levels[0].lin)
+  for (let i = 1; i < levels.length; i++) {
+    const here = devOf(levels[i].lin)
+    if (here.dev <= 1e-6) continue
+    const gain = Math.min(MAX_GAIN, Math.max(1, (RETAIN * base.dev) / here.dev))
+    if (gain <= 1.001) continue
+    const lin = levels[i].lin
+    for (let p = 0; p < lin.length; p += 3) {
+      const y = 0.2126 * lin[p] + 0.7152 * lin[p + 1] + 0.0722 * lin[p + 2]
+      const target = here.mean + (y - here.mean) * gain
+      /* Apply as a ratio so hue rides along unchanged. */
+      const k = y > 1e-6 ? Math.max(0, target) / y : 1
+      lin[p] = Math.min(1, lin[p] * k)
+      lin[p + 1] = Math.min(1, lin[p + 1] * k)
+      lin[p + 2] = Math.min(1, lin[p + 2] * k)
+    }
+  }
+
   return levels
 }
 
