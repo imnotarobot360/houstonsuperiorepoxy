@@ -1,10 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Camera, Images, RefreshCw, Trash2, Upload } from 'lucide-react'
+import { Camera, Images, MoveHorizontal, RefreshCw, Trash2, Upload } from 'lucide-react'
 import { generateFloorVisualization } from '@/app/actions/floor-visualization'
 import type { FlakeBlend } from '@/lib/content/flake-blends'
 import { checkPhoto, PHOTO_ACCEPT } from '@/lib/visualizer/validation'
+import { preparePhoto } from '@/lib/visualizer/prepare-photo'
 
 /*
   "Preview on my garage photo" — the alternative to the stylized preview.
@@ -54,7 +55,12 @@ export function PhotoVisualizer({
 }) {
   const [phase, setPhase] = useState<Phase>({ kind: 'empty' })
   const [inputError, setInputError] = useState<string | null>(null)
-  const [compare, setCompare] = useState(false)
+  /*
+    Slider position as a percentage: 100 shows all of the generated floor, 0
+    shows all of the original photo. Replaces a show/hide toggle, because
+    comparing two states you cannot see at once means holding one in your head.
+  */
+  const [reveal, setReveal] = useState(100)
   const fileRef = useRef<HTMLInputElement>(null)
   const cameraRef = useRef<HTMLInputElement>(null)
   const objectUrl = useRef<string | null>(null)
@@ -70,10 +76,18 @@ export function PhotoVisualizer({
   const run = useCallback(
     async (file: File, previewUrl: string) => {
       setPhase({ kind: 'working', file, previewUrl })
-      setCompare(false)
+      setReveal(100)
+
+      /*
+        Shrink and re-encode BEFORE uploading. A 4 MB phone photo spends real
+        seconds crossing a cellular connection for bytes the model discards —
+        and this is also what turns an iPhone HEIC into a JPEG the provider can
+        actually decode. Never fatal: if it cannot decode, the original goes.
+      */
+      const prepared = await preparePhoto(file)
 
       const fd = new FormData()
-      fd.set('photo', file)
+      fd.set('photo', prepared.file)
       fd.set('blendSlug', blend.slug)
 
       const response = await generateFloorVisualization(fd)
@@ -118,7 +132,7 @@ export function PhotoVisualizer({
     setPreviewUrl(null)
     setPhase({ kind: 'empty' })
     setInputError(null)
-    setCompare(false)
+    setReveal(100)
     if (fileRef.current) fileRef.current.value = ''
     if (cameraRef.current) cameraRef.current.value = ''
     onVisualization({ pathname: null, attempted: false })
@@ -152,14 +166,65 @@ export function PhotoVisualizer({
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={phase.kind === 'done' && !compare ? phase.resultUrl : phase.previewUrl}
-                alt={
-                  phase.kind === 'done' && !compare
-                    ? `AI visualization of your garage with the ${blend.name} flake blend on the floor`
-                    : 'The garage photo you uploaded'
-                }
+                src={phase.previewUrl}
+                alt="The garage photo you uploaded"
                 className="h-full w-full object-cover"
               />
+
+              {/*
+                The generated floor, clipped to the slider position and sitting
+                exactly on top of the original. Both images are the same box,
+                so the wipe lines up pixel for pixel.
+              */}
+              {phase.kind === 'done' && (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={phase.resultUrl}
+                    alt={`AI visualization of your garage with the ${blend.name} flake blend on the floor`}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    style={{ clipPath: `inset(0 ${100 - reveal}% 0 0)` }}
+                  />
+
+                  {/* The seam. Pointer-events off so it never eats a drag. */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-y-0 w-0.5 bg-white/90 shadow-[0_0_8px_rgba(0,0,0,0.5)]"
+                    style={{ left: `${reveal}%`, transform: 'translateX(-50%)' }}
+                  />
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute top-1/2 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-foreground shadow-lg"
+                    style={{ left: `${reveal}%` }}
+                  >
+                    <MoveHorizontal size={16} aria-hidden="true" />
+                  </div>
+
+                  {/*
+                    A RANGE INPUT, NOT A DRAG HANDLER. It is draggable with a
+                    finger, and it also works with arrow keys and is announced
+                    by a screen reader — none of which a bare pointer handler
+                    gives you. It is invisible and stretched over the whole
+                    image, so the control IS the picture.
+                  */}
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={reveal}
+                    onChange={(e) => setReveal(Number(e.target.value))}
+                    aria-label={`Reveal the ${blend.name} floor. 0 shows your original photo, 100 shows the full preview.`}
+                    className="absolute inset-0 h-full w-full cursor-ew-resize appearance-none bg-transparent focus:outline-none [&::-webkit-slider-thumb]:h-full [&::-webkit-slider-thumb]:w-9 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:bg-transparent [&::-moz-range-thumb]:h-full [&::-moz-range-thumb]:w-9 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-transparent"
+                  />
+
+                  <p
+                    aria-hidden
+                    className="pointer-events-none absolute bottom-3 left-3 rounded-md bg-black/60 px-2 py-1 text-[0.7rem] font-medium text-white"
+                  >
+                    {reveal > 95 ? 'Preview' : reveal < 5 ? 'Your photo' : 'Drag to compare'}
+                  </p>
+                </>
+              )}
               {busy && (
                 <div className="absolute inset-0 grid place-items-center bg-background/70 backdrop-blur-sm">
                   <div className="flex flex-col items-center gap-3 px-6 text-center">
@@ -274,17 +339,6 @@ export function PhotoVisualizer({
           {phase.kind === 'empty' ? <Upload size={15} aria-hidden="true" /> : <Images size={15} aria-hidden="true" />}
           {phase.kind === 'empty' ? 'Upload a photo' : 'Choose another'}
         </label>
-
-        {phase.kind === 'done' && (
-          <button
-            type="button"
-            aria-pressed={compare}
-            onClick={() => setCompare((c) => !c)}
-            className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-4 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
-          >
-            {compare ? 'Show the preview' : 'Show my original'}
-          </button>
-        )}
 
         {phase.kind !== 'empty' && (
           <button

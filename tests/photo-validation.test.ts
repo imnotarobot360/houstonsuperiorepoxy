@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { PHOTO_MAX_BYTES, PHOTO_TYPES } from '../lib/leads'
 import { checkPhotoParts, formatMegabytes, PHOTO_ACCEPT } from '../lib/visualizer/validation'
+import { MAX_EDGE } from '../lib/visualizer/prepare-photo'
 
 /*
   Photo validation. These run against the SAME function the server action calls,
@@ -116,4 +117,16 @@ test('the accept attribute offers extensions as well as types', () => {
   assert.match(PHOTO_ACCEPT, /\.heic/)
   assert.match(PHOTO_ACCEPT, /\.jpg/)
   assert.match(PHOTO_ACCEPT, /image\/jpeg/)
+})
+
+/* ------------------------------------------- the pre-upload preparation */
+
+test('the resize ceiling is big enough for the model and small enough to send', () => {
+  /*
+    1536 is the long edge the photo is reduced to before upload. Guarding it
+    because the two failure directions are opposite and both bad: shrink too
+    far and the preview is mush, leave it too large and a phone spends ten
+    seconds uploading bytes the provider throws away.
+  */
+  assert.equal(MAX_EDGE, 1536)
 })
