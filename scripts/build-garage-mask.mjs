@@ -395,10 +395,31 @@ for (let x = 0; x < W; x++) {
   defect this whole pass exists to remove. A median cannot overshoot its local
   range, so it can never introduce that.
 */
-const SMOOTH_WINDOW = 21
+/*
+  THE FLOOR LINE IS ARCHITECTURE, SO FIT IT WITH STRAIGHT SEGMENTS.
+
+  A median filter removed the column-to-column jitter but left the boundary
+  WANDERING: a smooth wave running along cabinet bases and baseboards that are
+  dead straight in the photograph. That reads as a bad cut-out even more than
+  noise does, because the eye knows what a skirting board looks like.
+
+  So the boundary is simplified with Douglas-Peucker, which is the right shape
+  of tool: it keeps the points that carry the geometry — the cabinet corner,
+  the door track, the turn into the step — and throws away everything that is
+  only the region grow wobbling along a straight run. What comes back is
+  straight where the room is straight and bent exactly where the room bends.
+
+  TOLERANCE IS THE WHOLE DIAL. Too tight and the wave survives; too loose and a
+  real corner gets cut. Three pixels keeps every feature visible at this
+  resolution while flattening the wander.
+
+  As with the median, the direction of error is safe: the simplified line is
+  interpolated between points that were on the original boundary, so it cannot
+  climb above the highest of them onto a cabinet face.
+*/
+const LINE_TOLERANCE = 7
 
 {
-  const sHalf = Math.floor(SMOOTH_WINDOW / 2)
   const top = new Array(W).fill(-1)
   const bottom = new Array(W).fill(-1)
   for (let x = 0; x < W; x++) {
@@ -406,29 +427,59 @@ const SMOOTH_WINDOW = 21
     for (let y = H - 1; y >= 0; y--) if (seen[y * W + x]) { bottom[x] = y; break }
   }
 
-  const smoothed = new Array(W)
-  for (let x = 0; x < W; x++) {
-    if (top[x] < 0) { smoothed[x] = -1; continue }
-    const win = []
-    for (let d = -sHalf; d <= sHalf; d++) {
-      const t = top[Math.max(0, Math.min(W - 1, x + d))]
-      if (t >= 0) win.push(t)
-    }
-    win.sort((p, q) => p - q)
-    smoothed[x] = win[Math.floor(win.length / 2)]
+  /* Contiguous runs of covered columns are simplified independently, so a gap
+     in the floor never invents a line across it. */
+  const runs = []
+  let runStart = -1
+  for (let x = 0; x <= W; x++) {
+    const has = x < W && top[x] >= 0
+    if (has && runStart < 0) runStart = x
+    if (!has && runStart >= 0) { runs.push([runStart, x - 1]); runStart = -1 }
   }
 
-  let moved = 0
-  for (let x = 0; x < W; x++) {
-    if (top[x] < 0 || smoothed[x] < 0) continue
-    if (smoothed[x] === top[x]) continue
-    moved++
-    /* Repaint the column from the smoothed line to the bottom it already had. */
-    for (let y = Math.min(top[x], smoothed[x]); y <= bottom[x]; y++) {
-      seen[y * W + x] = y >= smoothed[x] ? 1 : 0
+  const simplify = (pts, tol) => {
+    if (pts.length < 3) return pts
+    const [x0, y0] = pts[0]
+    const [x1, y1] = pts[pts.length - 1]
+    const dx = x1 - x0
+    const dy = y1 - y0
+    const norm = Math.hypot(dx, dy) || 1
+    let worst = 0
+    let idx = -1
+    for (let i = 1; i < pts.length - 1; i++) {
+      const d = Math.abs(dy * (pts[i][0] - x0) - dx * (pts[i][1] - y0)) / norm
+      if (d > worst) { worst = d; idx = i }
+    }
+    if (worst <= tol) return [pts[0], pts[pts.length - 1]]
+    return [
+      ...simplify(pts.slice(0, idx + 1), tol).slice(0, -1),
+      ...simplify(pts.slice(idx), tol),
+    ]
+  }
+
+  let straightened = 0
+  for (const [a, b] of runs) {
+    if (b - a < 4) continue
+    const pts = []
+    for (let x = a; x <= b; x++) pts.push([x, top[x]])
+    const keep = simplify(pts, LINE_TOLERANCE)
+
+    /* Walk the simplified polyline and write an interpolated line back. */
+    for (let k = 0; k < keep.length - 1; k++) {
+      const [xa, ya] = keep[k]
+      const [xb, yb] = keep[k + 1]
+      for (let x = xa; x <= xb; x++) {
+        const t = xb === xa ? 0 : (x - xa) / (xb - xa)
+        const ny = Math.round(ya + (yb - ya) * t)
+        if (ny === top[x]) continue
+        straightened++
+        for (let y = Math.min(top[x], ny); y <= bottom[x]; y++) {
+          seen[y * W + x] = y >= ny ? 1 : 0
+        }
+      }
     }
   }
-  smoothedColumns = moved
+  smoothedColumns = straightened
 }
 
 /* ------------------------------------------------------ 2. subtract the steps */
