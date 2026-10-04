@@ -415,18 +415,22 @@ function EmptyState() {
       />
 
       {/*
-        Darkest at the bottom, where the caption and the longest line of text
-        sit, and lightest at the top, where the photo has the garage door worth
-        seeing. A flat overlay at one opacity either washed the floor out or
-        left the small print sitting on a bright patch of slab.
+        A LIGHT WASH OVER THE PHOTO, AND A PANEL UNDER THE WORDS — not one
+        heavy scrim over everything, which is what the first attempt did and
+        it dimmed the flake into a flat grey slab. The whole reason to put a
+        real floor here is that you can see the chips in it, so the overlay
+        that makes text readable has to be local to the text.
+
+        Weighted to the bottom because the caption sits there and the floor is
+        brightest in the middle of the frame.
       */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/75 to-background/55"
+        className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-background/30"
       />
 
       <div className="relative grid h-full place-items-center px-6 text-center">
-        <div className="flex max-w-sm flex-col items-center gap-3">
+        <div className="flex max-w-sm flex-col items-center gap-3 rounded-xl bg-background/75 px-5 py-4 backdrop-blur-[2px]">
           <Camera size={26} className="text-muted-foreground" aria-hidden="true" />
           <p className="text-sm font-medium text-foreground">See the blend on your own garage floor</p>
           <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
@@ -441,7 +445,7 @@ function EmptyState() {
         generated preview, and a figcaption has to be the first or last child
         of its figure — this sits several levels down inside the box.
       */}
-      <p className="absolute inset-x-0 bottom-0 px-4 pb-3 text-center text-[0.7rem] leading-tight text-muted-foreground">
+      <p className="absolute inset-x-0 bottom-0 px-4 pb-3 text-center text-[0.7rem] leading-tight text-foreground/70">
         Our install in Katy, TX — Stone Wash flake
       </p>
     </div>
