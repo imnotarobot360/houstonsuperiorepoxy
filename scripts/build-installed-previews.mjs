@@ -377,8 +377,59 @@ function bilinear(level, u, v, out) {
   whose texels match the pixel's footprint returns the AVERAGE of the chips that
   the pixel actually covers, which is what a camera does.
 */
+/*
+  ANISOTROPIC FILTERING, AND WHY THE FLOOR WAS SMEARED AGAINST EVERY WALL.
+
+  The footprint used to be max(du, dv): the LARGER of the two derivatives. Near
+  the wall the floor is seen almost edge-on, so the depth derivative is huge
+  while the across-floor one stays small. Taking the max then blurs BOTH
+  directions by the amount only depth needed, and the result is the streaked
+  haze that sits along the baseboard and around the step — the thing that reads
+  as a soft, dirty edge no amount of mask work can clean up, because it is not
+  the mask.
+
+  The fix is the standard one: choose the level from the MINOR axis, so detail
+  across the floor survives, and take several samples spaced along the MAJOR
+  axis to do the averaging that direction genuinely needs.
+
+  MAX_ANISO caps the work. Right at the wall the ratio runs away toward
+  infinity, and without a ceiling a single pixel would ask for hundreds of
+  samples for detail nobody can see.
+*/
+const MAX_ANISO = 8
+
 const tmpA = new Float32Array(3)
 const tmpB = new Float32Array(3)
+const tmpC = new Float32Array(3)
+
+function anisotropic(levels, u, v, du, dv, size, out) {
+  const major = Math.max(du, dv) * size
+  const minor = Math.min(du, dv) * size
+  if (major <= 1e-6) { trilinear(levels, u, v, major, out); return }
+
+  const ratio = Math.min(MAX_ANISO, Math.max(1, major / Math.max(minor, 1e-6)))
+  const samples = Math.max(1, Math.round(ratio))
+  /* The level follows the minor axis — but never finer than the major axis
+     divided by the samples we are actually taking, or the gaps between samples
+     would alias. */
+  const lodFootprint = Math.max(minor, major / samples)
+
+  if (samples === 1) { trilinear(levels, u, v, lodFootprint, out); return }
+
+  out[0] = 0; out[1] = 0; out[2] = 0
+  /* Step along whichever axis is the long one, centred on the sample point. */
+  const alongU = du >= dv
+  const span = (alongU ? du : dv)
+  for (let i = 0; i < samples; i++) {
+    const t = (i + 0.5) / samples - 0.5
+    const su = alongU ? u + t * span : u
+    const sv = alongU ? v : v + t * span
+    trilinear(levels, su, sv, lodFootprint, tmpC)
+    out[0] += tmpC[0]; out[1] += tmpC[1]; out[2] += tmpC[2]
+  }
+  out[0] /= samples; out[1] /= samples; out[2] /= samples
+}
+
 function trilinear(levels, u, v, footprint, out) {
   const lod = Math.max(0, Math.log2(Math.max(footprint, 1e-6)))
   const l0 = Math.min(levels.length - 1, Math.floor(lod))
@@ -484,9 +535,8 @@ function compose(texLevels, dim) {
         */
         const du = Math.abs(ux - u0) / TILE_FT
         const dv = Math.abs(vy - v0) / TILE_FT
-        const footprint = Math.max(du, dv) * texLevels[0].size
 
-        trilinear(texLevels, u0 / TILE_FT, v0 / TILE_FT, footprint, col)
+        anisotropic(texLevels, u0 / TILE_FT, v0 / TILE_FT, du, dv, texLevels[0].size, col)
 
         /*
           The material, under the photograph's own light. Nothing is added on
