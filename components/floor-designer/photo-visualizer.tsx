@@ -429,30 +429,41 @@ function EmptyState() {
         className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-background/30"
       />
 
-      <div className="relative grid h-full place-items-center px-6 text-center">
+      {/*
+        A COLUMN, SO THE CAPTION CANNOT BE OVERLAPPED. The caption used to be
+        absolutely positioned at the bottom while the prompt was centred in the
+        whole box; narrow the viewport past about 340px and the box (4:3, so it
+        shortens with the width) stopped having room for both, and "where it
+        is." printed straight through "Our install in Katy, TX". Laying them out
+        as two rows means the geometry cannot produce that collision at any
+        width.
+      */}
+      <div className="relative flex h-full flex-col">
         {/*
           KEPT NARROW AND SHORT so the panel does not become the box. On a
           375px phone the first version ran to three lines and covered the
           floor it was sitting on, which is the one thing it must not do.
         */}
-        <div className="flex max-w-[17rem] flex-col items-center gap-2.5 rounded-xl bg-background/75 px-4 py-3.5 backdrop-blur-[2px] sm:max-w-xs">
-          <Camera size={24} className="text-muted-foreground" aria-hidden="true" />
-          <p className="text-sm font-medium text-foreground">See a blend on your own floor</p>
-          <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
-            Take or upload a photo of your garage. We change the floor and leave everything else
-            exactly where it is.
-          </p>
+        <div className="grid flex-1 place-items-center px-6 py-3 text-center">
+          <div className="flex max-w-[17rem] flex-col items-center gap-2.5 rounded-xl bg-background/75 px-4 py-3.5 backdrop-blur-[2px] sm:max-w-xs">
+            <Camera size={24} className="text-muted-foreground" aria-hidden="true" />
+            <p className="text-sm font-medium text-foreground">See a blend on your own floor</p>
+            <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
+              Take or upload a photo of your garage. We change the floor and leave everything else
+              exactly where it is.
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/*
-        A <p>, not a <figcaption>: the frame above already has one for the
-        generated preview, and a figcaption has to be the first or last child
-        of its figure — this sits several levels down inside the box.
-      */}
-      <p className="absolute inset-x-0 bottom-0 px-4 pb-3 text-center text-[0.7rem] leading-tight text-foreground/70">
-        Our install in Katy, TX — Stone Wash flake
-      </p>
+        {/*
+          A <p>, not a <figcaption>: the frame above already has one for the
+          generated preview, and a figcaption has to be the first or last child
+          of its figure — this sits several levels down inside the box.
+        */}
+        <p className="px-4 pb-3 text-center text-[0.7rem] leading-tight text-foreground/70">
+          Our install in Katy, TX — Stone Wash flake
+        </p>
+      </div>
     </div>
   )
 }
