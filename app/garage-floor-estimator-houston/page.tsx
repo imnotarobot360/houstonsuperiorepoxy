@@ -20,7 +20,7 @@ import { LpBeforeAfter, LpServiceArea, LpSystem } from '@/components/lp/lp-secti
 export const metadata: Metadata = {
   title: 'Instant Garage Floor Estimate in Houston | Free Onsite Inspection',
   description:
-    'Answer 8 quick questions and see a preliminary garage floor coating estimate before you talk to anyone. Free onsite inspection, written proposal, no upfront payment.',
+    'Answer 8 quick questions and see a rough garage floor coating estimate at $4.50 per sq ft before you talk to anyone. Free onsite inspection, written proposal, no upfront payment.',
   robots: { index: false, follow: false },
   alternates: { canonical: '/garage-floor-estimator-houston' },
 }
@@ -40,7 +40,7 @@ export default function GarageFloorEstimatorPage() {
               See Your Estimate in Under a Minute
             </h2>
             <p className="mt-3 leading-relaxed text-muted-foreground text-pretty">
-              Answer a few quick questions to see a preliminary price range — no contact details
+              Answer a few quick questions to see a rough estimate with the arithmetic shown — no contact details
               required to view it.
             </p>
           </div>

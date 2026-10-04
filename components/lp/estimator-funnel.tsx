@@ -26,7 +26,16 @@ import {
   ZIP_SUPPORTED_MESSAGE,
   ZIP_UNSUPPORTED_MESSAGE,
 } from '@/lib/pricing-config'
-import { computeEstimate, type EstimateResult as EstimateResultData } from '@/lib/estimate-calc'
+import { factorsThatMayChangePrice } from '@/lib/estimate-calc'
+import {
+  EMPTY_MEASUREMENT,
+  explainMath,
+  resolveSquareFeet,
+  roughEstimate,
+  sqft as formatSqft,
+  usd,
+} from '@/lib/garage-measurement'
+import type { FunnelEstimate } from './estimate-result'
 import { EstimateResult } from '@/components/lp/estimate-result'
 import { site } from '@/lib/site'
 
@@ -79,7 +88,29 @@ export function EstimatorFunnel() {
   const [zip, setZip] = useState('')
   const [timeframe, setTimeframe] = useState<string | null>(null)
 
-  const [result, setResult] = useState<EstimateResultData | null>(null)
+  const [result, setResult] = useState<FunnelEstimate | null>(null)
+
+  /*
+    The funnel asks the size two ways — a garage-size card, then an optional
+    square footage — so it maps onto the shared measurement model rather than
+    growing its own rules: a typed figure is an 'area' measurement, a blank box
+    falls back to the 'preset'. resolveSquareFeet then applies the same
+    precedence and the same plausibility limits as /floor-designer.
+
+    `sqftEntry` exists separately so the square-footage STEP can validate what
+    was typed while the visitor is still on it, before anything is priced.
+  */
+  const measurementInput = useMemo(
+    () =>
+      squareFeet.trim()
+        ? { ...EMPTY_MEASUREMENT, mode: 'area' as const, squareFeet, preset: garageSize }
+        : { ...EMPTY_MEASUREMENT, mode: 'preset' as const, preset: garageSize },
+    [squareFeet, garageSize],
+  )
+  const sqftEntry = useMemo(
+    () => resolveSquareFeet({ ...EMPTY_MEASUREMENT, mode: 'area', squareFeet }),
+    [squareFeet],
+  )
   const [leadName, setLeadName] = useState('')
 
   const startedRef = useRef(false)
@@ -90,18 +121,25 @@ export function EstimatorFunnel() {
   const cardRef = useRef<HTMLDivElement>(null)
   const mountedRef = useRef(false)
 
-  /* Non-PII snapshot for analytics params. Never includes name/phone/email. */
+  /*
+    Non-PII snapshot for analytics params. Never includes name/phone/email.
+
+    `estimate_low`/`estimate_high` are gone with the low-high engine: there is
+    one figure now, so reporting it as a band would invent a spread nobody
+    quoted. Any saved report or ad rule keyed on those two fields needs
+    repointing at `estimate_total`.
+  */
   const eventParams = useMemo(
     () => ({
       garage_size: garageSize ?? undefined,
-      calculated_sqft: result?.squareFeet ?? (squareFeet ? Number.parseInt(squareFeet, 10) : undefined),
+      calculated_sqft: result?.estimate?.squareFeet ?? undefined,
       floor_condition: condition ?? undefined,
       selected_system: finish ?? undefined,
-      estimate_low: result?.low ?? undefined,
-      estimate_high: result?.high ?? undefined,
+      estimate_total: result?.estimate?.totalUsd ?? undefined,
+      minimum_applied: result?.estimate?.minimumApplied ?? undefined,
       timeline: timeframe ?? undefined,
     }),
-    [garageSize, result, squareFeet, condition, finish, timeframe],
+    [garageSize, result, condition, finish, timeframe],
   )
 
   /* ViewEstimator — once, when the estimator first renders. Deferred a tick so
@@ -169,7 +207,14 @@ export function EstimatorFunnel() {
       case 0:
         return !!garageSize
       case 1:
-        return true // square footage is optional
+        /*
+          Still optional — blank falls back to the garage-size assumption. But
+          a value that IS typed has to be a real one: before the flat rate this
+          number only tinted a gated headline, and now it is multiplied by
+          $4.50 and shown as a price. "5" must not become a $1,000 quote for a
+          doormat.
+        */
+        return !squareFeet.trim() || sqftEntry.ok
       case 2:
         return !!condition
       case 3:
@@ -217,36 +262,62 @@ export function EstimatorFunnel() {
   }
 
   function finishQuestions(finalTimeframe: string) {
-    const answers = {
-      garageSize: garageSize ?? 'Other / Not Sure',
-      squareFeetEntered: squareFeet ? Number.parseInt(squareFeet, 10) || null : null,
-      coatingCondition: condition ?? 'Not Sure',
-      damage,
-      addedSurfaces: surfaces,
-      finish: finish ?? 'Not Sure — Recommend One',
-      zip,
-      timeframe: finalTimeframe,
+    /*
+      THE SAME ENGINE AS /floor-designer AND /pricing. One rate, one floor, and
+      the visitor's own square footage beating the garage-size assumption when
+      they gave one — the precedence rule lives in resolveSquareFeet, not here.
+
+      None of the condition, damage or added-surface answers touch the figure.
+      They go on the lead and into "may change your price", which is where a
+      thing nobody has measured belongs.
+    */
+    const measured = resolveSquareFeet(measurementInput)
+    const rough = measured.ok ? roughEstimate(measured.squareFeet) : null
+
+    const computed: FunnelEstimate = {
+      estimate: rough,
+      mathLine: measured.ok && rough ? explainMath(measured, rough) : null,
+      approximate: measured.ok && measured.approximate,
+      finishLabel: finish ?? 'Not Sure — Recommend One',
+      factorsThatMayChangePrice: factorsThatMayChangePrice({
+        garageSize: garageSize ?? 'Other / Not Sure',
+        squareFeetEntered: null,
+        coatingCondition: condition ?? 'Not Sure',
+        damage,
+        addedSurfaces: surfaces,
+        finish: finish ?? 'Not Sure — Recommend One',
+        zip,
+        timeframe: finalTimeframe,
+      }),
+      generatedAtISO: new Date().toISOString(),
     }
-    const computed = computeEstimate(answers)
+
     setResult(computed)
     setPhase('result')
     if (!estimateFiredRef.current) {
       estimateFiredRef.current = true
       const params = {
-        mode: computed.mode,
-        qualifies: computed.qualifiesForTwoCarAnchor,
+        /* 'rough' for every priced answer now; 'unpriced' when the size cannot
+           be turned into a number. The old 'gated' / 'calculated' split
+           described an engine this page no longer uses. */
+        mode: rough ? 'rough' : 'unpriced',
         garage_size: garageSize ?? undefined,
-        calculated_sqft: computed.squareFeet ?? undefined,
+        calculated_sqft: rough?.squareFeet ?? undefined,
+        approximate: computed.approximate,
         floor_condition: condition ?? undefined,
         selected_system: computed.finishLabel,
-        estimate_low: computed.low ?? undefined,
-        estimate_high: computed.high ?? undefined,
+        estimate_total: rough?.totalUsd ?? undefined,
+        minimum_applied: rough?.minimumApplied ?? undefined,
         timeline: finalTimeframe,
       }
       trackMeta('EstimateGenerated', params)
       track('estimate_generated', { location: 'estimator' })
     }
   }
+
+  /* Only complain once something has been typed — a blank box is a valid
+     answer here, not a mistake. */
+  const showSqftError = squareFeet.trim().length > 0 && !sqftEntry.ok
 
   const progress = useMemo(() => Math.round(((stepIndex + 1) / TOTAL_STEPS) * 100), [stepIndex])
   const zipValid = /^\d{5}$/.test(zip)
@@ -279,7 +350,9 @@ export function EstimatorFunnel() {
     formData.set('space', 'Garage')
     formData.set(
       'area',
-      squareFeet ? `${squareFeet} sq ft (${garageSize ?? 'garage'})` : (garageSize ?? ''),
+      result?.estimate
+        ? `${formatSqft(result.estimate.squareFeet)}${result.approximate ? ' (approx.)' : ''} — ${garageSize ?? 'garage'}`
+        : (garageSize ?? ''),
     )
     if (condition) formData.set('floorCondition', condition)
     if (timeframe) formData.set('timeframe', timeframe)
@@ -300,7 +373,15 @@ export function EstimatorFunnel() {
         surfaces.filter((s) => s !== 'None').length
           ? `Added surfaces: ${surfaces.filter((s) => s !== 'None').join(', ')}`
           : null,
-        result ? `Estimate shown: ${result.headline}` : null,
+        /*
+          THE ARITHMETIC, not just the answer. Whoever calls back can see the
+          figure the customer was shown and check it against the square footage
+          in the same sentence — and can tell at a glance whether that footage
+          was measured or assumed.
+        */
+        result?.estimate
+          ? `Rough estimate shown: ${usd(result.estimate.totalUsd)} (${result.mathLine})`
+          : 'No estimate shown — garage size could not be priced from the form',
         lastTouchSummary ? `Last touch: ${lastTouchSummary}` : null,
       ]
         .filter(Boolean)
@@ -308,8 +389,12 @@ export function EstimatorFunnel() {
     )
 
     /* Estimate summary for the customer confirmation email (see lib/email.ts). */
-    if (result) formData.set('estimate_headline', result.headline)
-    if (squareFeet) formData.set('estimate_sqft', String(squareFeet))
+    if (result?.estimate) {
+      /* "Rough estimate" in the words themselves: this string is printed in an
+         email the customer keeps. */
+      formData.set('estimate_headline', `Rough estimate ${usd(result.estimate.totalUsd)}`)
+      formData.set('estimate_sqft', String(result.estimate.squareFeet))
+    }
     if (finish) formData.set('finish_label', finish)
 
     formData.set('meta_event_id', eventId)
@@ -399,15 +484,29 @@ export function EstimatorFunnel() {
                 An estimate is fine — leave it blank if you&apos;re not sure and we&apos;ll use a
                 typical size for your garage.
               </p>
+              {/*
+                inputMode decimal on a text input, not type="number". A number
+                input silently reports an empty string for "abc", which would
+                turn a typo into "left it blank" and quietly price the garage
+                off the preset instead of telling the visitor what went wrong.
+              */}
               <input
-                type="number"
-                inputMode="numeric"
-                min={0}
+                type="text"
+                inputMode="decimal"
                 value={squareFeet}
                 onChange={(e) => setSquareFeet(e.target.value)}
                 placeholder="e.g. 400"
-                className="mt-4 w-full rounded-md border border-border bg-background px-4 py-3 text-foreground"
+                aria-invalid={showSqftError ? true : undefined}
+                aria-describedby={showSqftError ? 'es-sqft-error' : undefined}
+                className={`mt-4 w-full rounded-md border bg-background px-4 py-3 text-foreground ${
+                  showSqftError ? 'border-destructive' : 'border-border'
+                }`}
               />
+              {showSqftError && (
+                <p id="es-sqft-error" role="alert" className="mt-2 text-sm text-destructive">
+                  {sqftEntry.errors.squareFeet}
+                </p>
+              )}
             </div>
           )}
 
@@ -523,12 +622,15 @@ export function EstimatorFunnel() {
           {result && (
             <div className="mb-6 rounded-md border border-border bg-muted/20 p-4 text-center">
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                Your preliminary estimate
+                Your rough estimate
               </p>
-              <p className="mt-1 font-serif text-2xl font-semibold text-primary">{result.headline}</p>
-              {result.squareFeet != null && (
+              <p className="mt-1 font-serif text-2xl font-semibold text-primary">
+                {result.estimate ? usd(result.estimate.totalUsd) : 'Priced after inspection'}
+              </p>
+              {result.estimate && (
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Based on approximately {result.squareFeet.toLocaleString('en-US')} sq. ft.
+                  Based on {result.approximate ? 'approximately ' : ''}
+                  {formatSqft(result.estimate.squareFeet)}
                 </p>
               )}
             </div>

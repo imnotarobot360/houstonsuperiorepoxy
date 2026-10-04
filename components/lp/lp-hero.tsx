@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { pricing } from '@/lib/site'
 
 /*
   Hero. Headline and CTA are ordered first so they stay visible without
@@ -11,8 +12,22 @@ export function LpHero() {
     <section className="relative overflow-hidden border-b border-border">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-28 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:pb-20 lg:pt-36">
         <div className="flex flex-col items-start">
+          {/*
+            THIS BADGE HELD A HARDCODED $1,800 THROUGH THE PRICE WITHDRAWAL.
+
+            When the owner pulled confirmation, lib/site.ts went to {{TOKEN}}s
+            and every other surface was rewritten to be figure-free — and this
+            one was missed, so the ad landing page went on advertising a number
+            the rest of the site would no longer stand behind. The figure is
+            confirmed again as of 2026-10-04, which makes this the moment to
+            make sure it cannot happen twice.
+
+            It now reads from `pricing`, which derives from the same constants
+            the estimator below multiplies. The badge and the estimate a visitor
+            gets thirty seconds later are the same number by construction.
+          */}
           <span className="inline-flex items-center border border-primary/40 bg-primary/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.1em] text-primary">
-            2-Car Garage Systems Starting at $1,800*
+            2-Car Garage Systems Starting at {pricing.twoCarFrom}*
           </span>
 
           <h1 className="mt-5 font-serif text-4xl leading-[1.05] text-foreground text-balance sm:text-5xl lg:text-6xl">

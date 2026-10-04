@@ -81,7 +81,22 @@ export function qualifiesForTwoCarAnchor(a: EstimatorAnswers): boolean {
   return true
 }
 
-/* Human-readable list of what, given the answers, could still move the price. */
+/*
+  Human-readable list of what, given the answers, could still move the price.
+
+  EXPORTED 2026-10-04 so the landing-page funnel can keep this list while its
+  arithmetic moves to the flat $4.50 rate in lib/garage-measurement.ts.
+
+  IT IS DESCRIPTIVE TEXT AND NOTHING ELSE. Every entry names a thing an
+  estimator will look at on site; not one of them carries a number, and none
+  may ever be wired into a calculation. The whole point of the flat rate is
+  that a customer's answers about damage and coatings do not silently move the
+  figure — they move the CONVERSATION, which is what this list is for.
+*/
+export function factorsThatMayChangePrice(a: EstimatorAnswers): string[] {
+  return factorsFrom(a)
+}
+
 function factorsFrom(a: EstimatorAnswers): string[] {
   const factors: string[] = []
   if (a.coatingCondition === 'Existing Epoxy or Coating' || a.coatingCondition === 'Paint or Sealer') {
