@@ -10,6 +10,13 @@ import { preparePhoto } from '@/lib/visualizer/prepare-photo'
 /*
   "Preview on my garage photo" — the Floor Designer's only preview.
 
+  WHY THESE CONTROLS ARE min-h-11 AND NOT min-h-10: 44px, not 40. Checked on a
+  375px viewport the day the stylized preview was removed — "Take a photo" and
+  "Upload a photo" are now the only way to see a blend on a floor, so they are
+  the page's primary action on the screen most visitors use, and they were a
+  size the rest of the page reserves for secondary chips. The retry and remove
+  buttons match them so the row stays aligned.
+
   IT BECAME THE ONLY ONE ON 2026-10-03. It used to be the alternative to a
   pre-rendered stylized garage, which was the default because it always
   worked: no upload, no provider, no round trip. That preview was removed by
@@ -297,7 +304,7 @@ export function PhotoVisualizer({
             <button
               type="button"
               onClick={() => void run(phase.file, phase.previewUrl)}
-              className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-3.5 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
+              className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg border border-border px-3.5 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               <RefreshCw size={14} aria-hidden="true" />
               Try again
@@ -334,7 +341,7 @@ export function PhotoVisualizer({
 
         <label
           htmlFor="viz-camera"
-          className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background sm:hidden"
+          className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background sm:hidden"
         >
           <Camera size={15} aria-hidden="true" />
           {phase.kind === 'empty' ? 'Take a photo' : 'Retake'}
@@ -342,7 +349,7 @@ export function PhotoVisualizer({
 
         <label
           htmlFor="viz-file"
-          className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border border-border px-4 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background"
+          className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-border px-4 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background"
         >
           {phase.kind === 'empty' ? <Upload size={15} aria-hidden="true" /> : <Images size={15} aria-hidden="true" />}
           {phase.kind === 'empty' ? 'Upload a photo' : 'Choose another'}
@@ -353,7 +360,7 @@ export function PhotoVisualizer({
             type="button"
             onClick={remove}
             disabled={busy}
-            className="inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground disabled:opacity-50"
+            className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground disabled:opacity-50"
           >
             <Trash2 size={15} aria-hidden="true" />
             Remove photo
