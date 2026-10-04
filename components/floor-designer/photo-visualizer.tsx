@@ -430,12 +430,17 @@ function EmptyState() {
       />
 
       <div className="relative grid h-full place-items-center px-6 text-center">
-        <div className="flex max-w-sm flex-col items-center gap-3 rounded-xl bg-background/75 px-5 py-4 backdrop-blur-[2px]">
-          <Camera size={26} className="text-muted-foreground" aria-hidden="true" />
-          <p className="text-sm font-medium text-foreground">See the blend on your own garage floor</p>
+        {/*
+          KEPT NARROW AND SHORT so the panel does not become the box. On a
+          375px phone the first version ran to three lines and covered the
+          floor it was sitting on, which is the one thing it must not do.
+        */}
+        <div className="flex max-w-[17rem] flex-col items-center gap-2.5 rounded-xl bg-background/75 px-4 py-3.5 backdrop-blur-[2px] sm:max-w-xs">
+          <Camera size={24} className="text-muted-foreground" aria-hidden="true" />
+          <p className="text-sm font-medium text-foreground">See a blend on your own floor</p>
           <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
-            Take or upload a photo of your garage. We change the floor and leave everything else —
-            your door, your shelving, your light — where it is.
+            Take or upload a photo of your garage. We change the floor and leave everything else
+            exactly where it is.
           </p>
         </div>
       </div>
