@@ -27,6 +27,9 @@ import {
   ZIP_UNSUPPORTED_MESSAGE,
 } from '@/lib/pricing-config'
 import { factorsThatMayChangePrice } from '@/lib/estimate-calc'
+/* The shared phone mask. It strips a leading country code before formatting,
+   which the local copy this file used to carry did not — see lib/leads.ts. */
+import { formatPhoneInput } from '@/lib/leads'
 import {
   EMPTY_MEASUREMENT,
   explainMath,
@@ -41,13 +44,6 @@ import { site } from '@/lib/site'
 
 type Phase = 'questions' | 'result' | 'lead' | 'booking'
 const TOTAL_STEPS = 8
-
-function formatPhone(raw: string) {
-  const d = raw.replace(/\D/g, '').slice(0, 10)
-  if (d.length <= 3) return d
-  if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`
-  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`
-}
 
 /*
   The interactive garage-floor estimator.
@@ -733,7 +729,7 @@ function PhoneInput() {
       inputMode="tel"
       autoComplete="tel"
       value={value}
-      onChange={(e) => setValue(formatPhone(e.target.value))}
+      onChange={(e) => setValue(formatPhoneInput(e.target.value))}
       placeholder="(346) 782-0903"
       className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-foreground"
     />

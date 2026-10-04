@@ -20,6 +20,36 @@ export function normalizePhone(raw: string) {
   return digits.length === 11 && digits.startsWith('1') ? digits.slice(1) : digits
 }
 
+/*
+  The same number, formatted for a phone field while somebody types in it.
+
+  IT STRIPS THE COUNTRY CODE BEFORE MASKING, and that is the entire reason this
+  function exists in one place instead of three.
+
+  THE BUG IT REPLACES, found 2026-10-04: the landing-page funnel masked with
+  `digits.slice(0, 10)` and nothing else. Type or autofill "+1 346 782 0903"
+  and the leading 1 was kept, so "13467820903" was truncated to "1346782090"
+  and displayed as "(134) 678-2090". That is ten digits, so it PASSED
+  validation, was stored, was emailed to the office and was dead on arrival.
+  A rejected lead is a visitor who tries again; a silently wrong phone number
+  is a customer nobody can reach, and nothing on the screen said so.
+
+  +1 is how iOS and Android autofill write a US number, so this was not an edge
+  case. It was most of the people whose browser filled the field for them.
+
+  WHY THE 1 IS ONLY DROPPED PAST TEN DIGITS: so typing stays natural. A number
+  that genuinely begins with 1 is still being typed at that point, and yanking
+  the first character out from under the cursor mid-entry is its own bug.
+*/
+export function formatPhoneInput(raw: string): string {
+  let d = raw.replace(/\D/g, '')
+  if (d.length > 10 && d.startsWith('1')) d = d.slice(1)
+  d = d.slice(0, 10)
+  if (d.length <= 3) return d
+  if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`
+}
+
 export const normalizeEmail = (raw: string) => raw.trim().toLowerCase()
 
 /* ------------------------------------------------------------ choice fields */

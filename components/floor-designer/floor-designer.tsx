@@ -27,7 +27,7 @@ import {
 import { track } from '@/lib/analytics'
 import { decideConversion, leadConversionParams } from '@/lib/conversion'
 import { CatalogTextLink } from '@/components/catalog-cta'
-import { HONEYPOT_FIELD } from '@/lib/leads'
+import { formatPhoneInput, HONEYPOT_FIELD } from '@/lib/leads'
 import { newEventId, readFbCookies, trackMeta, trackMetaOnce } from '@/lib/meta-events'
 import { site } from '@/lib/site'
 import { BookingScheduler } from './booking-scheduler'
@@ -533,39 +533,58 @@ export function FloorDesigner({
 
             <Field label="Name" name="name" error={errors.name} required>
               <input
-                name="name"
+                {...fieldAttrs('name', errors.name)}
                 type="text"
                 autoComplete="name"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+                className={inputClass(errors.name)}
               />
             </Field>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Phone" name="phone" error={errors.phone} required>
                 <input
-                  name="phone"
+                  {...fieldAttrs('phone', errors.phone)}
                   type="tel"
+                  inputMode="tel"
                   autoComplete="tel"
-                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+                  placeholder="(346) 782-0903"
+                  /*
+                    Formats as you type, on an UNCONTROLLED input: rewriting
+                    e.target.value in the handler keeps the rest of this form
+                    uncontrolled (it is read with FormData on submit) while
+                    still showing the number the way it will be stored.
+
+                    The mask is the shared one, which strips a leading country
+                    code. That matters most here, because "+1 …" is what phone
+                    autofill writes and this is the only required field that
+                    can be wrong without looking wrong.
+                  */
+                  onChange={(e) => {
+                    e.target.value = formatPhoneInput(e.target.value)
+                  }}
+                  className={inputClass(errors.phone)}
                 />
               </Field>
               <Field label="ZIP" name="zip" error={errors.zip}>
                 <input
-                  name="zip"
+                  {...fieldAttrs('zip', errors.zip)}
                   type="text"
                   inputMode="numeric"
                   autoComplete="postal-code"
-                  className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+                  maxLength={5}
+                  placeholder="77494"
+                  className={inputClass(errors.zip)}
                 />
               </Field>
             </div>
 
             <Field label="Email" name="email" error={errors.email} hint="So we can email your estimate">
               <input
-                name="email"
+                {...fieldAttrs('email', errors.email)}
                 type="email"
+                inputMode="email"
                 autoComplete="email"
-                className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none"
+                className={inputClass(errors.email)}
               />
             </Field>
 
@@ -683,6 +702,36 @@ function StepHeading({ n, id, title }: { n: string; id: string; title: string })
   )
 }
 
+/*
+  The attributes every input in this form needs and three of the four were
+  missing.
+
+  THE BUG: `Field` renders `<label htmlFor={name}>` — and not one of these
+  inputs carried a matching `id`. So tapping the word "Phone" focused nothing,
+  which on a phone is the most natural way to start typing in a field, and a
+  screen reader announced four unlabelled boxes. The error text underneath was
+  a `<p role="alert">` with no association to the input it described, so a
+  non-sighted visitor was told something was wrong without being told what.
+
+  Spread rather than copied so a fifth field cannot be added without it.
+*/
+function fieldAttrs(name: string, error?: string) {
+  return {
+    id: name,
+    name,
+    'aria-invalid': error ? (true as const) : undefined,
+    'aria-describedby': error ? `${name}-error` : undefined,
+  }
+}
+
+/* The border is the only part that changes when a field is in error, so the
+   class lives here instead of being retyped with one word different. */
+function inputClass(error?: string) {
+  return `w-full rounded-lg border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none ${
+    error ? 'border-destructive focus:border-destructive' : 'border-border focus:border-primary'
+  }`
+}
+
 function Field({
   label,
   name,
@@ -709,7 +758,7 @@ function Field({
       </label>
       {children}
       {error && (
-        <p className="text-xs text-destructive" role="alert">
+        <p id={`${name}-error`} className="text-xs text-destructive" role="alert">
           {error}
         </p>
       )}

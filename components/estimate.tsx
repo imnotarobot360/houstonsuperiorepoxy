@@ -7,6 +7,7 @@ import { submitEstimate } from '@/app/actions/estimate'
 import { readAttribution, readGaSessionId, track } from '@/lib/analytics'
 import {
   CONDITIONS,
+  formatPhoneInput,
   CONTACT_METHODS,
   HONEYPOT_FIELD,
   PHOTO_MAX_COUNT,
@@ -438,11 +439,24 @@ export function Estimate() {
                   id="phone"
                   name="phone"
                   type="tel"
+                  inputMode="tel"
                   autoComplete="tel"
                   aria-invalid={!!errors.phone}
                   aria-describedby={errors.phone ? 'phone-error' : undefined}
                   className={field}
                   placeholder="(346) 782-0903"
+                  /*
+                    Formats as you type. Uncontrolled, so the handler rewrites
+                    e.target.value rather than holding state the rest of this
+                    form does not use.
+
+                    The shared mask strips a leading country code: "+1 …" is
+                    what phone autofill writes, and without that step it became
+                    a ten-digit number that passed validation and was wrong.
+                  */
+                  onChange={(e) => {
+                    e.target.value = formatPhoneInput(e.target.value)
+                  }}
                 />
                 {errors.phone && (
                   <p id="phone-error" className={errorText}>
