@@ -376,17 +376,69 @@ export function PhotoVisualizer({
   )
 }
 
+/*
+  What the box shows before anybody uploads anything.
+
+  IT IS A REAL FLOOR WE INSTALLED, not a render and not a stock photo: the
+  finished two-car garage in Cinco Ranch, Katy, from
+  content/projects/garage-floor-coating-katy-tx-500sf, cropped 4:3 off the top
+  of the original so the door, both walls and the sweep of the slab survive.
+
+  WHY IT IS CAPTIONED AND DIMMED. An unlabelled garage floor sitting in the
+  preview box is read as the preview — "so that is what Cabin Fever looks
+  like" — and it is not: it is Stone Wash, in somebody else's garage. The
+  caption names the blend and the job so the picture cannot be mistaken for
+  the visitor's selection, and the scrim pushes it behind the prompt so it
+  reads as the backdrop it is. Both are load-bearing, not decoration.
+
+  It replaced an empty box on 2026-10-03, the day the stylized render was
+  removed. The box was doing nothing except being the first thing a visitor
+  saw, which on a phone is most of the screen.
+*/
 function EmptyState() {
   return (
-    <div className="grid h-full place-items-center px-6 text-center">
-      <div className="flex max-w-sm flex-col items-center gap-3">
-        <Camera size={26} className="text-muted-foreground" aria-hidden="true" />
-        <p className="text-sm font-medium text-foreground">See the blend on your own garage floor</p>
-        <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
-          Take or upload a photo of your garage. We change the floor and leave everything else —
-          your door, your shelving, your light — where it is.
-        </p>
+    <div className="relative h-full w-full">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/designer/installed-katy-800.jpg"
+        srcSet="/images/designer/installed-katy-800.jpg 800w, /images/designer/installed-katy-1200.jpg 1200w"
+        sizes="(min-width: 1024px) 65vw, 100vw"
+        width={1200}
+        height={900}
+        alt="A finished two-car garage floor we coated in Katy, in an off-white and grey flake blend, looking across the bay toward the closed garage door."
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+
+      {/*
+        Darkest at the bottom, where the caption and the longest line of text
+        sit, and lightest at the top, where the photo has the garage door worth
+        seeing. A flat overlay at one opacity either washed the floor out or
+        left the small print sitting on a bright patch of slab.
+      */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/85 to-background/60"
+      />
+
+      <div className="relative grid h-full place-items-center px-6 text-center">
+        <div className="flex max-w-sm flex-col items-center gap-3">
+          <Camera size={26} className="text-muted-foreground" aria-hidden="true" />
+          <p className="text-sm font-medium text-foreground">See the blend on your own garage floor</p>
+          <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
+            Take or upload a photo of your garage. We change the floor and leave everything else —
+            your door, your shelving, your light — where it is.
+          </p>
+        </div>
       </div>
+
+      {/*
+        A <p>, not a <figcaption>: the frame above already has one for the
+        generated preview, and a figcaption has to be the first or last child
+        of its figure — this sits several levels down inside the box.
+      */}
+      <p className="absolute inset-x-0 bottom-0 px-4 pb-3 text-center text-[0.7rem] leading-tight text-muted-foreground">
+        Our install in Katy, TX — Stone Wash flake
+      </p>
     </div>
   )
 }
