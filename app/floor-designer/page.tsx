@@ -6,8 +6,7 @@ import { PageHero } from '@/components/page-hero'
 import { FloorDesigner } from '@/components/floor-designer/floor-designer'
 import { catalogEnabled } from '@/lib/catalog'
 import { isProviderConfigured } from '@/lib/visualizer/provider'
-import { activeBlends, flakeBlends } from '@/lib/content/flake-blends'
-import { coverPhoto, projectForBlend } from '@/lib/content/projects'
+import { activeBlends } from '@/lib/content/flake-blends'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 
@@ -24,7 +23,8 @@ export const metadata: Metadata = {
   INTENT: someone who wants to SEE it before they commit — the design-first
   entry point, as opposed to the question-first estimator.
 
-  The honesty bar is identical to /colors/: the preview is explicitly stylized,
+  The honesty bar is identical to /colors/: every preview is labelled as an AI
+  edit of the visitor's own photograph and never as a finished floor,
   the pricing is the same gated engine (no invented number appears that the main
   estimator wouldn't), and final colour is still chosen from physical boards on
   the customer's own slab. The whole flow reuses the real lead + scheduler
@@ -36,14 +36,14 @@ const body = [
   {
     heading: 'Design first, then price it',
     paras: [
-      'Start with the part you actually care about — the colour. Pick a flake blend and it drops onto a stylized garage floor so you can see how light or dark it reads before anything else. Then tell us two things about the space and you get an honest starting estimate, not a number invented to win a click.',
+      'Start with the part you actually care about — the colour. Pick a flake blend, then upload a photo of your garage and see that blend on your own floor before anything else. Then tell us two things about the space and you get an honest starting estimate, not a number invented to win a click.',
       'The blend you land on here is a shortlist, not a final answer. We bring the physical sample boards to your free inspection and look at them on your own slab, under your own light, because that is the only place the colour is real.',
     ],
   },
   {
-    heading: 'Why the lighting toggle matters',
+    heading: 'Why your own lighting matters',
     paras: [
-      'The single most common colour regret in a garage is a dark blend chosen in a bright showroom and installed in a space with one bulb and no windows. Flip the preview to "one bulb" and you will see why we push mid-tone, multi-colour blends for working garages — they hold up under the light you actually have and hide dust and tire marks between cleanings.',
+      'The single most common colour regret in a garage is a dark blend chosen in a bright showroom and installed in a space with one bulb and no windows. That is exactly why the preview works from a photo of your garage rather than a showroom shot, and why we push mid-tone, multi-colour blends for working garages — they hold up under the light you actually have and hide dust and tire marks between cleanings.',
     ],
   },
 ]
@@ -51,7 +51,7 @@ const body = [
 const faqs = [
   {
     q: 'Is the preview what my floor will actually look like?',
-    a: 'No — it is a stylized preview to help you narrow down, not a rendering of your finished floor. The blend images are real manufacturer photos of loose flake; on a real floor the chips sit in a pigmented base under a clear topcoat, so the surface reads slightly darker and calmer. We bring physical boards to your inspection and choose the final colour on your own slab.',
+    a: 'No — it is an AI preview to help you narrow down, not a rendering of your finished floor. It edits your photo to show roughly how a blend reads in that space. On a real floor the chips sit in a pigmented base under a clear topcoat and are broadcast by hand, so the finished surface reads slightly darker and calmer and will never match the preview chip for chip. We bring physical boards to your inspection and choose the final colour on your own slab.',
   },
   {
     q: 'Where does the price come from?',
@@ -67,36 +67,7 @@ const faqs = [
   },
 ]
 
-/*
-  Real installed floors, keyed by blend slug.
-
-  Built HERE rather than inside the designer because lib/content/projects reads
-  content/projects from disk — importing it into a client component would break
-  the build. The designer is a client component, so it receives the finished map.
-
-  Only blends with both a published project and an area name qualify: the tile is
-  captioned "Installed — <area>", and a caption with nothing in it is worse than
-  falling back to a render.
-*/
-function installedByBlend() {
-  const out: Record<string, { src: string; alt: string; neighborhood: string }> = {}
-  for (const b of flakeBlends) {
-    if (b.installedPhoto) {
-      out[b.slug] = b.installedPhoto
-      continue
-    }
-    const project = projectForBlend(b.name)
-    const photo = project ? coverPhoto(project) : undefined
-    if (project?.neighborhood && photo) {
-      out[b.slug] = { src: photo.src, alt: photo.alt, neighborhood: project.neighborhood }
-    }
-  }
-  return out
-}
-
 export default function Page() {
-  const installed = installedByBlend()
-
   return (
     <>
       <JsonLd data={graph(webPageNode(KEY), faqNode(PATH, faqs))} />
@@ -104,7 +75,7 @@ export default function Page() {
       <PageHero
         routeKey={KEY}
         eyebrow="Design tool"
-        intro={`Preview any of our ${activeBlends.length} stocked flake blends on a garage floor, see how each reads in bright and dim light, then get an honest starting estimate and book a free onsite inspection — all in one place.`}
+        intro={`Pick from our ${activeBlends.length} stocked flake blends, upload a photo of your garage to see one on your own floor, then get an honest starting estimate and book a free onsite inspection — all in one place.`}
       />
 
       {/*
@@ -127,11 +98,7 @@ export default function Page() {
           is needed after setting the variables — already the documented
           expectation in lib/visualizer/provider.ts.
         */}
-        <FloorDesigner
-          catalogEnabled={catalogEnabled}
-          installed={installed}
-          photoPreviewEnabled={isProviderConfigured()}
-        />
+        <FloorDesigner catalogEnabled={catalogEnabled} photoPreviewEnabled={isProviderConfigured()} />
       </Section>
 
       <Section>

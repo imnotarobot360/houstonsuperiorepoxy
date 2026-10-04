@@ -21,8 +21,9 @@ import { checkAndRecord, clientIpFrom } from '@/lib/visualizer/rate-limit'
     photograph of somebody's home.
   - It does not touch the lead. Generation happens while the visitor is still
     deciding; the lead is submitted later by the existing action, and a failure
-    here must never block that. The Floor Designer keeps working with the
-    stylized preview no matter what this returns.
+    here must never block that. The Floor Designer keeps working — colour
+    picker, flake close-up, estimate and booking — no matter what this
+    returns; only the preview itself is lost.
 
   Storage follows the estimator's existing photo path exactly: @vercel/blob with
   `access: 'private'`, because these are pictures of a customer's home. The

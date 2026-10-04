@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import { submitEstimate } from '@/app/actions/estimate'
 import { computeEstimate, type EstimatorAnswers } from '@/lib/estimate-calc'
 import { activeBlends, flakeBlends } from '@/lib/content/flake-blends'
-import type { InstalledLighting, InstalledPhoto } from '@/lib/content/blend-visuals'
 import {
   COATING_CONDITIONS,
   type CoatingCondition,
@@ -20,7 +19,6 @@ import { newEventId, readFbCookies, trackMeta, trackMetaOnce } from '@/lib/meta-
 import { site } from '@/lib/site'
 import { BookingScheduler } from './booking-scheduler'
 import { ColorCarousel } from './color-carousel'
-import { InstalledPreview } from './installed-preview'
 import { MobileProjectBar, ProjectSummary } from './project-summary'
 import { SelectedColor, SystemSummary } from './selected-color'
 import { PhotoVisualizer } from './photo-visualizer'
@@ -57,9 +55,6 @@ const DEFAULT_SLUG = 'cabin-fever' // balanced mid-tone; /colors/ cites it as a 
 
 type Phase = 'design' | 'booking' | 'sent'
 
-/* Which preview the visitor is looking at. 'stylized' is the default. */
-type PreviewMode = 'stylized' | 'photo'
-
 type FieldErrors = Record<string, string>
 
 /*
@@ -69,24 +64,25 @@ type FieldErrors = Record<string, string>
 */
 export function FloorDesigner({
   catalogEnabled = false,
-  installed = {},
   photoPreviewEnabled = false,
 }: {
   catalogEnabled?: boolean
-  /* Real installed floors by blend slug — assembled server-side, see the page. */
-  installed?: Record<string, InstalledPhoto>
   /*
     Whether an image-generation provider is configured. DEFAULTS TO FALSE so a
-    caller that forgets to pass it hides the tab rather than showing a dead one
-    — the safe direction for a control that cannot work without a server-side
+    caller that forgets to pass it shows no preview rather than a dead one —
+    the safe direction for a control that cannot work without a server-side
     key. Resolved in app/floor-designer/page.tsx.
+
+    SINCE THE STYLIZED PREVIEW WAS REMOVED this flag decides whether the page
+    offers a preview AT ALL. If the key ever lapses the designer still works —
+    swatch, flake close-up, lighting, estimate, booking — it simply stops
+    offering to paint the visitor's own garage, which is better than offering
+    it and failing.
   */
   photoPreviewEnabled?: boolean
 }) {
   const [slug, setSlug] = useState(DEFAULT_SLUG)
-  const [lighting, setLighting] = useState<InstalledLighting>('bright')
-  const [showReal, setShowReal] = useState(true)
-  const [previewMode, setPreviewMode] = useState<PreviewMode>('stylized')
+
   /*
     Carried into the lead so whoever calls back knows whether this person
     showed us their garage — and whether the preview worked. Never holds image
@@ -111,20 +107,7 @@ export function FloorDesigner({
   const formRef = useRef<HTMLFormElement>(null)
 
   const blend = useMemo(() => flakeBlends.find((b) => b.slug === slug) ?? flakeBlends[0], [slug])
-  const realPhoto = installed[blend.slug]
 
-  /*
-    The colours either side in the rail, so the preview can warm them while the
-    visitor is still looking at this one. Stepping to an adjacent swatch is by
-    far the most common next action.
-  */
-  const neighbours = useMemo(() => {
-    const i = activeBlends.findIndex((b) => b.slug === slug)
-    return {
-      prev: i > 0 ? activeBlends[i - 1].slug : undefined,
-      next: i >= 0 && i < activeBlends.length - 1 ? activeBlends[i + 1].slug : undefined,
-    }
-  }, [slug])
 
   const detailsRef = useRef<HTMLDivElement>(null)
   const jumpToDetails = useCallback(() => {
@@ -183,7 +166,6 @@ export function FloorDesigner({
         blendFamily: blend.family,
         blendTone: blend.tone,
         finish: RECOMMENDED_FINISH,
-        lighting,
         garageSize: size,
         slabCondition: condition,
         estimate,
@@ -290,36 +272,29 @@ export function FloorDesigner({
         </h2>
         <div className="flex flex-col gap-4">
           {/*
-            The stylized garage is the DEFAULT and stays one tap away. It needs
-            no upload, no provider and no round trip, and it shows the blend
-            under controlled light — so it is what a visitor lands on. The photo
-            path trades that reliability for the one thing it cannot offer, the
-            visitor's own garage, and is opt-in for exactly that reason.
-          */}
-          {/*
-            THE TAB ONLY EXISTS WHEN IT CAN DO SOMETHING. Without a provider
-            the photo path can only ever answer "not switched on yet", and a
-            control that never works teaches visitors that controls on this
-            site do not work — a worse outcome than not offering it. The
-            stylized preview is unaffected either way.
-          */}
-          {photoPreviewEnabled && <PreviewModeTabs mode={previewMode} onMode={setPreviewMode} />}
+            THE GENERATED GARAGE PREVIEW WAS REMOVED ON 2026-10-03, by the
+            owner's decision after seeing it.
 
-          {!photoPreviewEnabled || previewMode === 'stylized' ? (
-            <InstalledPreview
-              slug={blend.slug}
-              name={blend.name}
-              lighting={lighting}
-              neighbours={neighbours}
-              realPhoto={realPhoto}
-              showReal={showReal}
-              onToggleReal={setShowReal}
-            />
-          ) : (
-            <PhotoVisualizer blend={blend} onVisualization={setVisualization} />
-          )}
+            It composited a flake texture onto a stock garage photograph, and
+            five rounds of work got it close without getting it right: the
+            step was coated, the flake had no contrast, the tile showed a grid,
+            the floor line waved, and the material smeared against the walls.
+            Each was found and fixed, and the verdict was still that it did not
+            look like a real floor. That verdict is the one that counts — it is
+            the picture a customer judges the company by.
+
+            What remains is the visitor's OWN garage, which does not have the
+            problem the stylized one could never shake: it is a photograph of
+            the actual room, so nothing has to be faked convincingly.
+
+            The renderer, its scripts and the 162 pre-rendered images are still
+            in the repository and still build. Nothing about bringing it back
+            is hard if that is ever wanted; see installed-preview.tsx and
+            scripts/build-installed-previews.mjs.
+          */}
+          {photoPreviewEnabled && <PhotoVisualizer blend={blend} onVisualization={setVisualization} />}
         </div>
-        <SelectedColor blend={blend} lighting={lighting} onLighting={setLighting} />
+        <SelectedColor blend={blend} />
       </section>
 
       {/* --------------------------------------------------------------- Colour rail */}
@@ -332,11 +307,7 @@ export function FloorDesigner({
         </div>
         <ColorCarousel
           selectedSlug={slug}
-          onSelect={(s) => {
-            setSlug(s)
-            /* A different blend may have no photograph; fall back to the render. */
-            setShowReal(true)
-          }}
+          onSelect={setSlug}
         />
         {/*
           Beside the picker specifically: the alternative to choosing here is
@@ -693,57 +664,3 @@ function EstimateCard({ estimate }: { estimate: ReturnType<typeof computeEstimat
   )
 }
 
-/*
-  The preview switch.
-
-  A GROUP OF PRESSED BUTTONS, NOT A TABLIST — and the first attempt at this was
-  a tablist, which was wrong twice over. `role="tab"` promises a `tabpanel` it
-  is associated with, and there is none: the two previews are separate
-  components swapped in place, not labelled panels. And a tablist implies
-  roving tabindex, where arrow keys move the selection; with only the active
-  button reachable, pressing an arrow changed the selection while leaving focus
-  on a button that had just become tabIndex={-1}.
-
-  This is the same pattern as LightingToggle in selected-color.tsx, three
-  elements up the page: a labelled group of toggle buttons, each reporting its
-  own state with aria-pressed. Both buttons stay in the tab order, Enter and
-  Space work because they are buttons, and there is no roving focus to get
-  wrong. Two controls that look identical should also behave identically.
-*/
-function PreviewModeTabs({
-  mode,
-  onMode,
-}: {
-  mode: PreviewMode
-  onMode: (m: PreviewMode) => void
-}) {
-  const options: { value: PreviewMode; label: string }[] = [
-    { value: 'stylized', label: 'Stylized garage' },
-    { value: 'photo', label: 'My garage photo' },
-  ]
-
-  return (
-    <div
-      role="group"
-      aria-label="Choose how to preview this blend"
-      className="flex gap-1 self-start rounded-lg border border-border p-1"
-    >
-      {options.map((o) => {
-        const active = o.value === mode
-        return (
-          <button
-            key={o.value}
-            type="button"
-            aria-pressed={active}
-            onClick={() => onMode(o.value)}
-            className={`min-h-10 rounded-md px-4 text-xs font-medium transition-colors ${
-              active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {o.label}
-          </button>
-        )
-      })}
-    </div>
-  )
-}

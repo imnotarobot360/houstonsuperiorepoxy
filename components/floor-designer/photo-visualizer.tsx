@@ -8,13 +8,21 @@ import { checkPhoto, PHOTO_ACCEPT } from '@/lib/visualizer/validation'
 import { preparePhoto } from '@/lib/visualizer/prepare-photo'
 
 /*
-  "Preview on my garage photo" — the alternative to the stylized preview.
+  "Preview on my garage photo" — the Floor Designer's only preview.
 
-  IT IS AN ALTERNATIVE, NOT A REPLACEMENT. The pre-rendered garage is the
-  default and stays one tap away, because it is the thing that always works:
-  it needs no upload, no provider, no network round trip, and it shows the
-  blend on a floor shot under controlled light. This path trades that
-  reliability for the one thing it cannot offer — the visitor's own garage.
+  IT BECAME THE ONLY ONE ON 2026-10-03. It used to be the alternative to a
+  pre-rendered stylized garage, which was the default because it always
+  worked: no upload, no provider, no round trip. That preview was removed by
+  the owner after seeing it — see the note in floor-designer.tsx — on the
+  grounds that it did not look like a real floor, and a picture that does not
+  look real is worse for the company than no picture.
+
+  WHAT THAT MEANS FOR THIS FILE: it is now load-bearing. Every failure state
+  below is a visitor who sees no preview at all rather than one who falls back
+  to the stylized garage, so each one has to read like something a person
+  wrote, and the retry has to be worth pressing. The gate in floor-designer.tsx
+  hides this whole block when no provider is configured, so the page offers
+  nothing it cannot deliver.
 
   EVERY RESULT IS LABELLED. An AI edit of a photograph of someone's home is the
   single most believable image on this site, which is exactly why it carries a

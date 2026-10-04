@@ -28,9 +28,17 @@ import { visualizationRequests } from '@/lib/db/schema'
   * IT FAILS CLOSED. If the limiter cannot reach its store, the request is
     refused. That is the uncomfortable direction, and it is the right one here:
     allowing the call means spending money with no guard on exactly the day the
-    database is unwell, and the visitor still has the whole stylized designer,
-    which is the page's default anyway. A blocked visitor loses a preview; a
-    failing-open limiter loses the budget it exists to protect.
+    database is unwell.
+
+    THE COST OF THAT CHOICE WENT UP ON 2026-10-03, when the stylized preview
+    was removed. Until then a refused visitor fell back to the pre-rendered
+    garage, so the limiter cost them almost nothing. Now the photo preview is
+    the only preview, and a refusal means no preview at all — they still get
+    the colour picker, the flake close-up, the estimate and the booking form,
+    which is the part that actually produces a lead. Still the right direction:
+    a blocked visitor loses a picture, a failing-open limiter loses the budget
+    it exists to protect. But it is worth watching, and worth raising
+    VIZ_RATE_GLOBAL rather than letting real shoppers hit the ceiling.
 */
 
 /* Generous for a person, cheap for the account: a genuine visitor compares a

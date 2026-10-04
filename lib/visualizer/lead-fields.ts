@@ -20,7 +20,6 @@ export type DesignerLeadContext = {
   blendFamily: string
   blendTone: string
   finish: string
-  lighting: 'bright' | 'one-bulb'
   garageSize: string | null
   slabCondition: string | null
   estimate: EstimateResult | null
@@ -56,12 +55,9 @@ export function describeEstimate(estimate: EstimateResult | null): string {
 }
 
 export function buildDesignerLeadFields(ctx: DesignerLeadContext): DesignerLeadFields {
-  const lightingLabel = ctx.lighting === 'one-bulb' ? 'dim/one-bulb' : 'bright'
-
   const parts = [
     `Floor Designer — leaning toward the "${ctx.blendName}" flake blend (${ctx.blendFamily}, ${ctx.blendTone}-tone).`,
     `Finish: ${ctx.finish}.`,
-    `Viewed in ${lightingLabel} lighting.`,
     `Garage: ${ctx.garageSize ?? 'not answered'}.`,
     `Slab: ${ctx.slabCondition ?? 'not answered'}.`,
     `Estimate: ${describeEstimate(ctx.estimate)}.`,
