@@ -381,8 +381,13 @@ export function PhotoVisualizer({
 
   IT IS A REAL FLOOR WE INSTALLED, not a render and not a stock photo: the
   finished two-car garage in Cinco Ranch, Katy, from
-  content/projects/garage-floor-coating-katy-tx-500sf, cropped 4:3 off the top
-  of the original so the door, both walls and the sweep of the slab survive.
+  content/projects/garage-floor-coating-katy-tx-500sf.
+
+  THE CROP IS 1200x900 AT top=300, NOT top=0. The original is portrait, so a
+  4:3 window off the very top is all wall, ceiling and garage door with the
+  floor barely in it — which was the first thing deployed and was wrong, since
+  the floor is the entire point. Dropping 300px puts the slab across most of
+  the frame and still keeps the bottom of the door for context.
 
   WHY IT IS CAPTIONED AND DIMMED. An unlabelled garage floor sitting in the
   preview box is read as the preview — "so that is what Cabin Fever looks
@@ -417,7 +422,7 @@ function EmptyState() {
       */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/85 to-background/60"
+        className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/75 to-background/55"
       />
 
       <div className="relative grid h-full place-items-center px-6 text-center">
