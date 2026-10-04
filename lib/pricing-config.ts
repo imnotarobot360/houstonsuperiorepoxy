@@ -33,6 +33,67 @@
 
 export const calculatorEnabled = false
 
+/* ------------------------------------------- APPROVED rough-estimate pricing
+
+  OWNER-APPROVED 2026-10-04 and therefore NOT gated: a flat rate and a floor.
+  These are the only two numbers behind the Floor Designer's rough estimate.
+
+    rough estimate = max(square feet x $4.50, $1,000)
+
+  WHY THIS SITS BESIDE THE GATED MATRIX RATHER THAN REPLACING IT. The matrix
+  above models a low–high band that varies by finish, slab condition, damage
+  and added surfaces, and none of those numbers are approved. This is a
+  different and deliberately blunter instrument: one rate, one minimum, no
+  adjustments. Slab condition and damage still get ASKED — they go on the lead
+  and they are why the notice says the price can move — but they must never
+  silently change the arithmetic. A customer who answers "existing coating"
+  and watches the number jump has been quoted, not estimated.
+
+  Changing the rate or the floor is a one-line edit here. Nothing else in the
+  codebase may hold either figure.
+*/
+export const GARAGE_RATE_PER_SQFT_USD = 4.5
+export const GARAGE_MINIMUM_PROJECT_USD = 1000
+
+/*
+  VERBATIM owner-supplied wording. Shown beside the price AND again above the
+  lead form — both placements are required, because the two are far enough
+  apart on a phone that a customer can reach the form without ever having had
+  the qualifier on screen.
+
+  Do not paraphrase, shorten or split this.
+*/
+export const ROUGH_ESTIMATE_NOTICE =
+  'Rough estimate only. This estimate is based on the garage’s measured square footage at $4.50 per sq ft, with a $1,000 minimum. The final price may change based on the condition of the concrete, existing coatings, repairs, moisture, and other site conditions. We’ll confirm the final written price after inspecting the garage.'
+
+/*
+  The standard system, in the owner's words. Used beside the rough estimate so
+  the number is attached to what it buys.
+
+  It describes the system and NOTHING ELSE. Removal of old coatings, repairs,
+  moisture treatment, stem walls and steps are deliberately absent: naming them
+  here would read as "included", and they are exactly the things that move the
+  final price after inspection.
+*/
+export const ROUGH_ESTIMATE_SYSTEM = [
+  'Diamond-ground concrete',
+  'Epoxy base coat',
+  'Full flake broadcast',
+  'Polyaspartic topcoat',
+] as const
+
+/*
+  What the rough estimate does NOT cover. Stated plainly rather than left to
+  the notice, because "may change based on site conditions" is vague and these
+  four are the specific, common, expensive ones.
+*/
+export const ROUGH_ESTIMATE_EXCLUSIONS = [
+  'Removing existing coatings',
+  'Significant concrete repairs',
+  'Moisture treatment',
+  'Stem walls, steps and other added surfaces',
+] as const
+
 /* ----------------------------------------------------------- confirmed anchors */
 
 export const CONFIRMED = {
@@ -134,15 +195,25 @@ export type Timeframe = (typeof TIMEFRAMES)[number]
 /* -------------------------------------------------- typical areas (assumptions)
 
   These are dimensional ASSUMPTIONS, not prices — a rough square footage used
-  only to echo "calculated square footage" back to the customer when they do
-  not enter exact dimensions. They never drive a published dollar figure while
-  `calculatorEnabled` is false. Labeled "approx." wherever shown. Confirm and
-  refine at the same time the pricing matrix is approved.
+  when the customer picks a garage size instead of measuring. Set to the
+  owner's figures on 2026-10-04: 200 / 400 / 600. They were 240 / 400 / 620,
+  which were this file's own guesses.
+
+  THEY ARE NOW LOAD-BEARING. Before the rough estimate existed these only
+  echoed an approximate area back; now a preset feeds the price directly, so a
+  wrong number here is a wrong dollar figure in front of a customer. They are
+  labelled "approx." everywhere they appear, and ANY measurement the customer
+  actually enters overrides them — see resolveSquareFeet in
+  lib/garage-measurement.ts, which is the only place that precedence lives.
+
+  Null for "Larger" and "Other / Not Sure" on purpose: those cannot be turned
+  into a number without measuring, so they produce no price at all rather than
+  a made-up one.
 */
 export const TYPICAL_SQFT: Record<GarageSize, number | null> = {
-  '1-Car': 240,
+  '1-Car': 200,
   '2-Car': 400,
-  '3-Car': 620,
+  '3-Car': 600,
   Larger: null,
   'Other / Not Sure': null,
 }

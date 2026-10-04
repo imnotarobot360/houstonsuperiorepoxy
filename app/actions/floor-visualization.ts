@@ -60,24 +60,37 @@ export type VisualizationResponse =
     }
   | { ok: false; code: VisualizationFailure | 'invalid' | 'rate_limited'; message: string }
 
-/* Visitor-facing text for each failure. Specific enough to act on, vague enough
-   not to leak operational detail to the public. */
+/*
+  Visitor-facing text for each failure. Specific enough to act on, vague enough
+  not to leak operational detail to the public.
+
+  REWRITTEN 2026-10-04. Every one of these used to send the visitor to "the
+  colour preview on this page", which was the stylized garage render — removed
+  on 2026-10-03. They were pointing at a thing that no longer exists, which is
+  worse than saying nothing: it reads as a feature the visitor cannot find.
+
+  What actually still works when a preview fails is the part that produces a
+  lead: the colour, the flake close-up, the rough estimate and the booking. So
+  that is what they say now. Checked by failing a real generation against an
+  unreachable endpoint, not by reading the file.
+*/
 const MESSAGES: Record<VisualizationFailure | 'invalid' | 'rate_limited' | 'rate_limited_unavailable', string> = {
   not_configured:
-    'Photo previews are not switched on yet. The colour preview on this page still works, and we bring physical samples to every estimate.',
-  auth: 'Photo previews are temporarily unavailable. Please use the colour preview for now — everything else on this page still works.',
+    'Photo previews are not switched on yet. You can still pick a colour and get your rough estimate below, and we bring physical samples to every estimate.',
+  auth: 'Photo previews are temporarily unavailable. Your colour choice and your rough estimate below are unaffected.',
   rejected:
     'That photo could not be used. A straight-on shot of the floor, taken in good light with the garage door open, works best.',
   unavailable: 'The preview service is busy. Give it a moment and try again.',
-  timeout: 'That took too long to generate. Try again, or carry on with the colour preview.',
-  error: 'Something went wrong generating the preview. You can try again, or carry on with the colour preview.',
+  timeout: 'That took too long to generate. Try again, or carry on — your rough estimate below does not need the photo.',
+  error:
+    'Something went wrong generating the preview. You can try again, or carry on — your rough estimate below does not need the photo.',
   invalid: 'That file could not be used. Use a photo from your camera or gallery.',
   rate_limited:
-    'You have generated a lot of previews in a short time. The colour preview on this page still works in the meantime.',
+    'You have generated a lot of previews in a short time. Your colour choice and your rough estimate below still work in the meantime.',
   /* Fail-closed path: the limiter could not reach its store. Says nothing about
      why, because the visitor cannot act on a database problem. */
   rate_limited_unavailable:
-    'Photo previews are briefly unavailable. The colour preview on this page still works — please try again shortly.',
+    'Photo previews are briefly unavailable — please try again shortly. Your rough estimate below is unaffected.',
 }
 
 export async function generateFloorVisualization(formData: FormData): Promise<VisualizationResponse> {

@@ -1,4 +1,5 @@
-import type { EstimateResult } from '@/lib/estimate-calc'
+import type { MeasurementMode, RoughEstimate } from '@/lib/garage-measurement'
+import { sqft as formatSqft, usd } from '@/lib/garage-measurement'
 
 /*
   Builds the Floor Designer's contribution to a lead, as plain data.
@@ -20,9 +21,18 @@ export type DesignerLeadContext = {
   blendFamily: string
   blendTone: string
   finish: string
+  /* How the customer described the garage, in their own terms — a preset
+     label, or the dimensions they measured. */
   garageSize: string | null
+  /* Which of the three ways they answered, so the office knows whether the
+     square footage is a measurement or this site's assumption. */
+  measuredBy: MeasurementMode
+  squareFeet: number
+  squareFeetApproximate: boolean
   slabCondition: string | null
-  estimate: EstimateResult | null
+  estimate: RoughEstimate
+  /* The arithmetic as one line, identical to the one on screen. */
+  mathLine: string
   /*
     Private-blob pathname of the generated visualization, when one was made.
     A PATHNAME, NOT AN IMAGE and not a public URL: the office looks it up
@@ -36,31 +46,31 @@ export type DesignerLeadContext = {
 export type DesignerLeadFields = Record<string, string>
 
 /*
-  The estimate's STATUS, in the words the estimator itself uses.
+  How the square footage was arrived at, in one phrase for whoever calls back.
 
-  Never re-derives a price and never invents one. `computeEstimate` is the only
-  thing that decides whether a number exists, and in gated mode (which is the
-  shipped state — see calculatorEnabled in lib/pricing-config.ts) the honest
-  answer is the headline it produced, which may well be "priced after
-  inspection". Reporting that verbatim is the point.
+  WHY IT IS ON THE LEAD AT ALL. The difference between "they measured 24 x 24"
+  and "they tapped the 2-Car button" is the difference between a number to
+  trust and a number to re-check on site, and the estimator who turns up has no
+  other way to tell. An approximate figure is labelled approximate every time.
 */
-export function describeEstimate(estimate: EstimateResult | null): string {
-  if (!estimate) return 'No estimate shown (size or slab condition not answered)'
-  const mode = estimate.mode === 'calculated' ? 'calculated' : 'gated'
-  const sqft =
-    estimate.squareFeet != null
-      ? `${estimate.squareFeet} sq ft${estimate.squareFeetApproximate ? ' (approx.)' : ''}`
-      : 'square footage not established'
-  return `${estimate.headline} — ${mode}, ${sqft}`
+export function describeMeasurement(ctx: {
+  measuredBy: MeasurementMode
+  squareFeet: number
+  squareFeetApproximate: boolean
+}): string {
+  const area = formatSqft(ctx.squareFeet)
+  if (ctx.measuredBy === 'dimensions') return `${area}, from the customer's own length x width`
+  if (ctx.measuredBy === 'area') return `${area}, square footage entered by the customer`
+  return `${area}, APPROXIMATE — from the garage-size preset, not measured`
 }
 
 export function buildDesignerLeadFields(ctx: DesignerLeadContext): DesignerLeadFields {
   const parts = [
     `Floor Designer — leaning toward the "${ctx.blendName}" flake blend (${ctx.blendFamily}, ${ctx.blendTone}-tone).`,
     `Finish: ${ctx.finish}.`,
-    `Garage: ${ctx.garageSize ?? 'not answered'}.`,
+    `Garage: ${ctx.garageSize ?? 'not answered'} — ${describeMeasurement(ctx)}.`,
     `Slab: ${ctx.slabCondition ?? 'not answered'}.`,
-    `Estimate: ${describeEstimate(ctx.estimate)}.`,
+    `Rough estimate: ${usd(ctx.estimate.totalUsd)} (${ctx.mathLine}).`,
   ]
 
   /*
@@ -81,11 +91,30 @@ export function buildDesignerLeadFields(ctx: DesignerLeadContext): DesignerLeadF
     estimate exists, so a missing one stays missing rather than becoming an
     empty string the email would render as a blank headline.
   */
-  if (ctx.estimate) {
-    fields.estimate_headline = ctx.estimate.headline
-    fields.finish_label = ctx.estimate.finishLabel
-    if (ctx.estimate.squareFeet != null) fields.estimate_sqft = String(ctx.estimate.squareFeet)
-  }
+  /*
+    The estimate fields the existing customer email reads. The headline is now
+    a real dollar figure rather than "priced after inspection", so it is always
+    present — but it is written as the ROUGH estimate, with the word in it,
+    because this string lands in an email the customer keeps.
+  */
+  fields.estimate_headline = `Rough estimate ${usd(ctx.estimate.totalUsd)}`
+  fields.finish_label = ctx.finish
+  fields.estimate_sqft = String(ctx.estimate.squareFeet)
+
+  /*
+    THE RATE, THE TOTAL AND THE MINIMUM FLAG ARE NOT SEPARATE FIELDS.
+
+    They are in `details`, which is a real column and is what the office reads.
+    Adding estimate_rate / estimate_total / estimate_minimum_applied as form
+    fields would look thorough and do nothing: app/actions/estimate.ts reads
+    three named fields off the FormData for the customer email and ignores
+    everything else, and estimate_leads has no column for any of them. They
+    would travel the wire and be dropped on the floor.
+
+    Giving them columns of their own is a schema change. Worth doing if the
+    office ever wants to sort leads by value — and a decision for the owner,
+    not a side effect of this feature.
+  */
 
   return fields
 }

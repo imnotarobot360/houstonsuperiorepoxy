@@ -36,7 +36,7 @@ const body = [
   {
     heading: 'Design first, then price it',
     paras: [
-      'Start with the part you actually care about — the colour. Pick a flake blend, then upload a photo of your garage and see that blend on your own floor before anything else. Then tell us two things about the space and you get an honest starting estimate, not a number invented to win a click.',
+      'Start with the part you actually care about — the colour. Pick a flake blend, then upload a photo of your garage and see that blend on your own floor before anything else. Then tell us how big the garage is and you get a rough estimate with the arithmetic shown, not a number invented to win a click.',
       'The blend you land on here is a shortlist, not a final answer. We bring the physical sample boards to your free inspection and look at them on your own slab, under your own light, because that is the only place the colour is real.',
     ],
   },
@@ -55,7 +55,7 @@ const faqs = [
   },
   {
     q: 'Where does the price come from?',
-    a: 'The same gated estimate engine as our main estimator. When your size and slab condition qualify for a known starting point, you see it; otherwise it is priced after the free onsite inspection. We do not show invented dollar ranges, because the concrete condition is what moves the number and we cannot see that from a form.',
+    a: 'Square footage times $4.50, with a $1,000 minimum on any garage. That is the whole calculation and the page shows you every step of it. It is a rough estimate, not a quote: nothing in that arithmetic can see your concrete, so removing an old coating, repairing or moisture-treating the slab, or coating stem walls and steps may change the final price. We confirm it in writing after the free onsite inspection.',
   },
   {
     q: 'What happens after I submit?',
@@ -75,7 +75,7 @@ export default function Page() {
       <PageHero
         routeKey={KEY}
         eyebrow="Design tool"
-        intro={`Pick from our ${activeBlends.length} stocked flake blends, upload a photo of your garage to see one on your own floor, then get an honest starting estimate and book a free onsite inspection — all in one place.`}
+        intro={`Pick from our ${activeBlends.length} stocked flake blends, upload a photo of your garage to see one on your own floor, then get a rough estimate at $4.50 per sq ft and book a free onsite inspection — all in one place.`}
       />
 
       {/*

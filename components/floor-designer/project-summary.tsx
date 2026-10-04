@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { TYPICAL_SQFT, type CoatingCondition, type GarageSize } from '@/lib/pricing-config'
+import { sqft as formatSqft } from '@/lib/garage-measurement'
+import type { CoatingCondition } from '@/lib/pricing-config'
 
 /*
   The running summary of what has been chosen, and the way out of the colour
@@ -42,16 +43,24 @@ function Fact({ label, value, onPrompt }: { label: string; value: string | null;
 
 export function ProjectSummary({
   blendName,
-  size,
+  areaLabel,
+  squareFeet,
+  approximate,
   condition,
   onJumpToDetails,
 }: {
   blendName: string
-  size: GarageSize | null
+  /*
+    How the customer described the garage — "2-Car", or "24 ft x 24 ft
+    (576 sq ft)". Taken from the designer rather than re-derived here, so the
+    summary cannot disagree with the price card about what was measured.
+  */
+  areaLabel: string | null
+  squareFeet: number | null
+  approximate: boolean
   condition: CoatingCondition | null
   onJumpToDetails: () => void
 }) {
-  const sqft = size ? TYPICAL_SQFT[size] : null
 
   return (
     <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
@@ -62,16 +71,19 @@ export function ProjectSummary({
       <div className="mt-4 flex flex-wrap items-end justify-between gap-6">
         <div className="flex flex-wrap items-start gap-x-8 gap-y-4">
           <Fact label="Color" value={blendName} onPrompt={onJumpToDetails} />
-          <Fact label="Garage" value={size} onPrompt={onJumpToDetails} />
+          <Fact label="Garage" value={areaLabel} onPrompt={onJumpToDetails} />
           <Fact
             label="Area"
             /*
-              TYPICAL_SQFT is null for "Larger" and "Other / Not Sure" on
-              purpose — those cannot be turned into a number without measuring,
-              and printing one anyway is exactly the invented figure this site
-              does not publish.
+              Null until the customer has given a size we can price. "Larger"
+              and "Other / Not Sure" produce no square footage on purpose, so
+              this stays a prompt rather than printing a figure nobody measured.
             */
-            value={sqft ? `Approx. ${sqft} sq ft` : size ? 'Measured onsite' : null}
+            value={
+              squareFeet != null
+                ? `${approximate ? 'Approx. ' : ''}${formatSqft(squareFeet)}`
+                : null
+            }
             onPrompt={onJumpToDetails}
           />
           <Fact label="Slab" value={condition} onPrompt={onJumpToDetails} />
@@ -100,11 +112,11 @@ export function ProjectSummary({
 */
 export function MobileProjectBar({
   blendName,
-  size,
+  areaLabel,
   onContinue,
 }: {
   blendName: string
-  size: GarageSize | null
+  areaLabel: string | null
   onContinue: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -147,7 +159,7 @@ export function MobileProjectBar({
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-foreground">{blendName}</p>
         <p className="truncate text-xs text-muted-foreground">
-          {size ? `${size} garage` : 'Tap continue to size it'}
+          {areaLabel ?? 'Tap continue to size it'}
         </p>
       </div>
       <button

@@ -368,6 +368,26 @@ export function PhotoVisualizer({
         )}
       </div>
 
+      {/*
+        THE FILE NAME, so the customer can see WHICH photo they picked.
+
+        On a phone the gallery hands back a 4:3 thumbnail of a grey floor, and
+        a grey floor looks like every other grey floor. Printing the name is
+        the only way somebody who picked the wrong one from a roll of twenty
+        can tell before they wait a minute for a preview of their neighbour's
+        garage.
+
+        `break-all` because camera filenames are long and unhyphenated, and a
+        40-character token with nowhere to wrap pushes the whole card sideways
+        on a 375px screen.
+      */}
+      {phase.kind !== 'empty' && (
+        <p className="flex flex-wrap items-baseline gap-x-2 text-[0.7rem] text-muted-foreground">
+          <span className="font-medium text-foreground">Your photo:</span>
+          <span className="break-all">{phase.file.name}</span>
+        </p>
+      )}
+
       <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">
         Your photo is used to generate the preview and is not kept. Stand back far enough to see the
         whole floor, open the garage door for light, and keep the camera straight.

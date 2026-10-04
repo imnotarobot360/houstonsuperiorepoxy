@@ -41,6 +41,19 @@ export type AnalyticsEvent =
   | 'lead_form_start'
   | 'schedule_inspection'
   /*
+    THE CONVERSION. GA4's own recommended name for a submitted lead, so it maps
+    onto the standard report and onto a Google Ads conversion import without a
+    custom definition.
+
+    It is the only event in this list that means "a customer", which is why it
+    is fired in exactly one place — the Floor Designer's submit handler, after
+    the server confirms the lead, behind a ref that cannot fire twice. The
+    funnel milestones above (`estimate_generated`, `lead_form_start`) are NOT
+    conversions and must never be promoted to one in the GA4 admin: they fire
+    for people who never gave us their number.
+  */
+  | 'generate_lead'
+  /*
     Blend-selection entry points. Both are fired by the delegated CTA handler
     in components/analytics-events.tsx, not by an onClick, so the components
     carrying them stay server-rendered.

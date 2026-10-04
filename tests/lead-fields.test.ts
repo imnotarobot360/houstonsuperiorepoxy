@@ -1,27 +1,20 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { computeEstimate, type EstimatorAnswers } from '../lib/estimate-calc'
-import { calculatorEnabled, RECOMMENDED_FINISH } from '../lib/pricing-config'
-import { buildDesignerLeadFields, describeEstimate } from '../lib/visualizer/lead-fields'
+import { explainMath, resolveSquareFeet, roughEstimate, EMPTY_MEASUREMENT } from '../lib/garage-measurement'
+import { GARAGE_RATE_PER_SQFT_USD, RECOMMENDED_FINISH } from '../lib/pricing-config'
+import { buildDesignerLeadFields, describeMeasurement } from '../lib/visualizer/lead-fields'
 
 /*
-  The lead payload, and the estimator rules it must not break.
+  The lead payload.
 
-  The visualizer is allowed to add context to a lead. It is NOT allowed to
-  change what the estimator says, invent a figure, or turn a job the rules send
-  to inspection into one with a price on it. Those are the assertions here.
+  This is the only artefact of the whole funnel that a human being reads: the
+  person who picks up the phone sees `details` and nothing else. So the
+  assertions here are about whether that sentence is complete, honest about
+  where its numbers came from, and short enough to survive validation.
 */
 
-const BASE: EstimatorAnswers = {
-  garageSize: '2-Car',
-  coatingCondition: 'Bare Concrete',
-  damage: [],
-  addedSurfaces: [],
-  finish: 'Full-Broadcast Flake System',
-  squareFeetEntered: null,
-  zip: '77077',
-  timeframe: 'As Soon as Possible',
-}
+const measured = resolveSquareFeet({ ...EMPTY_MEASUREMENT, mode: 'preset', preset: '2-Car' })
+const estimate = roughEstimate(400)
 
 function ctx(over: Partial<Parameters<typeof buildDesignerLeadFields>[0]> = {}) {
   return {
@@ -29,49 +22,95 @@ function ctx(over: Partial<Parameters<typeof buildDesignerLeadFields>[0]> = {}) 
     blendFamily: 'Neutral',
     blendTone: 'mid',
     finish: RECOMMENDED_FINISH,
-    garageSize: '2-Car',
+    garageSize: '2-Car (approx. 400 sq ft)',
+    measuredBy: 'preset' as const,
+    squareFeet: 400,
+    squareFeetApproximate: true,
     slabCondition: 'Bare Concrete',
-    estimate: computeEstimate(BASE),
+    estimate,
+    mathLine: explainMath(measured, estimate),
     ...over,
   }
 }
 
-/* ------------------------------------------------- estimator rules preserved */
+/* ------------------------------------------------------------ the price fields */
 
-test('the pricing calculator is still gated', () => {
-  /* If this flips, every assertion below about "no invented price" needs
-     rechecking against the approved matrix — fail loudly rather than quietly. */
-  assert.equal(calculatorEnabled, false)
+test('the lead carries the rough estimate, its rate and its square footage', () => {
+  /*
+    The total and the rate live in `details` rather than in fields of their
+    own, because `details` is the column that is actually stored — see the note
+    in lead-fields.ts. Asserting on the sentence is therefore asserting on what
+    reaches the office.
+  */
+  const fields = buildDesignerLeadFields(ctx())
+  assert.equal(fields.estimate_sqft, '400')
+  assert.match(fields.details, /\$1,800\.00/)
+  assert.match(fields.details, new RegExp('\\$' + GARAGE_RATE_PER_SQFT_USD.toFixed(2) + '/sq ft'))
 })
 
-test('the lead reports the estimator headline verbatim, never a derived price', () => {
-  const estimate = computeEstimate(BASE)
-  const fields = buildDesignerLeadFields(ctx({ estimate }))
-  assert.equal(fields.estimate_headline, estimate.headline)
-  assert.match(fields.details, new RegExp(estimate.headline.replace(/[$.*+?^{}()|[\]\\]/g, '\\$&')))
+test('the headline the customer email prints says ROUGH', () => {
+  /* It lands in an email the customer keeps and may wave at us later. If it
+     says "$1,800.00" with no qualifier, that is what they will remember
+     agreeing to. */
+  const fields = buildDesignerLeadFields(ctx())
+  assert.match(fields.estimate_headline, /Rough estimate/)
+  assert.match(fields.estimate_headline, /\$1,800\.00/)
 })
 
-test('a size the rules price after inspection is not given a number', () => {
-  /* "Other / Not Sure" has no typical square footage, so the engine cannot
-     produce a band — the lead must say so rather than guess. */
-  const estimate = computeEstimate({ ...BASE, garageSize: 'Other / Not Sure' })
-  const fields = buildDesignerLeadFields(ctx({ estimate, garageSize: 'Other / Not Sure' }))
-  assert.equal(estimate.low, null)
-  assert.equal(estimate.high, null)
-  assert.equal(fields.estimate_sqft, undefined, 'no square footage should be claimed')
+test('the minimum being applied is flagged, not hidden', () => {
+  /* A $1,000 lead on a 200 sq ft garage is a different conversation from a
+     $1,000 lead that calculated to $1,000, and the office should know which. */
+  const small = resolveSquareFeet({ ...EMPTY_MEASUREMENT, mode: 'preset', preset: '1-Car' })
+  const e = roughEstimate(200)
+  const fields = buildDesignerLeadFields(
+    ctx({ squareFeet: 200, estimate: e, mathLine: explainMath(small, e), garageSize: '1-Car' }),
+  )
+  assert.match(fields.details, /minimum/i)
+  assert.match(fields.details, /\$1,000\.00/)
 })
 
-test('no estimate at all is reported as absent, not as zero', () => {
-  const fields = buildDesignerLeadFields(ctx({ estimate: null }))
-  assert.match(fields.details, /No estimate shown/)
-  assert.equal(fields.estimate_headline, undefined)
-  assert.equal(fields.estimate_sqft, undefined)
-  assert.doesNotMatch(fields.details, /\$0/)
+test('the details line shows the arithmetic, so the office can check it', () => {
+  const fields = buildDesignerLeadFields(ctx())
+  assert.match(fields.details, /Rough estimate: \$1,800\.00/)
+  assert.match(fields.details, /400 sq ft/)
 })
 
-test('describeEstimate reports the mode the engine chose', () => {
-  const estimate = computeEstimate(BASE)
-  assert.match(describeEstimate(estimate), /gated/)
+/* -------------------------------------------------- where the number came from */
+
+test('a preset is reported as an ASSUMPTION, in capitals', () => {
+  /* The estimator who turns up needs to know whether to re-measure. */
+  const line = describeMeasurement({ measuredBy: 'preset', squareFeet: 400, squareFeetApproximate: true })
+  assert.match(line, /APPROXIMATE/)
+  assert.match(line, /not measured/)
+})
+
+test('a measured garage is reported as measured', () => {
+  assert.match(
+    describeMeasurement({ measuredBy: 'dimensions', squareFeet: 576, squareFeetApproximate: false }),
+    /length x width/,
+  )
+  assert.match(
+    describeMeasurement({ measuredBy: 'area', squareFeet: 528, squareFeetApproximate: false }),
+    /entered by the customer/,
+  )
+})
+
+test('the measurement note reaches the details line', () => {
+  assert.match(buildDesignerLeadFields(ctx()).details, /APPROXIMATE/)
+  const m = resolveSquareFeet({ ...EMPTY_MEASUREMENT, mode: 'dimensions', lengthFt: '24', widthFt: '24' })
+  const e = roughEstimate(576)
+  const fields = buildDesignerLeadFields(
+    ctx({
+      measuredBy: 'dimensions',
+      squareFeet: 576,
+      squareFeetApproximate: false,
+      estimate: e,
+      mathLine: explainMath(m, e),
+      garageSize: '24 ft × 24 ft (576 sq ft)',
+    }),
+  )
+  assert.doesNotMatch(fields.details, /APPROXIMATE/)
+  assert.match(fields.details, /24 ft/)
 })
 
 /* --------------------------------------------------------- lead submission */
@@ -81,7 +120,7 @@ test('the details line carries blend, garage, slab and estimate', () => {
   assert.match(fields.details, /Cabin Fever/)
   assert.match(fields.details, /Garage: 2-Car/)
   assert.match(fields.details, /Slab: Bare Concrete/)
-  assert.match(fields.details, /Estimate:/)
+  assert.match(fields.details, /Rough estimate:/)
 })
 
 test('unanswered questions say so instead of being dropped', () => {
@@ -110,13 +149,18 @@ test('no photo attempt adds no preview line at all', () => {
   assert.doesNotMatch(fields.details, /Garage photo preview/)
 })
 
-test('a failed preview never blocks the rest of the lead', () => {
-  /* The regression this guards: an exception path that returned early and lost
-     the blend, the size and the estimate along with the image. */
+test('a failed preview never costs the lead its price', () => {
+  /*
+    THE RULE THE WHOLE FUNNEL HANGS ON: image generation is a nice-to-have and
+    the estimate is the product. An exception path that returned early and lost
+    the blend, the size and the price along with the image would turn a
+    customer into nothing.
+  */
   const fields = buildDesignerLeadFields(ctx({ visualizationPathname: null, visualizationAttempted: true }))
   assert.match(fields.details, /Cabin Fever/)
   assert.match(fields.details, /Garage: 2-Car/)
-  assert.ok(fields.estimate_headline, 'the estimate must still reach the office')
+  assert.match(fields.details, /\$1,800\.00/, 'the price must still reach the office')
+  assert.ok(fields.estimate_headline)
 })
 
 test('every field is a string, because FormData carries nothing else', () => {
@@ -135,19 +179,25 @@ test('the details line stays well inside the limit that would REJECT the lead', 
     characters does not lose its tail, it fails the whole submission and the
     lead is never captured.
 
-    The preview reference is appended last, which would make it the first
-    casualty of a truncating limit and the trigger of a rejecting one. This
-    builds the longest plausible line — longest blend name, longest enum
-    values, a full blob pathname — and asserts there is real headroom.
+    The line got longer when the arithmetic went onto it, which is exactly when
+    a limit like this starts to matter. This builds the worst case — longest
+    blend name, longest enum values, a measured garage so the dimensions are
+    spelled out, and a full blob pathname.
   */
+  const m = resolveSquareFeet({ ...EMPTY_MEASUREMENT, mode: 'dimensions', lengthFt: '123.75', widthFt: '101.25' })
+  const e = roughEstimate(m.squareFeet!)
   const worst = buildDesignerLeadFields({
     blendName: 'Stonehenge Charcoal Pearl',
     blendFamily: 'Cool Grey',
     blendTone: 'mid',
     finish: 'Full-Broadcast Flake System',
-    garageSize: 'Other / Not Sure',
+    garageSize: '123.75 ft × 101.25 ft (12,529.69 sq ft)',
+    measuredBy: 'dimensions',
+    squareFeet: m.squareFeet!,
+    squareFeetApproximate: false,
     slabCondition: 'Existing Epoxy or Coating',
-    estimate: computeEstimate({ ...BASE, garageSize: 'Other / Not Sure' }),
+    estimate: e,
+    mathLine: explainMath(m, e),
     visualizationPathname: 'visualizations/1730000000000-stonehenge-charcoal-pearl-a1b2c3d4e5f6.png',
     visualizationAttempted: true,
   })

@@ -2,23 +2,37 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { submitEstimate } from '@/app/actions/estimate'
-import { computeEstimate, type EstimatorAnswers } from '@/lib/estimate-calc'
 import { activeBlends, flakeBlends } from '@/lib/content/flake-blends'
+import {
+  EMPTY_MEASUREMENT,
+  explainMath,
+  type MeasurementInput,
+  resolveSquareFeet,
+  roughEstimate,
+  type RoughEstimate,
+  sqft as formatSqft,
+  usd,
+} from '@/lib/garage-measurement'
 import {
   COATING_CONDITIONS,
   type CoatingCondition,
-  GARAGE_SIZES,
   type GarageSize,
   RECOMMENDED_FINISH,
+  ROUGH_ESTIMATE_EXCLUSIONS,
+  ROUGH_ESTIMATE_NOTICE,
+  ROUGH_ESTIMATE_SYSTEM,
   TIMEFRAMES,
   type Timeframe,
 } from '@/lib/pricing-config'
+import { track } from '@/lib/analytics'
+import { decideConversion, leadConversionParams } from '@/lib/conversion'
 import { CatalogTextLink } from '@/components/catalog-cta'
 import { HONEYPOT_FIELD } from '@/lib/leads'
 import { newEventId, readFbCookies, trackMeta, trackMetaOnce } from '@/lib/meta-events'
 import { site } from '@/lib/site'
 import { BookingScheduler } from './booking-scheduler'
 import { ColorCarousel } from './color-carousel'
+import { MeasurementFields } from './measurement-fields'
 import { MobileProjectBar, ProjectSummary } from './project-summary'
 import { SelectedColor, SystemSummary } from './selected-color'
 import { PhotoVisualizer } from './photo-visualizer'
@@ -92,7 +106,18 @@ export function FloorDesigner({
     pathname: null,
     attempted: false,
   })
-  const [size, setSize] = useState<GarageSize | null>(null)
+  /*
+    How big the garage is. One object rather than a size enum, because the
+    customer can answer it three ways and the price has to come from whichever
+    one they actually used — see lib/garage-measurement.ts.
+  */
+  const [measurement, setMeasurement] = useState<MeasurementInput>(EMPTY_MEASUREMENT)
+  /*
+    Measurement errors stay quiet until the customer has either typed something
+    or tried to submit. Reddening an empty box the moment they open the field
+    is a telling-off for not having started.
+  */
+  const [measurementTouched, setMeasurementTouched] = useState(false)
   const [condition, setCondition] = useState<CoatingCondition | null>(null)
   const [timeframe, setTimeframe] = useState<Timeframe>('As Soon as Possible')
   const [smsConsent, setSmsConsent] = useState(false)
@@ -105,6 +130,19 @@ export function FloorDesigner({
   const [pending, startTransition] = useTransition()
 
   const formRef = useRef<HTMLFormElement>(null)
+
+  /*
+    THE CONVERSION GUARD. One lead, one conversion — for GA4 and for Meta.
+
+    A ref, not state: it must be readable and writable inside the same async
+    callback that fires the events, and it must not cause a render. React 18+
+    double-invokes effects in development, and a customer who submits, gets a
+    validation error from the server, fixes it and submits again goes through
+    this handler twice — neither may produce a second conversion, because a
+    conversion is what the ad platforms optimise spend against and a duplicate
+    is a lie about how many customers this page produced.
+  */
+  const conversionFired = useRef(false)
 
   const blend = useMemo(() => flakeBlends.find((b) => b.slug === slug) ?? flakeBlends[0], [slug])
 
@@ -120,24 +158,41 @@ export function FloorDesigner({
   }, [])
 
   /*
-    The gated estimate. Computed live once both facts are chosen, using defaults
-    (no damage, no added surfaces) that keep the two-car qualifying anchor
-    honest. Null until then, so the card prompts instead of guessing.
+    THE ROUGH ESTIMATE: max(square feet x $4.50, $1,000).
+
+    Deliberately NOT a function of slab condition, damage or timeframe. Those
+    are asked, they go on the lead and they are why the notice says the price
+    can move after inspection — but if answering "existing coating" made the
+    number jump, the customer would have been quoted by a form that never saw
+    the slab. One rate, one floor, shown with its arithmetic.
+
+    This is the owner-approved path and is NOT behind `calculatorEnabled`;
+    that gate still guards the unapproved low–high matrix used by the
+    question-first estimator at /pricing. See lib/pricing-config.ts.
+
+    It needs only the size — the price appears as soon as the garage is
+    described, before the slab question, because the measurement is the only
+    input to it.
   */
-  const estimate = useMemo(() => {
-    if (!size || !condition) return null
-    const answers: EstimatorAnswers = {
-      garageSize: size,
-      squareFeetEntered: null,
-      coatingCondition: condition,
-      damage: ['None That I Can See'],
-      addedSurfaces: ['None'],
-      finish: RECOMMENDED_FINISH,
-      zip: '',
-      timeframe,
+  const measured = useMemo(() => resolveSquareFeet(measurement), [measurement])
+  const estimate: RoughEstimate | null = useMemo(
+    () => (measured.ok ? roughEstimate(measured.squareFeet) : null),
+    [measured],
+  )
+
+  /*
+    What the lead calls the garage. A preset is its label; a measurement is the
+    measurement, because "24 ft x 24 ft (576 sq ft)" tells whoever calls back
+    something "2-Car" does not.
+  */
+  const areaLabel = useMemo(() => {
+    if (!measured.ok) return measurement.preset ?? null
+    if (measured.lengthFt != null && measured.widthFt != null) {
+      return `${measured.lengthFt} ft × ${measured.widthFt} ft (${formatSqft(measured.squareFeet)})`
     }
-    return computeEstimate(answers)
-  }, [size, condition, timeframe])
+    if (measured.source === 'area') return formatSqft(measured.squareFeet)
+    return `${measurement.preset} (approx. ${formatSqft(measured.squareFeet)})`
+  }, [measured, measurement.preset])
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -147,8 +202,20 @@ export function FloorDesigner({
     const form = e.currentTarget
     const data = new FormData(form)
 
+    /*
+      THE MEASUREMENT IS VALIDATED BEFORE ANYTHING ELSE HAPPENS. Submitting
+      with an unanswered or implausible size would send a lead with no price on
+      it, which is the one thing this funnel exists to avoid.
+    */
+    setMeasurementTouched(true)
+    if (!measured.ok || !estimate) {
+      setFormError('Tell us the garage size above so we can work out your rough estimate.')
+      detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      return
+    }
+
     /* Fixed + derived context the server needs, added as fields. */
-    data.set('area', size ?? '')
+    data.set('area', areaLabel ?? '')
     data.set('floorCondition', condition ?? '')
     data.set('timeframe', timeframe)
     data.set('smsConsent', smsConsent ? 'on' : '')
@@ -166,9 +233,13 @@ export function FloorDesigner({
         blendFamily: blend.family,
         blendTone: blend.tone,
         finish: RECOMMENDED_FINISH,
-        garageSize: size,
+        garageSize: areaLabel,
+        measuredBy: measured.source,
+        squareFeet: estimate.squareFeet,
+        squareFeetApproximate: measured.approximate,
         slabCondition: condition,
         estimate,
+        mathLine: explainMath(measured, estimate),
         visualizationPathname: visualization.pathname,
         visualizationAttempted: visualization.attempted,
       }),
@@ -200,7 +271,39 @@ export function FloorDesigner({
         const name = (data.get('name') as string) || 'there'
         setFirstName(name.trim().split(/\s+/)[0] || 'there')
         setLeadId(result.leadId)
-        trackMeta('Lead', { content_name: 'Floor Designer' }, result.meta?.eventId ?? leadEventId)
+        /*
+          THE CONVERSION, fired here and nowhere else: after the server has
+          come back ok, never on the click and never on a validation failure.
+
+          `result.ok` and not `!result.unsaved`: ok means the lead reached the
+          business, which is what a conversion claims. When the database write
+          failed but the notification email went out (result.unsaved), the
+          owner has the customer's details and will call them — that is a lead
+          by any definition the ad account cares about, and suppressing it
+          would under-report real business. The flag rides along on the event
+          so the discrepancy is visible in the report rather than invisible.
+
+          Both platforms are inert unless their IDs are configured; see
+          lib/analytics.ts and lib/meta-events.ts. Neither call carries the
+          customer's name, phone or email — only the value of the job.
+        */
+        const decision = decideConversion({
+          outcome: { kind: 'accepted', stored: !result.unsaved },
+          alreadyFired: conversionFired.current,
+        })
+        if (decision.fire) {
+          conversionFired.current = true
+          trackMeta('Lead', { content_name: 'Floor Designer' }, result.meta?.eventId ?? leadEventId)
+          track(
+            'generate_lead',
+            leadConversionParams({
+              estimate,
+              measuredBy: measured.source,
+              blendName: blend.name,
+              stored: !result.unsaved,
+            }),
+          )
+        }
         /*
           'sent' rather than 'booking' when the lead could not be stored. The
           scheduler writes the chosen slot onto the lead row, so with no row
@@ -259,7 +362,7 @@ export function FloorDesigner({
       <ProgressSteps
         steps={[
           { label: 'Color', done: true },
-          { label: 'Garage', done: size != null },
+          { label: 'Garage', done: measured.ok },
           { label: 'Slab', done: condition != null },
           { label: 'Estimate', done: estimate != null },
         ]}
@@ -328,7 +431,9 @@ export function FloorDesigner({
       {/* ------------------------------------------------------------------ Summary */}
       <ProjectSummary
         blendName={blend.name}
-        size={size}
+        areaLabel={areaLabel}
+        squareFeet={measured.ok ? measured.squareFeet : null}
+        approximate={measured.ok && measured.approximate}
         condition={condition}
         onJumpToDetails={jumpToDetails}
       />
@@ -340,31 +445,24 @@ export function FloorDesigner({
           <section aria-labelledby="step-space" className="flex flex-col gap-5">
             <StepHeading n="02" id="step-space" title="Tell us about the space" />
 
-            <fieldset className="flex flex-col gap-2">
-              <legend className="mb-1 text-sm font-medium text-foreground">Garage size</legend>
-              <div className="flex flex-wrap gap-2">
-                {GARAGE_SIZES.map((s) => {
-                  const active = s === size
-                  return (
-                    <button
-                      key={s}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => setSize(s)}
-                      /* min-h-10: py-2 on a text-sm line box lands at 38px,
-                         two short of every other control on the page. */
-                      className={`inline-flex min-h-10 items-center rounded-lg border px-3 py-2 text-sm transition-colors ${
-                        active
-                          ? 'border-primary bg-primary/10 text-foreground'
-                          : 'border-border text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  )
-                })}
-              </div>
-            </fieldset>
+            <MeasurementFields
+              value={measurement}
+              onChange={(next) => {
+                /*
+                  SWITCHING HOW YOU ANSWER IS NOT AN ATTEMPT AT ANSWERING.
+
+                  Found by using it: tapping "Length x width" reddened two
+                  empty boxes before a single key had been pressed, because
+                  picking a preset a moment earlier had already marked the
+                  question as touched. Changing the mode starts that mode
+                  clean; typing in it, or submitting, is what earns an error.
+                */
+                setMeasurementTouched(next.mode === measurement.mode)
+                setMeasurement(next)
+              }}
+              measurement={measured}
+              showErrors={measurementTouched}
+            />
 
             <label className="flex flex-col gap-2">
               <span className="text-sm font-medium text-foreground">Current slab condition</span>
@@ -400,8 +498,8 @@ export function FloorDesigner({
 
           {/* 03 — Estimate (gated) */}
           <section aria-labelledby="step-estimate" className="flex flex-col gap-4">
-            <StepHeading n="03" id="step-estimate" title="Your starting estimate" />
-            <EstimateCard estimate={estimate} />
+            <StepHeading n="03" id="step-estimate" title="Your rough estimate" />
+            <RoughEstimateCard estimate={estimate} mathLine={estimate ? explainMath(measured, estimate) : null} />
           </section>
         </div>
 
@@ -412,6 +510,19 @@ export function FloorDesigner({
             Send your details and we&apos;ll bring physical samples of your shortlist to a free
             onsite inspection, then put the final scope and price in writing. No payment up front.
           </p>
+
+          {/*
+            THE SECOND PLACEMENT, and it is not a duplicate by accident. On a
+            phone the price card and this form are several screens apart, so a
+            customer can arrive at "send my details" having scrolled straight
+            past the qualifier. Repeating it here means nobody hands over their
+            number without having been told what the figure is and is not.
+          */}
+          {estimate && (
+            <div className="rounded-lg border border-border bg-card/40 p-4">
+              <RoughEstimateNotice />
+            </div>
+          )}
 
           <form ref={formRef} onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
             {/* Honeypot — visually hidden, not display:none, so bots still fill it */}
@@ -500,7 +611,7 @@ export function FloorDesigner({
         Pinned on phones, and it stands in for the site-wide call bar here
         rather than stacking under it — see MarketingChromeBottom.
       */}
-      <MobileProjectBar blendName={blend.name} size={size} onContinue={jumpToDetails} />
+      <MobileProjectBar blendName={blend.name} areaLabel={areaLabel} onContinue={jumpToDetails} />
       {/* Room for the pinned bar, so the last field is never under it. */}
       <div aria-hidden className="h-16 lg:hidden" />
     </div>
@@ -606,12 +717,26 @@ function Field({
   )
 }
 
-function EstimateCard({ estimate }: { estimate: ReturnType<typeof computeEstimate> | null }) {
+/*
+  The rough estimate, with its arithmetic on display.
+
+  THE MATH IS SHOWN ON PURPOSE. A price that appears out of a form is a number
+  the customer has to take on trust; "400 sq ft x $4.50/sq ft = $1,800.00" is
+  one they can check against their own tape measure. It also makes the $1,000
+  minimum visible as a floor rather than as a mysteriously round answer for
+  every small garage.
+
+  The notice is rendered VERBATIM from the config and is not collapsible,
+  truncated or behind a "read more" — it is the sentence that keeps the figure
+  a rough estimate instead of a quote.
+*/
+function RoughEstimateCard({ estimate, mathLine }: { estimate: RoughEstimate | null; mathLine: string | null }) {
   if (!estimate) {
     return (
       <div className="rounded-xl border border-dashed border-border p-6">
         <p className="text-sm leading-relaxed text-muted-foreground text-pretty">
-          Choose a garage size and slab condition above to see your starting estimate.
+          Give us the garage size above — a typical size, your measurements, or the square footage —
+          and your rough estimate appears here.
         </p>
       </div>
     )
@@ -619,48 +744,74 @@ function EstimateCard({ estimate }: { estimate: ReturnType<typeof computeEstimat
 
   return (
     <div className="rounded-xl border border-border bg-card p-6">
-      <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-primary">
-        Preliminary — {estimate.finishLabel}
+      <p className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-primary">Rough estimate</p>
+      <p className="mt-2 font-serif text-4xl tracking-tight text-foreground text-balance">
+        {usd(estimate.totalUsd)}
       </p>
-      <p className="mt-2 font-serif text-3xl tracking-tight text-foreground text-balance">
-        {estimate.headline}
-      </p>
-      {estimate.squareFeet != null && (
-        <p className="mt-1 text-sm text-muted-foreground">
-          Based on {estimate.squareFeet} sq ft{estimate.squareFeetApproximate ? ' (approx.)' : ''}
-        </p>
-      )}
+
+      {/* The arithmetic, in the customer's units. */}
+      <dl className="mt-4 flex flex-col gap-1.5 border-t border-border pt-4 text-sm">
+        <Row label="Area" value={formatSqft(estimate.squareFeet)} />
+        <Row label="Rate" value={`${usd(estimate.ratePerSqFtUsd)} per sq ft`} />
+        <Row label="Calculated" value={usd(estimate.calculatedUsd)} />
+        {estimate.minimumApplied && (
+          <Row label="Minimum" value={`${usd(estimate.minimumUsd)} — applied`} emphasis />
+        )}
+      </dl>
+      {mathLine && <p className="mt-3 text-xs leading-relaxed text-muted-foreground text-pretty">{mathLine}</p>}
 
       <div className="mt-5 border-t border-border pt-5">
-        <p className="text-sm font-medium text-foreground">Every floor includes</p>
+        <p className="text-sm font-medium text-foreground">The standard system</p>
         <ul className="mt-2 flex flex-col gap-1.5">
-          {estimate.includedSteps.map((s) => (
-            <li key={s} className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
+          {ROUGH_ESTIMATE_SYSTEM.map((step) => (
+            <li key={step} className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
               <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-primary" />
-              <span className="text-pretty">{s}</span>
+              <span className="text-pretty">{step}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      {estimate.factorsThatMayChangePrice.length > 0 && (
-        <div className="mt-5 border-t border-border pt-5">
-          <p className="text-sm font-medium text-foreground">What could change the price</p>
-          <ul className="mt-2 flex flex-col gap-1.5">
-            {estimate.factorsThatMayChangePrice.map((f) => (
-              <li key={f} className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
-                <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/60" />
-                <span className="text-pretty">{f}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="mt-5 border-t border-border pt-5">
+        <p className="text-sm font-medium text-foreground">Not included in this figure</p>
+        <ul className="mt-2 flex flex-col gap-1.5">
+          {ROUGH_ESTIMATE_EXCLUSIONS.map((x) => (
+            <li key={x} className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
+              <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/60" />
+              <span className="text-pretty">{x}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
+          Any of these may change the final price. We confirm them at the free onsite inspection.
+        </p>
+      </div>
 
-      <p className="mt-5 border-t border-border pt-5 text-xs leading-relaxed text-muted-foreground text-pretty">
-        {estimate.disclaimer}
-      </p>
+      <RoughEstimateNotice className="mt-5 border-t border-border pt-5" />
     </div>
+  )
+}
+
+function Row({ label, value, emphasis }: { label: string; value: string; emphasis?: boolean }) {
+  return (
+    <div className="flex items-baseline justify-between gap-4">
+      <dt className="text-muted-foreground">{label}</dt>
+      <dd className={emphasis ? 'font-medium text-foreground' : 'text-foreground'}>{value}</dd>
+    </div>
+  )
+}
+
+/*
+  Rendered in BOTH places the spec requires: beside the price and again above
+  the lead form. One component so the two can never drift apart, and so a
+  future edit cannot accidentally fix only the copy somebody happened to be
+  looking at.
+*/
+function RoughEstimateNotice({ className = '' }: { className?: string }) {
+  return (
+    <p className={`text-xs leading-relaxed text-muted-foreground text-pretty ${className}`}>
+      {ROUGH_ESTIMATE_NOTICE}
+    </p>
   )
 }
 
