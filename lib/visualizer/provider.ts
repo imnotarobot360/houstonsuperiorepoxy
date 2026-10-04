@@ -134,6 +134,20 @@ export function buildPrompt(blend: VisualizationRequest['blend'], note?: string)
     `${blend.blurb}`,
     `Overall it reads as a ${blend.tone}-tone ${blend.family} floor with a satin-to-gloss clear topcoat.`,
     'The flake chips are small and densely packed, covering the surface completely — not large scattered specks.',
+    /*
+      THE ANTI-WARM CLAUSE. Measured 2026-10-03 against the live API: asked for
+      Cabin Fever — "grey, tan, white and black in near-equal measure", whose
+      own sample photo has a red-minus-blue of +12 — the model returned floors
+      at +52 (low quality) and +42 (high). It renders a gold or beige floor for
+      a neutral blend, which is the one thing a colour-selection tool must not
+      do: the customer is choosing a colour.
+
+      Naming the chips was already in the prompt and did not stop it, so this
+      says the quiet part: do not warm it. If a later measurement shows the
+      cast is gone, this line is why — leave it in.
+    */
+    'Keep the white balance of the photograph exactly as it is: do not add a warm, golden, amber, sepia or beige cast to the floor or to the room.',
+    'If the blend is described as grey, cool or neutral, the finished floor must read neutral grey — never gold, tan-brown or beige.',
     'Keep the walls, ceiling, garage door, shelving, vehicles, stored objects, window light, shadows and camera angle exactly as they are.',
     'Preserve the existing lighting direction and intensity, and let the new floor reflect that light plausibly.',
     'Do not add, remove or move any object. Do not change the room geometry. Do not add text, logos or watermarks.',
