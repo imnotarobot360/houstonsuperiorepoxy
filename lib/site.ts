@@ -1,3 +1,6 @@
+import { roughEstimate, usdCompact } from '@/lib/garage-measurement'
+import { GARAGE_MINIMUM_PROJECT_USD, GARAGE_RATE_PER_SQFT_USD, TYPICAL_SQFT } from '@/lib/pricing-config'
+
 /*
   Single source of truth for verified business facts.
 
@@ -141,37 +144,37 @@ export const site = {
 } as const
 
 /*
-  UNCONFIRMED PRICES — TOKENS, NOT FIGURES.
+  CONFIRMED PRICES — RE-CONFIRMED BY THE OWNER 2026-10-04.
 
-  This file previously published $4.50/sq ft, $1,000 and $1,800 as confirmed
-  owner-supplied floors. That confirmation was withdrawn, so they are back to
-  tokens and NOTHING renders them.
+  These were published, withdrawn, and are now back. The withdrawal is worth
+  remembering: a figure on a website becomes the figure the customer remembers,
+  so it goes up only when somebody who can honour it has said so.
 
-  Deliberately different from the `author` token pattern in
-  lib/content/authority.ts, which renders `{{AUTHOR_NAME}}` visibly on the page
-  as a nag. A visible `{{PRICE_2_CAR_STARTING}}` in 3rem type on /pricing/ would
-  be published to visitors and crawled by Google, so these tokens are a REFILL
-  POINT ONLY. Visible copy was rewritten to be genuinely price-free rather than
-  to interpolate a token, and `isPlaceholder()` from authority.ts is the guard
-  to use if any of these ever reach structured data.
+  DERIVED, NOT TYPED. The rate and the minimum come from lib/pricing-config.ts,
+  which is the same place the Floor Designer's calculator reads them — so the
+  advertised price and the calculated price cannot drift apart. The two-car
+  figure is literally `roughEstimate(TYPICAL_SQFT['2-Car'])`, i.e. the number
+  the calculator would produce for a typical two-car garage. Changing the rate
+  in the config changes every surface at once.
 
-  TO GO LIVE once the owner re-confirms, replace the three token values below
-  and then re-wire the copy that was rewritten to remove them:
-    - components/pricing.tsx      — the price grid was removed entirely
-    - app/pricing/page.tsx        — intro, two body paragraphs, one FAQ answer
-    - lib/site.ts                 — the two-car cost FAQ in `faqs`
-    - lib/content/answers.ts      — the `pricing` route quickAnswer
-    - lib/schema.ts               — `priceRange` on the LocalBusiness node
+  WHAT THESE FIGURES COVER, AND WHAT THEY DO NOT. A residential GARAGE in the
+  standard flake system: diamond-ground concrete, epoxy base, full flake
+  broadcast, polyaspartic topcoat, on a sound slab with no coating to remove.
+  They are NOT the price of a metallic floor, a warehouse, a commercial job or
+  a patio, and no copy may present them as such — those are quoted after
+  inspection and always have been.
 
-  `assumes` is NOT a price and stays: it describes what a starting rate would
-  presuppose, and the cost-factor copy still needs it.
+  EVERY LABEL MUST SAY "FROM". A floor presented as a typical price is how an
+  advertised rate becomes a misrepresentation; `oneCarNote` exists to say that
+  the one-car figure is a minimum charge rather than a calculated price.
 */
 export const pricing = {
-  perSqFtFrom: '{{PRICE_PER_SQFT_RANGE}}',
-  oneCarFrom: '{{PRICE_1_CAR_STARTING}}',
-  twoCarFrom: '{{PRICE_2_CAR_STARTING}}',
+  perSqFtFrom: usdCompact(GARAGE_RATE_PER_SQFT_USD),
+  oneCarFrom: usdCompact(GARAGE_MINIMUM_PROJECT_USD),
+  twoCarFrom: usdCompact(roughEstimate(TYPICAL_SQFT['2-Car'] ?? 400).totalUsd),
   oneCarNote: 'minimum job charge',
-  /* What a starting rate would presuppose. Still rendered — not a figure. */
+  /* What the starting rate presupposes. Still rendered, and now load-bearing:
+     it is the sentence that keeps "from $4.50" honest. */
   assumes:
     'the least expensive system on a sound slab with no existing coating to remove',
 } as const
@@ -717,16 +720,17 @@ export const faqs = [
   {
     q: 'How much does a two-car garage floor coating cost in Houston?',
     /*
-      Answers the cost question without a figure, because this string is
-      published in FAQPage structured data as well as on the page — a number
-      here is a price claim made to Google, not just to a reader.
+      NOW ANSWERS WITH THE NUMBER, because there is a confirmed one. This string
+      is published in FAQPage structured data as well as on the page, so it is a
+      price claim made to Google — which is precisely why it leads with the
+      figure, says "from", and then names what moves it. A number with no
+      qualifier would be the misrepresentation; a qualifier with no number is
+      the evasion the old version was.
 
-      It still has to be a real answer. "It depends" is worthless, so this names
-      the four things that actually move the number, in rough order of impact,
-      and states what the quote process guarantees. That is genuinely useful to
-      someone comparing bids and is all true.
+      The figures are interpolated from `pricing` so this cannot drift from the
+      calculator.
     */
-    a: 'Cost is driven by four things, and slab condition matters more than square footage. First, whether an existing coating has to be ground off — that is the single largest swing. Second, crack and spall repair, which is quoted as its own line because scope varies enormously between floors. Third, slab moisture, which can change which system will bond reliably. Fourth, the system itself: a solid colour, a full flake broadcast and a metallic finish are different amounts of material and labour. We inspect the slab, itemize all of it in writing, and take no payment upfront.',
+    a: `A standard two-car garage in our flake system starts at ${pricing.twoCarFrom} — that is ${pricing.perSqFtFrom} per square foot across a typical 400 sq ft bay, with a ${pricing.oneCarFrom} minimum on any garage. That is a starting point on a sound slab, not a quote. Four things move it, and slab condition matters more than square footage: whether an existing coating has to be ground off, which is the single largest swing; crack and spall repair, quoted as its own line; slab moisture, which can change which system will bond; and the system itself. We inspect the slab, itemize all of it in writing, and take no payment upfront.`,
   },
   {
     q: 'How long does the installation take?',

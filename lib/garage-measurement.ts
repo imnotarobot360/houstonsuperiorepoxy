@@ -240,6 +240,20 @@ export function usd(n: number): string {
   return n.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 
+/*
+  The same money, formatted for ADVERTISING rather than for arithmetic.
+
+  "$1,000.00 minimum" reads like an invoice; "$1,000 minimum" reads like a
+  price. The calculator keeps usd() and its cents, because there the decimals
+  are the proof that the figure was computed rather than rounded. A rate like
+  $4.50 keeps its cents here too — it is not a whole dollar.
+*/
+export function usdCompact(n: number): string {
+  return Number.isInteger(n)
+    ? n.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    : usd(n)
+}
+
 /* Areas are whole numbers unless the customer gave a fractional dimension. */
 export function sqft(n: number): string {
   return `${Number.isInteger(n) ? n.toLocaleString('en-US') : n.toLocaleString('en-US', { maximumFractionDigits: 2 })} sq ft`

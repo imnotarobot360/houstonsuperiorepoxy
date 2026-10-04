@@ -1,3 +1,5 @@
+import { pricing } from '@/lib/site'
+
 /*
   Cost factors and the eleven quoted line items for /pricing/.
 
@@ -5,21 +7,21 @@
   There are no dollar amounts anywhere below, and that is deliberate rather than
   an oversight waiting to be filled in carelessly.
 
-  Only three price figures were ever on this site (per-square-foot, 1-car and
-  2-car starting prices) and all three are unconfirmed, now held as {{TOKEN}}s
-  in lib/site.ts. The other eight line items here never had a figure at all.
+  THREE OF THE ELEVEN LINES NOW HAVE A FIGURE. Per-square-foot, one-car and
+  two-car were re-confirmed by the owner on 2026-10-04 and carry a `startsAt`
+  interpolated from `pricing` in lib/site.ts. THE OTHER EIGHT STILL DO NOT AND
+  MUST NOT: three-car, larger, removal, repair, stem walls, additives, metallic
+  and commercial have never had a confirmed number, and the fact that their
+  neighbours now show one is not evidence about them. A fabricated price is the
+  single most damaging thing this site could publish.
 
-  That left three options and only one honest one:
-    - Render the tokens: publishes the literal string "{{PRICE_2_CAR_STARTING}}"
-      to visitors, and into the FAQ rich result. Rejected.
-    - Invent the missing eight: a fabricated price is the single most damaging
-      thing this site could publish. Rejected outright.
-    - Explain what drives each line instead. Chosen.
+  So the remaining eight still explain what drives the line instead. That is
+  genuinely useful to a price shopper and it is true today.
 
-  Each entry carries a `refill` note naming exactly which figure belongs there
-  once the owner confirms it, so restoring prices is a lookup rather than an
-  archaeology exercise. Adding a figure to this file WITHOUT owner confirmation
-  re-introduces the exact problem the last cleanup removed.
+  Each entry keeps its `refill` note naming exactly which figure belongs there,
+  so filling one in later is a lookup rather than an archaeology exercise.
+  Adding a figure to this file WITHOUT owner confirmation re-introduces the
+  exact problem the last cleanup removed.
 */
 
 export type CostDirection = 'up' | 'down' | 'varies'
@@ -106,6 +108,13 @@ export type LineItem = {
   drivers: readonly string[]
   onQuote: string
   /*
+    The confirmed starting figure for this line, when one exists. ABSENT on the
+    eight lines that have never had a confirmed number — an undefined here is a
+    deliberate statement that we do not publish a figure for this, not a gap to
+    be tidied up with a plausible-looking guess.
+  */
+  startsAt?: string
+  /*
     The figure to restore here once the owner confirms it. Named explicitly
     rather than left as "add price" so nobody has to guess which number this
     section wanted.
@@ -125,7 +134,8 @@ export const lineItems: readonly LineItem[] = [
     ],
     onQuote:
       'Your quote states the rate and, separately, what that rate does and does not include, so it can be compared against another contractor line by line rather than headline to headline.',
-    refill: 'PRICE_PER_SQFT_RANGE from lib/site.ts, once re-confirmed.',
+    startsAt: `${pricing.perSqFtFrom} per sq ft`,
+    refill: 'Filled 2026-10-04 from pricing.perSqFtFrom in lib/site.ts.',
   },
   {
     id: 'one-car-garage',
@@ -138,7 +148,8 @@ export const lineItems: readonly LineItem[] = [
     ],
     onQuote:
       'Quoted as a single itemized figure covering grinding, base coat, broadcast and topcoat, with repair and removal broken out as their own lines if the slab needs them.',
-    refill: 'PRICE_1_CAR_STARTING from lib/site.ts, once re-confirmed.',
+    startsAt: `${pricing.oneCarFrom} ${pricing.oneCarNote}`,
+    refill: 'Filled 2026-10-04 from pricing.oneCarFrom in lib/site.ts.',
   },
   {
     id: 'two-car-garage',
@@ -151,7 +162,8 @@ export const lineItems: readonly LineItem[] = [
     ],
     onQuote:
       'One itemized figure for the coating system, with preparation, repair and any removal shown as separate lines so you can see the split.',
-    refill: 'PRICE_2_CAR_STARTING from lib/site.ts, once re-confirmed.',
+    startsAt: `${pricing.twoCarFrom} for a typical 400 sq ft bay`,
+    refill: 'Filled 2026-10-04 from pricing.twoCarFrom in lib/site.ts.',
   },
   {
     id: 'three-car-garage',

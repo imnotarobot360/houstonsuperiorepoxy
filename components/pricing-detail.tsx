@@ -11,18 +11,16 @@ import { costFactors, lineItems, type CostDirection } from '@/lib/content/pricin
   is also what makes the same content usable by a screen reader, so the
   extractability win and the accessibility win are the same change.
 
-  WHY THERE ARE NO DOLLAR FIGURES
-  Every price on this site is unconfirmed and now lives as a {{TOKEN}} in
-  lib/site.ts. Only three tokens exist (per-square-foot, 1-car, 2-car); the
-  other eight line items below have no confirmed figure at all. Rendering the
-  tokens would publish the literal text "{{PRICE_2_CAR_STARTING}}" to visitors
-  and into the FAQ rich result, and inventing the missing eight would be worse.
+  WHY ONLY THREE OF THE ELEVEN SHOW A FIGURE
+  Per-square-foot, one-car and two-car were re-confirmed by the owner on
+  2026-10-04 and render their `startsAt`. The other eight have never had a
+  confirmed number, so they show none — and the asymmetry is the point. A
+  reader seeing a price on three lines and not on "removal" learns something
+  true: removal is quoted after we see the floor.
 
-  So each section explains what drives that specific line and what the written
-  quote breaks out. That is genuinely useful to a price shopper, it is true
-  today, and it is the half of the argument that does not expire. Each entry in
-  lib/content/pricing-detail.ts carries a `refill` note naming the figure to add
-  once confirmed.
+  Every section still explains what drives that specific line and what the
+  written quote breaks out, which is the half of the argument that does not
+  expire. Do not add a figure here that is not in `pricing` in lib/site.ts.
 */
 
 /* ---------------------------------------------------------------- */
@@ -143,6 +141,12 @@ export function LineItems() {
           <h3 className="font-serif text-xl tracking-tight text-foreground text-balance sm:text-2xl">
             {item.heading}
           </h3>
+
+          {item.startsAt && (
+            <p className="mt-3 font-mono text-lg tracking-tight text-foreground">
+              From <span className="text-primary">{item.startsAt}</span>
+            </p>
+          )}
 
           <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground text-pretty">
             {item.what}

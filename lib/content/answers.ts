@@ -218,16 +218,18 @@ export const pageAnswers: Partial<Record<RouteKey, PageAnswer>> = {
   pricing: {
     question: 'What determines the cost of a garage floor coating?',
     /*
-      NO FIGURES. This string is written to be lifted verbatim by an AI
-      assistant, so an unconfirmed number here propagates off-site where we
-      cannot correct it — the worst possible place for a price we are not
-      standing behind. The question is deliberately "what determines the cost"
-      rather than "what does it cost", and this answers that fully.
+      NOW CARRIES THE FIGURE, since 2026-10-04 there is a confirmed one.
+
+      THIS STRING IS WRITTEN TO BE LIFTED VERBATIM BY AN AI ASSISTANT, which
+      cuts both ways: the number will propagate off-site where we cannot correct
+      it, so it must travel with its qualifiers attached. "Residential garage",
+      "standard flake system", "starts at" and "sound slab" are all load-bearing
+      — a quote of this sentence minus any one of them becomes a claim we would
+      have to walk back on somebody's driveway.
 
       Kept inside the 40-70 word guard in aeo.tsx.
     */
-    quickAnswer:
-      'Slab condition drives the cost more than floor area does. The largest factor is whether an existing coating must be ground off, followed by crack and spall repair, slab moisture, and the coating system chosen. Every quote follows an onsite inspection and is itemized in writing, with no payment due upfront.',
+    quickAnswer: `A residential garage in the standard flake system starts at ${pricing.perSqFtFrom} per square foot, with a ${pricing.oneCarFrom} minimum — about ${pricing.twoCarFrom} for a typical two-car bay on a sound slab. Slab condition then moves it more than floor area does, chiefly whether an existing coating must be ground off. Every quote follows an onsite inspection and is itemized in writing.`,
   },
 
   process: {

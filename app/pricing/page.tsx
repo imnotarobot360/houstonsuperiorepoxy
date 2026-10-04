@@ -25,24 +25,29 @@ export const metadata: Metadata = {
 /*
   INTENT: price shopper.
 
-  NO DOLLAR FIGURES ON THIS PAGE. The starting prices it used to publish are
-  unconfirmed and are now {{TOKEN}}s in lib/site.ts. Interpolating them would
-  render "{{PRICE_PER_SQFT_RANGE}}" to visitors and into the FAQPage rich
-  result, so the copy below was rewritten to be genuinely figure-free rather
-  than to hold a token.
+  THE FIGURES ARE BACK, re-confirmed by the owner on 2026-10-04. Every one of
+  them is interpolated from `pricing` in lib/site.ts, which derives from
+  lib/pricing-config.ts — so this page, the FAQ rich result, the LocalBusiness
+  priceRange and the Floor Designer's calculator all quote the same arithmetic.
+  Nothing on this page may hardcode a dollar amount.
 
-  The page still has to earn its place for someone who came here to find out
-  what a floor costs. It does that by explaining what drives the number and
-  what the quote guarantees — which was always the stronger half of the
-  argument. See the restore checklist on `pricing` in lib/site.ts.
+  WHAT DID NOT CHANGE: the argument. The page used to earn its place by
+  explaining what drives the number instead of publishing one, and that was
+  always the stronger half — a reader who understands the variables can compare
+  two bids, which a reader holding one figure cannot. The number is now the way
+  in rather than the whole answer.
+
+  SCOPE DISCIPLINE: the rate is a residential garage in the standard flake
+  system. Metallic, commercial, warehouse and patio work is quoted after
+  inspection. Do not let a figure migrate into copy about those.
 */
 
 const body = [
   {
-    heading: 'Why we are not publishing a number today',
+    heading: 'Where the number comes from',
     paras: [
-      'We would rather show you a figure here, and we will once we can stand behind it. What we are not willing to do is publish a starting price we have not re-confirmed, because a number on a website becomes the number you remember — and finding out on the driveway that it was optimistic is exactly the experience this page exists to argue against.',
-      `In the meantime, what we can tell you is what a starting rate would assume: ${pricing.assumes}. Almost no real floor matches that description exactly, which is the honest reason a single advertised figure tells you so little.`,
+      `A residential garage in our standard flake system starts at ${pricing.perSqFtFrom} per square foot, with a ${pricing.oneCarFrom} minimum on any garage. A typical two-car bay of about 400 square feet works out at ${pricing.twoCarFrom}. That is the entire calculation, and you can run it yourself on our floor designer, which shows every step.`,
+      `What that figure assumes is ${pricing.assumes}. Almost no real floor matches that description exactly, which is why it is a starting point and not a quote — and why we would rather you understood the variables than memorised the number.`,
       'A number is only meaningful if the work behind it is defined, and in this trade it usually is not. The same garage can be quoted three ways — a thin single-part product rolled over an etched slab, a mid-grade epoxy on a partially ground floor, and a full diamond-ground system with a polyaspartic topcoat. Those are not competing prices for one job. They are prices for three different jobs, and ours is the third.',
       'So what we publish instead is the variables. If you understand what moves the number, you can compare any two quotes on equal terms — including ours against someone else’s.',
     ],
@@ -112,14 +117,23 @@ const faqs = [
   {
     q: 'How much does garage floor coating cost per square foot in Houston?',
     /*
-      HIGH-VOLUME QUERY AND THE RISKIEST ONE TO ANSWER. A per-square-foot rate
-      was published here once and the owner withdrew the confirmation — see the
-      note in lib/site.ts. This answers the question properly by explaining why
-      the unit itself misleads on a residential garage, rather than by quoting a
-      rate or by dodging. Like every answer on this page it goes into FAQPage
-      structured data, so a figure here is a price claim made to Google.
+      HIGH-VOLUME QUERY AND THE RISKIEST ONE TO ANSWER. A rate was published
+      here once and the owner withdrew the confirmation; it was re-confirmed on
+      2026-10-04, so the answer now leads with the number instead of explaining
+      why it could not give one.
+
+      IT STILL HAS TO CARRY THE CAVEAT, and the caveat is not boilerplate: most
+      of the cost sits in work that does not scale with area, which is the real
+      reason two identically sized garages differ by thousands. Leading with
+      "$4.50" and stopping would be the misrepresentation this answer was
+      originally written to avoid.
+
+      Like every answer on this page it goes into FAQPage structured data, so
+      the figure is a price claim made to Google — hence "starts at", the named
+      system, and the minimum, all in the first sentence where a snippet will
+      actually keep them.
     */
-    a: 'A per-square-foot rate is the wrong unit for a residential garage, which is why we do not quote one. Most of the cost sits in work that does not scale with area: grinding the slab, repairing cracks and spalls, and removing any failed coating all take roughly the same effort per square foot on a small floor as a large one, while mobilisation and setup are fixed. Two garages of identical size can differ by thousands because one has a sound bare slab and the other has a failing coating over damaged concrete. We quote the actual scope, itemized, after seeing the floor.',
+    a: `Our standard flake system starts at ${pricing.perSqFtFrom} per square foot on a residential garage, with a ${pricing.oneCarFrom} minimum on any garage — about ${pricing.twoCarFrom} for a typical two-car bay. Treat that as a starting point rather than a rate that travels: most of the cost sits in work that does not scale with area. Grinding, repairing cracks and spalls, and removing a failed coating take roughly the same effort per square foot on a small floor as a large one, while mobilisation and setup are fixed. Two garages of identical size can differ by thousands because one has a sound bare slab and the other has a failing coating over damaged concrete. We quote the actual scope, itemized, after seeing the floor.`,
   },
   {
     q: 'Does a 3-car garage cost proportionally more than a 2-car?',

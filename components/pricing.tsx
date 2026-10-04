@@ -1,23 +1,27 @@
 import Link from 'next/link'
 import { Info } from 'lucide-react'
 import { SectionHeading } from '@/components/section-heading'
-import { costFactors, site } from '@/lib/site'
+import { costFactors, pricing, site } from '@/lib/site'
 
 /*
-  THE THREE-CARD STARTING-PRICE GRID WAS REMOVED.
+  THE STARTING-PRICE GRID IS BACK — the owner re-confirmed the figures on
+  2026-10-04, and this is the restore the previous note described.
 
-  It rendered $4.50/sq ft, $1,000 and $1,800 from `pricing` in lib/site.ts.
-  Those figures are no longer confirmed, so they are {{TOKEN}}s — and this grid
-  existed only to display them in 2xl mono type. Interpolating the tokens would
-  have published "{{PRICE_2_CAR_STARTING}}" to visitors and to Google, so the
-  section now leads with the cost factors instead.
+  EVERY LABEL SAYS "FROM", which is the whole discipline here: these are a rate
+  and a floor, not a typical price. The note under each one does the work the
+  label cannot, and the line under the grid states the one condition that makes
+  all three true — a sound slab with nothing to grind off.
 
-  TO RESTORE once figures are re-confirmed: rebuild a `startingPoints` array of
-  { label, value, note } from `pricing` and render it as a
-  `sm:grid-cols-3` dl above the cost-factor list. Every label must say "from" —
-  a floor presented as a typical price is what turns an advertised rate into a
-  misrepresentation.
+  The values come from `pricing` in lib/site.ts, which derives them from
+  lib/pricing-config.ts — the same constants the Floor Designer's calculator
+  multiplies. The advertised number and the calculated number are therefore the
+  same number by construction, and cannot drift.
 */
+const startingPoints = [
+  { label: 'From', value: pricing.perSqFtFrom, unit: 'per sq ft', note: 'Standard flake system, measured area' },
+  { label: 'One-car from', value: pricing.oneCarFrom, unit: '', note: `Our ${pricing.oneCarNote} on any garage` },
+  { label: 'Two-car from', value: pricing.twoCarFrom, unit: '', note: 'A typical 400 sq ft bay at the rate above' },
+]
 
 /*
   `detailHref` is passed on the homepage so the section links through to
@@ -30,10 +34,38 @@ export function Pricing({ detailHref }: { detailHref?: string }) {
         <SectionHeading
           eyebrow="Pricing"
           title="Where pricing starts, and what moves it"
-          intro="Two quotes on the same garage can describe completely different work, so a single number would tell you very little on its own. Rather than advertise a figure that may not survive contact with your slab, here is every variable that decides what your floor costs — and what the quote itself guarantees."
+          intro="Here is where a garage floor starts, and here is everything that moves it. Two quotes on the same garage can describe completely different work, so the starting figure is only half the answer — the variables below are the half that lets you compare any two bids on equal terms."
         />
 
-        <p className="mt-14 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+        <dl className="mt-14 grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
+          {startingPoints.map((p) => (
+            <div key={p.label} className="flex flex-col gap-1 bg-background p-6">
+              <dt className="text-[0.7rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                {p.label}
+              </dt>
+              <dd className="flex items-baseline gap-1.5 font-mono text-2xl tracking-tight text-foreground">
+                {p.value}
+                {p.unit && <span className="text-sm text-muted-foreground">{p.unit}</span>}
+              </dd>
+              <p className="text-[0.7rem] leading-relaxed text-muted-foreground text-pretty">{p.note}</p>
+            </div>
+          ))}
+        </dl>
+
+        {/*
+          THE SCOPE LINE, directly under the numbers and not further down the
+          page. Everything above is a residential garage in the standard flake
+          system; metallic, commercial, warehouse and patio work is not covered
+          by any of it, and a reader who takes "$4.50" to their warehouse quote
+          was misled by this page, not by their own optimism.
+        */}
+        <p className="mt-5 text-sm leading-relaxed text-muted-foreground text-pretty">
+          Those are starting points for a residential garage in our standard flake system, assuming{' '}
+          {pricing.assumes}. Metallic floors, patios, warehouses and commercial work are quoted
+          after inspection. Your written quote is the number that counts.
+        </p>
+
+        <p className="mt-10 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
           <Info size={16} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
           <span>
             Slab condition drives cost more than square footage does. Whether an existing coating

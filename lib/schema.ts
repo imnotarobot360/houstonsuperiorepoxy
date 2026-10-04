@@ -1,7 +1,7 @@
 import { author, contentDates, isPlaceholder } from '@/lib/content/authority'
 import { type RouteKey, routes } from '@/lib/routes'
 import { cities } from '@/lib/content/cities'
-import { site, socialProfiles } from '@/lib/site'
+import { pricing, site, socialProfiles } from '@/lib/site'
 
 /*
   ============================================================================
@@ -318,11 +318,18 @@ export const localBusinessNode = {
   },
   currenciesAccepted: 'USD',
   /*
-    NO `priceRange`. The starting prices it derived from are unconfirmed and are
-    now {{TOKEN}}s in lib/site.ts, and `priceRange: '{{PRICE_1_CAR_STARTING}}'`
-    would be malformed structured data — worse than the property being absent.
-    Restore it only alongside re-confirmed figures visible on /pricing/.
+    `priceRange` RESTORED 2026-10-04, alongside re-confirmed figures that are
+    visible on /pricing/ — which is the condition the previous note set and the
+    rule Google applies: structured data may not claim something the page does
+    not show.
+
+    Interpolated from `pricing`, so it cannot drift from the page. The value is
+    the one-car minimum as an open-ended floor ("$1,000+") rather than a band:
+    we have a confirmed floor and no confirmed ceiling, and inventing an upper
+    bound to look precise would be the same fabrication the tokens existed to
+    prevent.
   */
+  priceRange: `${pricing.oneCarFrom}+`,
 }
 
 /** The website itself, published by the Organization. */
