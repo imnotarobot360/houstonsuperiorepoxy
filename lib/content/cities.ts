@@ -1,5 +1,5 @@
 /*
-  Twelve city pages, hand-written.
+  Fourteen city pages, hand-written.
 
   RULE: do NOT extend this file by swapping a city name into a template. Each
   entry has to earn its URL with content that is only true of that city. If a
@@ -546,6 +546,82 @@ export const cities: City[] = [
       },
     ],
     neighbors: ['sugar-land', 'pearland', 'richmond'],
+  },
+  {
+    slug: 'spring',
+    name: 'Spring',
+    county: 'Harris County',
+    intro:
+      'Most of Spring was built out between the late 1960s and the 1980s, along two creeks that flood. That combination — slabs around half a century old, a meaningful number of which have taken water — is what makes a Spring garage floor its own kind of job.',
+    slab: [
+      {
+        heading: 'A build-out concentrated in the 1970s and 1980s',
+        body: 'Suburban Spring and Klein expanded rapidly after Bush Intercontinental opened in the late 1960s; Klein ISD\u2019s enrolment rose about 82 percent between 1972 and 1982, and neighbourhoods around Champions and along Cypress Creek date from that window. That puts a large share of garage slabs at forty to fifty years old: usually sound concrete, but with spalling at the apron, opened control joints and decades of oil to deal with before anything is coated.',
+      },
+      {
+        heading: 'Two creeks, and the slabs along them',
+        body: 'Cypress Creek and Spring Creek both flooded during Harvey. The Harris County Flood Control District puts the Cypress Creek watershed at 29.3 inches of rainfall and roughly 9,450 homes flooded in that storm, following the Tax Day flood the year before. A slab that has been submerged is not ruled out, but it has to be checked for what soaked in and whether it is still giving moisture back.',
+      },
+      {
+        heading: 'The houses mostly stayed',
+        body: 'Unlike some flooded parts of the inner loop, Spring has not seen wholesale teardown and rebuild — around 410 homes have been bought out across the Cypress Creek watershed since 1985, about 150 of them in the Spring and Klein area. So the typical flooded Spring garage still has its original slab rather than a new one, which makes moisture testing the part of the inspection that decides the specification.',
+      },
+    ],
+    local:
+      'We ask two questions here before quoting: when was the house built, and has this garage ever taken water. A dry 1978 slab in Champions is a straightforward repair-and-grind job. The same slab after a 2017 flood is a different specification, because the concrete may still be releasing moisture years later and a coating applied over that is the most common way a floor fails. Old Town Spring and the older stock around it are older again, and are assessed on their own terms.',
+    faqs: [
+      {
+        q: 'My Spring house is from the seventies. Is the garage slab too old?',
+        a: 'Age by itself is not the problem — concrete from that era in this area is frequently sound. What we are scoping is the spalling at the apron, how far oil has penetrated at the parking positions, and whether any control joint or crack is still moving. That repair work is quoted as its own line rather than hidden in a square-foot rate.',
+      },
+      {
+        q: 'Our garage flooded in Harvey. Can it be coated now?',
+        a: 'Usually, after testing. Years can pass and a slab that sat under water can still be driving moisture upward, and there may be contaminants in the concrete. We moisture-test at the inspection and tell you plainly whether to proceed, wait, or change the specification.',
+      },
+      {
+        q: 'Do you cover Klein and the Champions area as well as Old Town Spring?',
+        a: 'Yes — they are all part of the same service area for us, though they are not the same job. Champions-era subdivisions and the older stock near Old Town Spring sit decades apart, and the inspection is what establishes which one you have.',
+      },
+    ],
+    neighbors: ['the-woodlands', 'tomball', 'cypress'],
+  },
+  {
+    slug: 'tomball',
+    name: 'Tomball',
+    county: 'Harris County',
+    intro:
+      'Tomball is far enough northwest that the ground under it is not the Beaumont clay most of this site talks about. There is a USDA soil series named after the town, and its defining characteristic is poor drainage — which is a moisture question before it is a concrete one.',
+    slab: [
+      {
+        heading: 'The soil series is literally called Tomball',
+        body: 'The USDA maintains an official soil series named Tomball: loamy deposits derived from the Willis Formation, found in open-ended depressions on the inland coastal plain, and described as poorly drained and very slowly permeable. Where a garage sits on ground like that, water does not leave quickly, and what we care about is whether it is finding its way up through the slab.',
+      },
+      {
+        heading: 'Conditions change street to street up here',
+        body: 'Northwest Harris County surface geology is older than the Beaumont clay nearer the coast, and sandy and clayey deposits interleave across short distances. That is genuinely different from the uniform clay further south: two houses a few streets apart can sit on noticeably different ground. It is the main reason we will not quote a Tomball floor from a description over the phone.',
+      },
+      {
+        heading: 'Town lots and acreage are different jobs',
+        body: 'Tomball was still a town of about 12,000 at the 2020 census, with newer subdivisions around a small historic core and acreage properties beyond it. An attached two-car garage and a detached shop on a few acres are not the same project: the shop is usually a larger pour, often with no vapor barrier under it, and sometimes has never had a finished floor at all.',
+      },
+    ],
+    local:
+      'Moisture is the first thing we test in Tomball and the thing most likely to change the specification. Poorly drained ground and slow permeability mean vapor drive is a live possibility rather than a box to tick, and a coating applied over a slab that is still passing moisture will fail regardless of how well it was ground. Where a moisture problem shows up we say so and explain the options — we will not quietly coat over it.',
+    faqs: [
+      {
+        q: 'Is the soil in Tomball different from the rest of Houston?',
+        a: 'Generally yes. Most of our service area sits on Beaumont Formation clay; northwest Harris County surfaces are older deposits, and there is a USDA soil series named Tomball that is poorly drained and very slowly permeable. What it means practically is that moisture under the slab deserves more attention here, not that your floor cannot be coated.',
+      },
+      {
+        q: 'Can you coat a detached shop or barn floor, not just a garage?',
+        a: 'Yes, and it is a common request on acreage out this way. A shop slab is usually bigger, more likely to have been poured without a vapor barrier, and may have heavier equipment on it — so the system we specify and the return-to-service time can differ from a house garage. It is quoted after we have seen it.',
+      },
+      {
+        q: 'How do you know what my slab is sitting on?',
+        a: 'We test rather than look it up. Published soil mapping tells us what to expect in an area, but it does not tell us about your slab, so moisture testing at the inspection is what actually decides the specification. The NRCS Web Soil Survey will show the mapped series for your address if you are curious before we arrive.',
+      },
+    ],
+    neighbors: ['spring', 'magnolia', 'cypress'],
   },
 ]
 
