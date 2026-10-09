@@ -73,7 +73,7 @@ const whatsIncluded = [
   'Polyaspartic clear topcoat where appropriate for the system',
   'Stem walls and curbs coated if you want them included',
   'Final walkthrough with care instructions for your specific floor',
-  'Written Limited Lifetime residential workmanship warranty',
+  'Written Limited Lifetime Workmanship Warranty on qualifying residential installations',
 ]
 
 const jobFlow = [

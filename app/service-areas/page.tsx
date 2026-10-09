@@ -53,7 +53,7 @@ const body = [
 
 const coverage = [
   'Free onsite estimates throughout the coverage area, with nothing due upfront.',
-  'The same written five-year workmanship warranty regardless of which city you are in.',
+  'The same written workmanship warranty regardless of which city you are in — the term is set by what is being coated, not by where you live.',
   'The same diamond grinding and repair standards on every slab we coat.',
   'Residential garages, patios and pool decks, plus commercial and warehouse slabs.',
 ]

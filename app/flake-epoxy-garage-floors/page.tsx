@@ -84,7 +84,7 @@ const included = [
   'Scrape and vacuum of the cured flake layer',
   'Polyaspartic clear topcoat',
   'Stem walls and curbs on request, itemized separately',
-  'Written Limited Lifetime residential workmanship warranty',
+  'Written Limited Lifetime Workmanship Warranty on qualifying residential installations',
 ]
 
 const detail = [

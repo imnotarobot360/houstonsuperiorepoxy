@@ -132,7 +132,7 @@ export function LpSystem() {
           <li aria-hidden="true" className="text-border">
             |
           </li>
-          <li>Limited Lifetime residential workmanship warranty</li>
+          <li>Limited Lifetime Workmanship Warranty on qualifying residential installations</li>
           <li aria-hidden="true" className="text-border">
             |
           </li>

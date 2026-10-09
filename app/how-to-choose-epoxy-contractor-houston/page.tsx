@@ -462,7 +462,7 @@ export default function Page() {
               },
               {
                 t: 'Warranty',
-                d: 'A written Limited Lifetime residential workmanship warranty, with its terms and exclusions set out in full.',
+                d: 'A written Limited Lifetime Workmanship Warranty on qualifying residential installations, with its terms and exclusions set out in full.',
               },
               {
                 t: 'Payment',

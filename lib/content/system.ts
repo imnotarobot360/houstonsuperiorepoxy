@@ -1,3 +1,5 @@
+import { WARRANTY_RESIDENTIAL_SCOPE, WARRANTY_TERM } from '@/lib/content/warranty'
+
 /*
   The installed system, named once.
 
@@ -28,4 +30,4 @@ export const systemLayers = [
   designer only ever previews a garage, but this string is importable and the
   scope has to travel with it. See the category split in lib/content/specs.ts.
 */
-export const SYSTEM_WARRANTY = 'Limited Lifetime residential workmanship warranty'
+export const SYSTEM_WARRANTY = `${WARRANTY_TERM} on ${WARRANTY_RESIDENTIAL_SCOPE}`

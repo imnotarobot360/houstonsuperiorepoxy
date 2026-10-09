@@ -36,7 +36,7 @@ const commitments = [
   },
   {
     tag: 'Warranty',
-    title: 'Limited Lifetime residential workmanship warranty',
+    title: 'Limited Lifetime Workmanship Warranty on qualifying residential installations',
     body: 'Provided in writing with every floor. A workmanship warranty covers our installation, which is a different thing from a product warranty covering the manufacturer’s material — worth understanding before you compare guarantees.',
   },
   {
@@ -95,7 +95,7 @@ const body = [
         schema's parentOrganization, the cities as real pages, the warranty and
         grinding in `commitments` above.
       */
-      `${site.company} is the concrete coatings division of ${site.parentCompany}, a service-area business installing garage floor, patio and pool deck, and commercial and warehouse coatings across Greater Houston — including ${cityPhrase}. Every floor is diamond-ground before coating, carries a five-year written workmanship warranty, and is quoted onsite and itemized in writing.`,
+      `${site.company} is the concrete coatings division of ${site.parentCompany}, a service-area business installing garage floor, patio and pool deck, and commercial and warehouse coatings across Greater Houston — including ${cityPhrase}. Every floor is diamond-ground before coating, carries a written workmanship warranty with the term set by what is being coated, and is quoted onsite and itemized in writing.`,
       'Coatings are not a sideline added to a general contracting business; they are the work. That focus is the reason this site is as technical as it is. The difference between a floor that lasts and one that peels in eighteen months is almost entirely in preparation and material selection, and those are decisions you should be able to interrogate before you hire anyone.',
     ],
   },

@@ -615,7 +615,7 @@ export const comparison = [
   },
   {
     point: 'Warranty',
-    ours: 'Written Limited Lifetime residential workmanship warranty',
+    ours: 'Written Limited Lifetime Workmanship Warranty on qualifying residential installations',
     theirs: 'Product-only, prorated at best',
   },
 ] as const

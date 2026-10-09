@@ -30,7 +30,7 @@ const followUps = [
   { key: 'pricing' as const, blurb: 'The ten variables in every quote.' },
   { key: 'process' as const, blurb: 'The nine-step install, in order.' },
   { key: 'polyaspartic' as const, blurb: 'Epoxy vs polyaspartic in full.' },
-  { key: 'warranty' as const, blurb: 'What the five years covers.' },
+  { key: 'warranty' as const, blurb: 'What the Limited Lifetime term covers.' },
 ]
 
 export function Faq() {

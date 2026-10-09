@@ -498,7 +498,7 @@ export type CustomerEmailResult =
 */
 function warrantyPhrase(space?: string | null): string {
   return space === 'Garage'
-    ? 'a written Limited Lifetime residential workmanship warranty'
+    ? 'a written Limited Lifetime Workmanship Warranty on qualifying residential installations'
     : 'a written workmanship warranty, with the term confirmed in your written estimate'
 }
 

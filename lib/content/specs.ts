@@ -1,4 +1,5 @@
 import type { GlossaryKey } from '@/lib/content/authority'
+import { WARRANTY_RESIDENTIAL_SCOPE, WARRANTY_TERM } from '@/lib/content/warranty'
 import type { RouteKey } from '@/lib/routes'
 
 /*
@@ -67,8 +68,7 @@ import type { RouteKey } from '@/lib/routes'
   Saying "stated in your proposal" is accurate and commits the business to
   nothing it has not signed.
 */
-const WARRANTY_RESIDENTIAL =
-  'Limited Lifetime residential workmanship warranty on qualifying garage installations, provided in writing'
+const WARRANTY_RESIDENTIAL = `${WARRANTY_TERM} on ${WARRANTY_RESIDENTIAL_SCOPE}, provided in writing`
 
 const WARRANTY_EXTERIOR =
   'Written workmanship warranty under the approved exterior system — the residential Limited Lifetime term does not extend to outdoor concrete'

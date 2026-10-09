@@ -50,7 +50,7 @@ export const routes = {
     h1: 'Garage Floor Coatings in Houston',
     title: 'Garage Floor Coatings Houston | Flake & Polyaspartic Systems',
     description:
-      'Houston garage floor coatings built on diamond-ground concrete, full-broadcast flake and a polyaspartic topcoat. Hot-tire resistant, backed by a Limited Lifetime residential workmanship warranty.',
+      'Houston garage floor coatings built on diamond-ground concrete, full-broadcast flake and a polyaspartic topcoat. Hot-tire resistant, backed by a written Limited Lifetime Workmanship Warranty on qualifying residential installations.',
     parent: null,
     label: 'Garage Floors',
   },
@@ -226,7 +226,7 @@ export const routes = {
     h1: 'About Houston Superior Epoxy',
     title: 'About Us | Houston Superior Epoxy',
     description:
-      'Houston Superior Epoxy is the concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, Limited Lifetime residential workmanship warranty.',
+      'Houston Superior Epoxy is the concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, with a Limited Lifetime Workmanship Warranty on qualifying residential installations.',
     parent: null,
     label: 'About',
   },
