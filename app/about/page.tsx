@@ -9,6 +9,7 @@ import { cities } from '@/lib/content/cities'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { finishSamples, site } from '@/lib/site'
+import { PageAnswer } from '@/components/aeo'
 
 const KEY = 'about' as const
 const PATH = routes[KEY].path
@@ -159,6 +160,15 @@ export default function Page() {
         eyebrow="About us"
         intro={`The concrete coatings division of ${site.parentCompany}, serving Greater Houston. $2M insured, with a written Limited Lifetime workmanship warranty on qualifying residential garage installations.`}
       />
+
+      {/*
+        The quick answer sits directly under the hero on purpose. It is the
+        block an answer engine lifts, and burying it below the body means
+        competing with whatever prose happens to come first.
+      */}
+      <Section>
+        <PageAnswer routeKey={KEY} />
+      </Section>
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:gap-16">

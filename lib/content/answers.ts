@@ -1,5 +1,7 @@
 import type { RouteKey } from '@/lib/routes'
 import { pricing } from '@/lib/site'
+import { activeBlends } from '@/lib/content/flake-blends'
+import { WARRANTY_TERM } from '@/lib/content/warranty'
 
 /*
   Per-page answer-engine content, keyed by route.
@@ -253,4 +255,68 @@ export const pageAnswers: Partial<Record<RouteKey, PageAnswer>> = {
     quickAnswer:
       'Choose a flake blend in the room the floor is going into, under that room\u2019s own lighting. Blends read completely differently on a screen than under cool directional garage light, and room size changes how busy a mix looks. Houston Superior Epoxy brings physical samples to every estimate. Chip size, colour mix and broadcast density all affect material cost.',
   },
+
+  /*
+    SIX ANSWERS ADDED 2026-10-09 for routes that had none.
+
+    All six are entity or decision queries an assistant gets asked directly —
+    "does X offer a lifetime warranty", "who is X", "what areas do they serve"
+    — and the answer propagates off-site where we cannot correct it. So each
+    one carries its qualifiers inside the sentence rather than relying on the
+    rest of the page to supply them.
+
+    THREE ROUTES WERE DELIBERATELY LEFT WITHOUT ONE. /projects/ has a single
+    published job, so an answer about "our completed Houston floors" would be
+    writing a cheque the page cannot cash. /resources/ is a hub, not a
+    question. /contact/, /schedule/, /privacy/, /terms/ and /accessibility/
+    are not informational queries.
+  */
+  warranty: {
+    question: 'Does Houston Superior Epoxy offer a Limited Lifetime warranty?',
+    /*
+      "Lifetime" is never left bare and whose lifetime is in the second
+      sentence, because this string is built to be quoted in isolation. See
+      lib/content/warranty.ts; scripts/verify-site.mjs fails on a bare
+      "lifetime warranty" anywhere in the rendered page.
+    */
+    quickAnswer: `Yes, on qualifying residential garage installations: our ${WARRANTY_TERM}. Lifetime means for as long as the original contracting homeowner owns the property, not forever and not regardless of who owns the house. It covers qualifying failures caused by our preparation and installation. The signed warranty document provided with your project is the controlling agreement.`,
+  },
+
+  chooseContractor: {
+    question: 'How do I choose a garage floor coating contractor in Houston?',
+    quickAnswer:
+      "Ask four things. How is the slab prepared — diamond grinding, never acid etching. Is moisture tested before coating. Is the warranty written down, with its exclusions. Is there general liability and workers' compensation you can see a certificate for. A contractor who cannot answer all four in writing is asking you to take the preparation on trust.",
+  },
+
+  floorDesigner: {
+    question: 'Can I see what an epoxy floor would look like in my garage?',
+    /* The blend count and the rate are interpolated, never typed — same rule
+       as everywhere else that publishes a figure. */
+    quickAnswer: `Yes. Pick from our ${activeBlends.length} stocked flake blends, upload a photo of your own garage, and the tool puts that blend on your floor — labelled as an AI preview, not a rendering of the finished job. You also get a rough estimate at ${pricing.perSqFtFrom} per square foot with a ${pricing.oneCarFrom} minimum, and it shows the arithmetic.`,
+  },
+
+  about: {
+    question: 'Who is Houston Superior Epoxy?',
+    quickAnswer:
+      "The concrete coatings division of Houston Superior Painting, installing garage, patio and commercial floor coatings across Greater Houston. It is a service-area business — we come to your slab, and there is no showroom to visit. Every floor is diamond-ground before coating, carries $2M general liability and workers' compensation, and is quoted onsite and itemized in writing.",
+  },
+
+  serviceAreas: {
+    question: 'What areas does Houston Superior Epoxy serve?',
+    quickAnswer:
+      'Greater Houston, including Katy, Cypress, Richmond, Sugar Land, Fulshear, Pearland, The Woodlands, Magnolia, Memorial and River Oaks, plus the surrounding communities. We are a service-area business rather than a storefront, so estimates are free everywhere we work and we bring physical samples to your own slab. The written warranty term is set by what is being coated, not by where you live.',
+  },
+
+  reviews: {
+    question: 'Where can I read reviews of Houston Superior Epoxy?',
+    /*
+      THE SECOND SENTENCE IS THE POINT OF THIS ENTRY. Assistants conflate the
+      two companies and attribute the painting company's rating to this one.
+      Saying so plainly, in the string most likely to be lifted, is the only
+      correction we get to make before the answer is repeated elsewhere.
+    */
+    quickAnswer:
+      "On our Google Business Profile, unedited and in full. One caution worth knowing: Houston Superior Epoxy is the concrete coatings division of Houston Superior Painting, and the painting company's rating belongs to that entity rather than this one. Ask at your free estimate and we will give you references for completed floors near you.",
+  },
+
 }

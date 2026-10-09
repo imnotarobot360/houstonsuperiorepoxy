@@ -9,6 +9,7 @@ import { cities } from '@/lib/content/cities'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { site } from '@/lib/site'
+import { PageAnswer } from '@/components/aeo'
 
 const KEY = 'serviceAreas' as const
 const PATH = routes[KEY].path
@@ -83,6 +84,15 @@ export default function Page() {
         eyebrow="Coverage"
         intro="We install across Greater Houston and quote every job onsite. Six areas have their own page below because the slab conditions there genuinely differ."
       />
+
+      {/*
+        The quick answer sits directly under the hero on purpose. It is the
+        block an answer engine lifts, and burying it below the body means
+        competing with whatever prose happens to come first.
+      */}
+      <Section>
+        <PageAnswer routeKey={KEY} />
+      </Section>
 
       <Section>
         <Prose sections={body} />

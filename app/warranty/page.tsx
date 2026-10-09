@@ -21,6 +21,7 @@ import {
   WARRANTY_REMEDY_EXCLUDES,
   WARRANTY_TERM,
 } from '@/lib/content/warranty'
+import { PageAnswer } from '@/components/aeo'
 
 const KEY = 'warranty' as const
 const PATH = routes[KEY].path
@@ -150,6 +151,15 @@ export default function Page() {
         eyebrow="Guarantee"
         intro={`Qualifying Houston Superior Epoxy residential garage floor installations include our ${WARRANTY_TERM} against covered installation-related failures, backed by $2M general liability and workers’ compensation coverage. Here is what that means, what it excludes, and how to claim.`}
       />
+
+      {/*
+        The quick answer sits directly under the hero on purpose. It is the
+        block an answer engine lifts, and burying it below the body means
+        competing with whatever prose happens to come first.
+      */}
+      <Section>
+        <PageAnswer routeKey={KEY} />
+      </Section>
 
       {/*
         THE CONTROLLING-DOCUMENT DISCLOSURE, placed first and styled as a

@@ -7,6 +7,7 @@ import { PageHero } from '@/components/page-hero'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { site } from '@/lib/site'
+import { PageAnswer } from '@/components/aeo'
 
 const KEY = 'reviews' as const
 const PATH = routes[KEY].path
@@ -91,6 +92,15 @@ export default function Page() {
         eyebrow="Reputation"
         intro="Our coatings work is reviewed on its own Google Business Profile. Rather than reprint the flattering ones here, we link you to all of them."
       />
+
+      {/*
+        The quick answer sits directly under the hero on purpose. It is the
+        block an answer engine lifts, and burying it below the body means
+        competing with whatever prose happens to come first.
+      */}
+      <Section>
+        <PageAnswer routeKey={KEY} />
+      </Section>
 
       {/*
         The <Reviews /> card was removed from THIS page only — it still runs on

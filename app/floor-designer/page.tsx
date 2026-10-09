@@ -9,6 +9,7 @@ import { isProviderConfigured } from '@/lib/visualizer/provider'
 import { activeBlends } from '@/lib/content/flake-blends'
 import { r, routes } from '@/lib/routes'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
+import { PageAnswer } from '@/components/aeo'
 
 const KEY = 'floorDesigner' as const
 const PATH = routes[KEY].path
@@ -77,6 +78,15 @@ export default function Page() {
         eyebrow="Design tool"
         intro={`Pick from our ${activeBlends.length} stocked flake blends, upload a photo of your garage to see one on your own floor, then get a rough estimate at $4.50 per sq ft and book a free onsite inspection — all in one place.`}
       />
+
+      {/*
+        The quick answer sits directly under the hero on purpose. It is the
+        block an answer engine lifts, and burying it below the body means
+        competing with whatever prose happens to come first.
+      */}
+      <Section>
+        <PageAnswer routeKey={KEY} />
+      </Section>
 
       {/*
         pt-8 only below lg. The shared Section pads py-20, which puts 80px of

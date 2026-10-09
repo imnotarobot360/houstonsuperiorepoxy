@@ -5,7 +5,7 @@ import { FaqList, Heading, Prose, RelatedLinks, Section } from '@/components/blo
 import { CtaBand } from '@/components/cta-band'
 import { JsonLd } from '@/components/json-ld'
 import { PageHero } from '@/components/page-hero'
-import { Byline, DefinedTerms, QuickAnswer, SourcesAndTechnicalReferences } from '@/components/aeo'
+import { Byline, DefinedTerms, PageAnswer, QuickAnswer, SourcesAndTechnicalReferences } from '@/components/aeo'
 import { blogPostingNode, faqNode, graph, webPageNode } from '@/lib/schema'
 import { r, routes } from '@/lib/routes'
 
@@ -262,6 +262,15 @@ export default function Page() {
           >
             Get an itemized quote
             <ArrowRight size={16} aria-hidden="true" />
+
+      {/*
+        The quick answer sits directly under the hero on purpose. It is the
+        block an answer engine lifts, and burying it below the body means
+        competing with whatever prose happens to come first.
+      */}
+      <Section>
+        <PageAnswer routeKey={KEY} />
+      </Section>
           </Link>
           <Link
             href={r('epoxyFlooring')}
