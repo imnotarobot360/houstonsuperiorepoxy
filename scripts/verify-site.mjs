@@ -130,6 +130,10 @@ function scanSource() {
 
 const PAGES = [
   '/',
+  /* The machine-readable summary. It states the warranty term, the rate and the
+     minimum, which makes it the likeliest place on the site for a stale claim
+     to sit unnoticed — so it is checked like any page. */
+  '/llms.txt',
   '/warranty/',
   '/about/',
   '/terms/',
