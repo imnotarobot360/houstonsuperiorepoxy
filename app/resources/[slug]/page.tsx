@@ -16,7 +16,7 @@ import { CtaBand } from '@/components/cta-band'
 import { JsonLd } from '@/components/json-ld'
 import { PageHero } from '@/components/page-hero'
 import { articleBySlug, articles } from '@/lib/content/resources'
-import { crumbsFor, r, routes } from '@/lib/routes'
+import { crumbsFor, fitTitle, r, routes } from '@/lib/routes'
 import { blogPostingNode, graph, webPageNode } from '@/lib/schema'
 import { og } from '@/lib/og'
 
@@ -38,7 +38,7 @@ export async function generateMetadata({
 
   const path = `/resources/${article.slug}/`
   return {
-    title: article.title,
+    title: fitTitle(article.title),
     description: article.description,
     alternates: { canonical: path },
     openGraph: og({

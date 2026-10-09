@@ -8,7 +8,7 @@ import { CtaBand } from '@/components/cta-band'
 import { JsonLd } from '@/components/json-ld'
 import { PageHero } from '@/components/page-hero'
 import { ProjectPhoto } from '@/components/project-photo'
-import { crumbsFor, r, routes } from '@/lib/routes'
+import { crumbsFor, fitTitle, r, routes } from '@/lib/routes'
 import { cityBySlug } from '@/lib/content/cities'
 import {
   orderedPhotos,
@@ -49,7 +49,7 @@ export async function generateMetadata({
   if (!project) return {}
 
   const path = `${routes.projects.path}${project.slug}/`
-  const title = `${project.title} | ${project.city}, TX | ${site.company}`
+  const title = fitTitle(`${project.title} | ${site.company}`)
   /*
     A file-authored project carries no summary, so the description falls back to
     the facts it does have. Never left empty — an empty meta description gets

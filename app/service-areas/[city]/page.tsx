@@ -6,7 +6,7 @@ import { CtaBand } from '@/components/cta-band'
 import { JsonLd } from '@/components/json-ld'
 import { PageHero } from '@/components/page-hero'
 import { cities, cityBySlug } from '@/lib/content/cities'
-import { crumbsFor, r, routes } from '@/lib/routes'
+import { crumbsFor, fitTitle, r, routes } from '@/lib/routes'
 import { faqNode, graph, serviceNode, webPageNode } from '@/lib/schema'
 import { site } from '@/lib/site'
 import { og } from '@/lib/og'
@@ -28,7 +28,7 @@ export async function generateMetadata({
   if (!city) return {}
 
   const path = `/service-areas/${city.slug}/`
-  const title = `Epoxy & Polyaspartic Floor Coatings in ${city.name}, TX | Houston Superior Epoxy`
+  const title = fitTitle(`Epoxy & Polyaspartic Floor Coatings in ${city.name}, TX | Houston Superior Epoxy`)
   const description = `Garage floor coatings in ${city.name}, ${city.county}. We diamond grind, repair the slab and quote onsite — free estimates with nothing due upfront.`
 
   return {

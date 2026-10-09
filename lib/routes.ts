@@ -36,6 +36,30 @@ type RouteMeta = {
   label: string
 }
 
+/*
+  Keeps a generated <title> inside what a search result actually shows.
+
+  THE PROBLEM IT SOLVES: 22 resource article titles carry
+  " | Houston Superior Epoxy" inside the stored string, and the city and
+  project templates append the brand too. Every one of those 32 pages came
+  out between 70 and 78 characters, so the brand -- the least useful part --
+  was the part Google truncated, and it took the end of the real title with
+  it.
+
+  Dropping the suffix when it does not fit beats truncating: a title cut
+  mid-word reads as broken, and the brand is already in the domain, the
+  breadcrumb and the site name. If the core alone is still long it is left
+  alone -- a long coherent title is better than a short mangled one, and
+  shortening it is a copy decision, not a string operation.
+*/
+export const TITLE_MAX = 60
+
+export function fitTitle(title: string, max = TITLE_MAX): string {
+  const suffix = ' | Houston Superior Epoxy'
+  if (title.length <= max) return title
+  return title.endsWith(suffix) ? title.slice(0, -suffix.length) : title
+}
+
 export const routes = {
   home: {
     path: '/',
