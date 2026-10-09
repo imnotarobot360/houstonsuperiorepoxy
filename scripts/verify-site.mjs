@@ -47,7 +47,20 @@ const BANNED = [
   {
     pattern: /\b(5|five)[-\s]year\s+(written\s+)?workmanship\s+warranty/gi,
     why: 'The five-year term was replaced by the Limited Lifetime Workmanship Warranty.',
-    allow: [/warranty\/page\.tsx$/, /content\/warranty\.ts$/, /verify-site\.mjs$/, /^AUDIT-REPORT\.md$/],
+    /*
+      The last two are INSTRUCTION DOCUMENTS that forbid the term. The string
+      is present in them because it is being prohibited, not claimed — the
+      same reason /warranty/ is allowed to describe the historical contracts
+      it is not changing.
+    */
+    allow: [
+      /warranty\/page\.tsx$/,
+      /content\/warranty\.ts$/,
+      /verify-site\.mjs$/,
+      /^AUDIT-REPORT\.md$/,
+      /^docs\/SEO-MASTER-PROMPT\.md$/,
+      /^OWNER_VERIFICATION_REQUIRED\.md$/,
+    ],
     allowHtml: [/\/warranty\/?$/],
   },
   {
