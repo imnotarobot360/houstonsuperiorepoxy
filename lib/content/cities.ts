@@ -1,5 +1,5 @@
 /*
-  Six city pages, hand-written.
+  Twelve city pages, hand-written.
 
   RULE: do NOT extend this file by swapping a city name into a template. Each
   entry has to earn its URL with content that is only true of that city. If a
@@ -432,6 +432,120 @@ export const cities: City[] = [
     ],
     neighbors: ['katy', 'sugar-land'],
     covers: ['Memorial', 'River Oaks'],
+  },
+  {
+    slug: 'the-heights',
+    name: 'The Heights',
+    county: 'Harris County',
+    intro:
+      'The Heights is the one part of Houston where the house and its garage are usually built on completely different foundations. The bungalow sits on pier-and-beam; the garage behind it sits on a slab poured decades later, and that slab is what we coat.',
+    slab: [
+      {
+        heading: 'Pier-and-beam house, slab-on-grade garage',
+        body: 'The historic districts are overwhelmingly pier-and-beam — the city\u2019s own design guidance calls for a first floor two and a half to three feet above grade and treats a visible slab-on-grade as incompatible. Detached garages are the exception. Most were added or rebuilt long after the house, on a plain slab at grade, which is why garage floors here are often much newer than the address suggests.',
+      },
+      {
+        heading: 'Alley-loaded garages on small lots',
+        body: 'The original plat gives most properties a 50-foot-wide lot with an alley behind, so garages are detached, tight, and frequently reoriented to face the alley when they are rebuilt. A narrow single-bay slab with a door at each end changes how we stage grinding and dust control, and it changes where the coating has to turn up at the threshold.',
+      },
+      {
+        heading: 'Twenty-three feet above downtown, and it matters',
+        body: 'The neighborhood was named for sitting about 23 feet higher than downtown Houston, and that elevation is the reason it drains better than much of the inner loop. It does not make a slab dry. A detached garage with no gutter and a grade that falls toward the door still takes water at the threshold, which is where we check for moisture first.',
+      },
+    ],
+    local:
+      'Two things make a Heights quote different. First, the garage is usually a separate structure with its own history — we are often looking at a 1990s or 2000s slab behind a 1920s house, and its age has to be established rather than assumed. Second, if the garage is a contributing structure in a historic district, exterior work can fall under Houston Archaeological and Historical Commission review. A floor coating is interior work and does not, but it is worth knowing the line before anyone starts talking about doors or siding.',
+    faqs: [
+      {
+        q: 'My Heights house is pier-and-beam. Can you still coat the garage?',
+        a: 'Almost always, because the garage is a different structure. Detached garages in the Heights sit on a slab even when the house does not, and that slab is what gets ground and coated. We confirm it at the inspection rather than assuming from the house.',
+      },
+      {
+        q: 'Does the historic district stop me from coating my garage floor?',
+        a: 'A floor coating is interior work to an existing structure, so it is not the kind of exterior alteration the historic district review covers. If your project also involves the garage door, siding or the building footprint, that part may need review — check with the City of Houston before committing to those.',
+      },
+      {
+        q: 'The garage is narrow and opens onto the alley. Is that a problem?',
+        a: 'No, but it changes the staging. A single-bay slab with an alley door means we plan grinding, dust extraction and the order of coats around one working access rather than two, and we agree where vehicles go during cure before the day starts.',
+      },
+    ],
+    neighbors: ['memorial-river-oaks', 'bellaire', 'cypress'],
+  },
+  {
+    slug: 'bellaire',
+    name: 'Bellaire',
+    county: 'Harris County',
+    intro:
+      'Bellaire has replaced a large share of its post-war housing stock in the last decade, much of it after flooding. That means an unusual number of garage slabs here are either brand new, recently elevated, or have been underwater — and all three change how a floor is prepared.',
+    slab: [
+      {
+        heading: 'Slabs that have been flooded',
+        body: 'The city reported that 1,936 of its roughly 6,688 homes took water during Hurricane Harvey, and Tropical Storm Imelda brought a second major flood to parts of the area within about two years. A slab that has been submerged is not automatically unsuitable, but it has to be assessed rather than assumed: we are looking at what soaked into the concrete, what is still coming back out of it, and whether a previous coating lost adhesion.',
+      },
+      {
+        heading: 'Green concrete on rebuilt and elevated homes',
+        body: 'Hundreds of homes around Bellaire, West University and Meyerland have been demolished and rebuilt since 2017, and others have been lifted onto concrete piers. Both produce a very young slab. New concrete needs time to cure and can still be driving moisture upward well after it looks dry, so on a recent pour the moisture test is the part of the inspection that decides the schedule.',
+      },
+      {
+        heading: 'Post-war slabs that are still original',
+        body: 'Where the original house remains, the garage slab is typically 1940s to 1960s concrete: thinner than a modern pour, often without a vapor barrier underneath, and carrying decades of oil. Those slabs usually coat well, but the preparation and repair scope is a bigger line on the quote than it is on a new build.',
+      },
+    ],
+    local:
+      'Bellaire is the one area where we ask about the flood history of the specific house before quoting, because the answer changes the specification more than the square footage does. A 2022 rebuild and a 1955 original two streets apart are not the same job. Brays Bayou runs along the area and the city has its own elevation standards, so new construction here is generally built to a different standard than the house it replaced — and the garage slab came with it.',
+    faqs: [
+      {
+        q: 'My garage flooded. Can the slab still take a coating?',
+        a: 'Usually yes, once it has been assessed. What matters is whether the concrete is still releasing moisture, whether contaminants soaked in, and whether any existing coating has lost adhesion. We test rather than guess, because a coating applied over a slab that is still drying is the most common way one fails.',
+      },
+      {
+        q: 'My house is a new build. Is the slab too new to coat?',
+        a: 'It can be. Fresh concrete needs to cure and give up its moisture before a coating goes down, and that is a timing question rather than a yes or no. We moisture-test at the inspection and tell you whether to proceed now or wait — waiting a few weeks is far cheaper than recoating a failed floor.',
+      },
+      {
+        q: 'We had the house elevated. Does that change the garage floor?',
+        a: 'Often the garage slab is new or substantially rebuilt as part of that work, which puts it in the same category as a new build: likely sound, likely young. The inspection establishes its age and moisture condition, and the specification follows from that.',
+      },
+    ],
+    neighbors: ['memorial-river-oaks', 'the-heights', 'missouri-city'],
+  },
+  {
+    slug: 'missouri-city',
+    name: 'Missouri City',
+    county: 'Fort Bend County',
+    intro:
+      'Missouri City contains two housing stocks separated by about a quarter of a century — the 1970s Quail Valley build-out and the Sienna development that is still going. A garage slab here is typically either fifty years old or five, and almost nothing in between.',
+    slab: [
+      {
+        heading: 'Beaumont clay, the Fort Bend constant',
+        body: 'Like most of Fort Bend County, Missouri City sits on Beaumont Formation clay: highly expansive soil that swells as it takes on water and shrinks as it dries. That seasonal shrink-swell is the usual explanation for cracking in garage slabs here, and it is also why a crack that is still moving has to be identified before anything is coated over it.',
+      },
+      {
+        heading: 'Quail Valley: fifty-year-old concrete',
+        body: 'Quail Valley was developed from 1969 and largely built out through the 1970s, which makes those garage slabs roughly half a century old. Expect spalling at the apron, oil saturation at the parking positions, and control joints that have opened up. They are usually good candidates — the concrete of that era is often better than people assume — but the repair scope is a real line on the quote.',
+      },
+      {
+        heading: 'Sienna: slabs that may still be curing',
+        body: 'Sienna has been under development since the mid-1990s and is still delivering homes, so a garage floor there can be a few months old. New slabs bring the opposite problem to old ones: no repair to speak of, but a hard power-troweled surface that has to be mechanically ground open, and moisture that may not have finished leaving the concrete.',
+      },
+    ],
+    local:
+      'We quote Missouri City by the subdivision rather than the city, because the two ends of it need different work. A Quail Valley floor is mostly a repair-and-preparation job; a Sienna floor is mostly a grinding-and-moisture job. Both get diamond grinding and the same written warranty, but the time on site and the line items are not the same, which is why we will not price either one over the phone.',
+    faqs: [
+      {
+        q: 'My Quail Valley garage is from the seventies. Is it too old to coat?',
+        a: 'Age alone does not rule a slab out — fifty-year-old concrete in this area is frequently sound. What we are checking is how much spalling and joint damage there is, how deep the oil has gone, and whether anything is still moving. The repair scope comes out of that, and it is quoted as its own line.',
+      },
+      {
+        q: 'Our Sienna home is nearly new. Why would the floor need grinding?',
+        a: 'Because a new slab is usually power-troweled to a hard, closed surface, and a coating needs a profile to bond into. Grinding opens that surface up. It is the same step on a new floor as on an old one, just for the opposite reason.',
+      },
+      {
+        q: 'Should I wait for the soil to settle before coating a new build?',
+        a: 'The coating is not what moves with the soil — the slab is. What we do want to confirm on a recent build is that the concrete has cured and is not still releasing moisture, and that any early cracking has been identified. We test at the inspection and tell you if waiting is the better call.',
+      },
+    ],
+    neighbors: ['sugar-land', 'pearland', 'richmond'],
   },
 ]
 
