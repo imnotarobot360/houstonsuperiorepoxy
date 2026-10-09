@@ -9,6 +9,7 @@ import { cities, cityBySlug } from '@/lib/content/cities'
 import { crumbsFor, r, routes } from '@/lib/routes'
 import { faqNode, graph, serviceNode, webPageNode } from '@/lib/schema'
 import { site } from '@/lib/site'
+import { og } from '@/lib/og'
 
 /* Fully static — six known cities, no runtime fallback. */
 export const dynamicParams = false
@@ -34,7 +35,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: path },
-    openGraph: { title, description, url: path },
+    openGraph: og({ title, description, url: path }),
   }
 }
 

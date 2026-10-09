@@ -18,6 +18,7 @@ import { PageHero } from '@/components/page-hero'
 import { articleBySlug, articles } from '@/lib/content/resources'
 import { crumbsFor, r, routes } from '@/lib/routes'
 import { blogPostingNode, graph, webPageNode } from '@/lib/schema'
+import { og } from '@/lib/og'
 
 /* Fully static — a fixed set of hand-written guides. */
 export const dynamicParams = false
@@ -40,12 +41,12 @@ export async function generateMetadata({
     title: article.title,
     description: article.description,
     alternates: { canonical: path },
-    openGraph: {
+    openGraph: og({
       title: article.title,
       description: article.description,
       url: path,
       type: 'article',
-    },
+    }),
   }
 }
 

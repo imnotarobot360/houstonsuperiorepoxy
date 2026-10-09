@@ -9,6 +9,7 @@ import { PageHero } from '@/components/page-hero'
 import { faqNode, graph, webPageNode } from '@/lib/schema'
 import { r, routes } from '@/lib/routes'
 import { site } from '@/lib/site'
+import { og } from '@/lib/og'
 
 const meta = routes.contact
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   title: meta.title,
   description: meta.description,
   alternates: { canonical: meta.path },
-  openGraph: { title: meta.title, description: meta.description, url: meta.path },
+  openGraph: og({ title: meta.title, description: meta.description, url: meta.path }),
 }
 
 const faqs = [

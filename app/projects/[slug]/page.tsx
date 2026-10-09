@@ -18,6 +18,7 @@ import {
 } from '@/lib/content/projects'
 import { graph, projectNode, webPageNode } from '@/lib/schema'
 import { site } from '@/lib/site'
+import { og } from '@/lib/og'
 
 /*
   Detail template for a single completed job.
@@ -54,6 +55,13 @@ export async function generateMetadata({
     the facts it does have. Never left empty — an empty meta description gets
     replaced by whatever fragment the search engine picks off the page.
   */
+  /*
+    The project’s own cover photograph for the share card, not the brand
+    card. This is the one page type where a real picture of the finished work
+    exists, and a link to a finished floor should show the finished floor.
+  */
+  const cover = orderedPhotos(project)[0]
+
   const description = (
     project.summary ??
     `${project.flakeBlend} ${project.system.toLowerCase()} installed in ${project.city}, TX — ${project.squareFeet}.`
@@ -63,7 +71,10 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: path },
-    openGraph: { title, description, url: path, type: 'article' },
+    openGraph: og(
+      { title, description, url: path, type: 'article' },
+      cover?.src && cover.alt ? { url: cover.src, alt: cover.alt } : undefined,
+    ),
   }
 }
 

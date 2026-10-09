@@ -1,3 +1,6 @@
+import { usdCompact } from '@/lib/garage-measurement'
+import { GARAGE_RATE_PER_SQFT_USD } from '@/lib/pricing-config'
+
 /*
   Single source of truth for the site's route structure.
 
@@ -39,7 +42,7 @@ export const routes = {
     h1: 'Premium Garage Floor Coatings in Houston, TX',
     title: 'Garage Epoxy Flooring Houston | Houston Superior Epoxy',
     description:
-      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, no upfront payment, and a Limited Lifetime workmanship warranty on qualifying residential garages.',
+      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, written warranty, no upfront payment.',
     parent: null,
     label: 'Home',
   },
@@ -50,7 +53,7 @@ export const routes = {
     h1: 'Garage Floor Coatings in Houston',
     title: 'Garage Floor Coatings Houston | Flake & Polyaspartic Systems',
     description:
-      'Houston garage floor coatings built on diamond-ground concrete, full-broadcast flake and a polyaspartic topcoat. Hot-tire resistant, backed by a written Limited Lifetime Workmanship Warranty on qualifying residential installations.',
+      'Houston garage floor coatings on diamond-ground concrete, with full-broadcast flake and a polyaspartic topcoat. Hot-tire resistant, written warranty.',
     parent: null,
     label: 'Garage Floors',
   },
@@ -66,9 +69,9 @@ export const routes = {
   polyaspartic: {
     path: '/polyaspartic-floor-coatings-houston/',
     h1: 'Polyaspartic Floor Coatings in Houston',
-    title: 'Polyaspartic vs Epoxy Floor Coatings | Houston Technical Guide',
+    title: 'Polyaspartic vs Epoxy Floor Coatings | Houston Guide',
     description:
-      'A technical comparison of polyaspartic and epoxy floor coatings for Houston slabs — UV stability, cure speed, temperature sensitivity, and when each is the right call.',
+      'Polyaspartic and epoxy floor coatings compared for Houston slabs: UV stability, cure speed, temperature sensitivity, and when each is the right call.',
     parent: null,
     label: 'Polyaspartic',
   },
@@ -106,7 +109,7 @@ export const routes = {
   commercial: {
     path: '/commercial-epoxy-flooring-houston/',
     h1: 'Commercial Epoxy Flooring in Houston',
-    title: 'Commercial Epoxy Flooring Houston | Phased, After-Hours Installs',
+    title: 'Commercial Epoxy Flooring Houston | After-Hours Installs',
     description:
       'Commercial epoxy and polyaspartic floors for Houston businesses, phased around your operating hours so the space stays usable. $2M insured.',
     parent: null,
@@ -115,7 +118,7 @@ export const routes = {
   warehouse: {
     path: '/warehouse-floor-coatings-houston/',
     h1: 'Warehouse Floor Coatings in Houston',
-    title: 'Warehouse Floor Coatings Houston | Heavy-Traffic Slab Systems',
+    title: 'Warehouse Floor Coatings Houston | Heavy-Traffic Systems',
     description:
       'Warehouse and industrial floor coatings for Houston distribution, manufacturing and storage slabs. Forklift traffic, joint detail, line striping.',
     parent: 'commercial',
@@ -124,7 +127,7 @@ export const routes = {
   patio: {
     path: '/patio-concrete-coatings-houston/',
     h1: 'Patio & Pool Deck Concrete Coatings',
-    title: 'Patio & Pool Deck Coatings Houston | Textured Exterior Concrete',
+    title: 'Patio & Pool Deck Coatings Houston | Exterior Concrete',
     description:
       'Textured concrete coatings for Houston patios and pool decks. Exterior slabs are assessed separately for sun, standing water and slip resistance.',
     parent: null,
@@ -173,7 +176,7 @@ export const routes = {
   process: {
     path: '/our-process/',
     h1: 'How We Install a Floor',
-    title: 'Our 9-Step Floor Installation Process | Houston Superior Epoxy',
+    title: 'Our 9-Step Floor Installation Process | Houston',
     description:
       'The nine-step sequence we run on every floor: inspection, diamond grinding, dust control, repair, base coat, broadcast, scrape, topcoat, final walkthrough.',
     parent: null,
@@ -191,9 +194,9 @@ export const routes = {
   floorDesigner: {
     path: '/floor-designer/',
     h1: 'Design Your Garage Floor',
-    title: 'Garage Floor Designer | Preview Flake Blends | Houston Superior Epoxy',
+    title: 'Garage Floor Designer | Preview Flake Blends Houston',
     description:
-      'Preview our stocked vinyl flake blends on a garage floor, see how each reads in bright and dim light, get a starting estimate, and book a free onsite inspection.',
+      `Preview our stocked vinyl flake blends on a photo of your own garage, get a rough estimate at ${usdCompact(GARAGE_RATE_PER_SQFT_USD)} per sq ft, and book a free onsite inspection.`,
     parent: 'garageCoatings',
     label: 'Floor Designer',
   },
@@ -217,7 +220,7 @@ export const routes = {
       as this entity's in search results and link previews.
     */
     description:
-      'Read reviews of Houston Superior Epoxy on our Google Business Profile — unedited and in full. Ask at your free estimate for references on completed floors near you.',
+      'Read our reviews on Google, unedited and in full. Ask at your free estimate for references on completed floors near you.',
     parent: null,
     label: 'Reviews',
   },
@@ -226,16 +229,16 @@ export const routes = {
     h1: 'About Houston Superior Epoxy',
     title: 'About Us | Houston Superior Epoxy',
     description:
-      'Houston Superior Epoxy is the concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, with a Limited Lifetime Workmanship Warranty on qualifying residential installations.',
+      'The concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, written warranty, no upfront payment.',
     parent: null,
     label: 'About',
   },
   warranty: {
     path: '/warranty/',
     h1: 'Your Floor. Protected for the Long Run.',
-    title: 'Limited Lifetime Garage Floor Warranty Houston | Houston Superior Epoxy',
+    title: 'Limited Lifetime Garage Floor Warranty | Houston',
     description:
-      'Qualifying Houston residential garage floor installations carry a written Limited Lifetime workmanship warranty, backed by $2M general liability and workers’ compensation coverage.',
+      'Qualifying Houston residential garage installations carry a written Limited Lifetime Workmanship Warranty. What it covers, what it excludes, how to claim.',
     parent: null,
     label: 'Warranty',
   },
@@ -281,9 +284,9 @@ export const routes = {
     path: '/how-to-choose-epoxy-contractor-houston/',
     h1: 'How to Choose a Garage Floor Coating Company in Houston',
     /* Kept distinct from the H1 so the SERP line and the page do not duplicate. */
-    title: 'How to Choose a Garage Floor Coating Company | Houston Buyer’s Guide',
+    title: 'How to Choose a Garage Floor Coating Company | Houston',
     description:
-      'An objective guide to vetting a Houston garage floor coating contractor: preparation method, moisture testing, coating chemistry, warranty, insurance, and the questions to ask before you sign.',
+      'How to vet a Houston garage floor coating contractor: preparation, moisture testing, chemistry, warranty, insurance, and what to ask before you sign.',
     parent: 'resources',
     label: 'Choosing a Contractor',
   },
