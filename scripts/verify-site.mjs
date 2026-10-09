@@ -79,6 +79,43 @@ const BANNED = [
 */
 const BARE_LIFETIME = /(?<!Limited\s)(?<!“)(?<!")(?<!')\blifetime\s+warranty/gi
 
+/*
+  THE WARRANTY MUST BE PRESENT, not merely un-contradicted.
+
+  Everything above this point is an absence check — it fails when a banned
+  claim appears. That is only half a control. A content rewrite that quietly
+  strips the warranty from a service page breaks no rule above, publishes
+  nothing false, and still loses the single strongest trust signal the
+  business has. The owner's instruction is to PRESERVE this term, so it is
+  asserted positively on the pages that sell the residential system.
+*/
+const MUST_CARRY_TERM = [
+  '/warranty/',
+  '/garage-floor-coatings-houston/',
+  '/flake-epoxy-garage-floors/',
+  '/llms.txt',
+]
+
+const WARRANTY_TERM_RE = /Limited Lifetime Workmanship Warranty/i
+
+/*
+  THE RESIDENTIAL TERM MUST NOT BE PROMISED ON A COMMERCIAL SURFACE.
+
+  Matching the bare string here would be wrong: /patio- legitimately contains
+  "the residential Limited Lifetime term does not extend to outdoor concrete",
+  which is a DENIAL and exactly the disclosure we want. So this matches the
+  affirmative shapes — a verb attaching the term to the reader's job — rather
+  than the term itself.
+*/
+const LIFETIME_PROMISE =
+  /\b(includes?|carries|carry|backed by|covered by|comes with)\s+(our\s+|a\s+|the\s+)?(written\s+)?Limited Lifetime/i
+
+const COMMERCIAL_PAGES = [
+  '/warehouse-floor-coatings-houston/',
+  '/patio-concrete-coatings-houston/',
+  '/metallic-epoxy-floors/',
+]
+
 const REQUIRED_ON_WARRANTY_PAGE = [
   ['the controlling-document disclosure', /signed warranty document provided with your project is the controlling agreement/i],
   ['the definition of whose lifetime', /original contracting homeowner owns the property/i],
@@ -106,8 +143,27 @@ function walk(dir, out = []) {
   return out
 }
 
+/*
+  The policy module is load-bearing: every warranty claim on the site
+  interpolates from it. Deleting the term or blanking it would propagate
+  silently to twenty pages at once, so source mode checks it exists before
+  checking anything else.
+*/
+function checkPolicyModule() {
+  const path = join(ROOT, 'lib', 'content', 'warranty.ts')
+  try {
+    const text = readFileSync(path, 'utf8')
+    if (!/WARRANTY_TERM\s*=\s*'Limited Lifetime Workmanship Warranty'/.test(text)) {
+      return ['lib/content/warranty.ts: WARRANTY_TERM is not the owner-approved string.']
+    }
+    return []
+  } catch {
+    return ['lib/content/warranty.ts is missing — every warranty claim on the site reads from it.']
+  }
+}
+
 function scanSource() {
-  const failures = []
+  const failures = checkPolicyModule()
   for (const file of walk(ROOT)) {
     const rel = relative(ROOT, file).replace(/\\/g, '/')
     const text = readFileSync(file, 'utf8')
@@ -204,6 +260,21 @@ async function scanLive(base) {
       failures.push(
         `${path}: ${bare.length} bare "lifetime warranty" (not preceded by "Limited") — e.g. "${bare[0]}"`,
       )
+    }
+
+    if (MUST_CARRY_TERM.includes(path) && !WARRANTY_TERM_RE.test(text)) {
+      failures.push(
+        `${path}: the Limited Lifetime Workmanship Warranty is GONE from this page. It is owner-approved and must be preserved.`,
+      )
+    }
+
+    if (COMMERCIAL_PAGES.includes(path)) {
+      const promise = text.match(LIFETIME_PROMISE)
+      if (promise) {
+        failures.push(
+          `${path}: "${promise[0]}" promises the residential term on a commercial or exterior surface.`,
+        )
+      }
     }
 
     if (path === '/warranty/') {
