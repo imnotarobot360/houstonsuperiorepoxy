@@ -16,8 +16,8 @@ const catalog = JSON.parse(
   readFileSync(join(process.cwd(), 'data', 'aeo', 'prompts.json'), 'utf8'),
 ) as { version: number; prompts: Prompt[] }
 
-test('the AI visibility catalog contains 210 discovery and 10 branded prompts', () => {
-  assert.equal(catalog.prompts.filter((prompt) => !prompt.branded).length, 210)
+test('the AI visibility catalog contains 420 discovery and 10 branded prompts', () => {
+  assert.equal(catalog.prompts.filter((prompt) => !prompt.branded).length, 420)
   assert.equal(catalog.prompts.filter((prompt) => prompt.branded).length, 10)
 })
 
@@ -43,6 +43,6 @@ test('every discovery city-service pair covers all five intents', () => {
     groups.set(key, intents)
   }
 
-  assert.equal(groups.size, 42)
+  assert.equal(groups.size, 84)
   for (const [key, intents] of groups) assert.equal(intents.size, 5, key)
 })

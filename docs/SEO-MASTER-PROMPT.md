@@ -72,7 +72,7 @@ Read before planning. Duplicating any of this is a regression, not progress.
 | robots | `app/robots.ts`; `/admin`, `/lp`, `/app/`, `/catalog/` disallowed |
 | Structured data | `lib/schema.ts` — Organization, LocalBusiness, WebSite, Service, BlogPosting, Project, FAQPage, BreadcrumbList. One graph per page, entities declared once |
 | AEO | `lib/content/answers.ts` — 40–70 word quick answers per route, with a dev-time word-count guard in `components/aeo.tsx` |
-| GEO / AI | `/llms.txt`, generated from the same constants the pages use (`lib/llms.ts`); 210 unbranded discovery prompts plus 10 branded accuracy checks in `data/aeo/` |
+| GEO / AI | `/llms.txt`, generated from the same constants the pages use (`lib/llms.ts`); 420 unbranded discovery prompts plus 10 branded accuracy checks in `data/aeo/` |
 | City pages | 14: richmond, katy, sugar-land, cypress, fulshear, pearland, the-woodlands, magnolia, memorial-river-oaks, the-heights, bellaire, missouri-city, spring and tomball (`lib/content/cities.ts`) |
 | Resource articles | 22 (`lib/content/resources.ts`) |
 | Specs / authority | `lib/content/specs.ts` (per-system spec blocks, warranty split by surface), `lib/content/authority.ts` |
@@ -151,7 +151,7 @@ schema is visibly on the page.
   where we cannot correct it: the rate never without its minimum, the warranty
   never as a bare "lifetime warranty".
 - Establish and repeat the baseline using the stable catalog in
-  `data/aeo/prompts.json`: 210 unbranded prompts across 7 cities, 6 services and
+  `data/aeo/prompts.json`: 420 unbranded prompts across all 14 listed cities, 6 services and
   5 intents, plus 10 branded accuracy checks. Run fresh conversations in
   ChatGPT, Google AI Mode, Gemini, Claude, Perplexity and Grok; record platform,
   model, mention, position, cited URL, competitors and accuracy. Branded results

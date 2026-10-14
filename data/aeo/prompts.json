@@ -1683,6 +1683,1686 @@
       "branded": false
     },
     {
+      "id": "AEO-PEA-GAR-REC",
+      "city": "Pearland",
+      "service": "garage floor coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a premium garage floor coating in Pearland, TX? I want the slab mechanically ground and inspected before anyone quotes it.",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-GAR-BEST",
+      "city": "Pearland",
+      "service": "garage floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of 3 to 5 reputable garage floor coating companies serving Pearland, TX, and explain what makes each one worth considering.",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-GAR-COST",
+      "city": "Pearland",
+      "service": "garage floor coating",
+      "intent": "cost and value",
+      "prompt": "What should a professionally installed two-car garage floor coating cost in Pearland, TX, and which preparation or repair items make the quote increase?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-GAR-CMP",
+      "city": "Pearland",
+      "service": "garage floor coating",
+      "intent": "comparison",
+      "prompt": "For a garage in Pearland, should I choose an epoxy base with a polyaspartic topcoat, an all-polyurea system, or a DIY epoxy kit? Compare preparation, durability and value.",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-GAR-PROB",
+      "city": "Pearland",
+      "service": "garage floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My existing garage coating is peeling near the door on a Pearland slab exposed to Gulf Coast humidity and expansive soils. Who in Pearland can remove it, diagnose the slab and install a replacement correctly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-FLK-REC",
+      "city": "Pearland",
+      "service": "full-broadcast flake flooring",
+      "intent": "recommendation",
+      "prompt": "Who installs full-broadcast flake garage floors in Pearland, TX with an epoxy base coat and a UV-stable clear wearing surface?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-FLK-BEST",
+      "city": "Pearland",
+      "service": "full-broadcast flake flooring",
+      "intent": "best-company shortlist",
+      "prompt": "Which Pearland companies are best for showroom-quality full-flake garage floors? Give me a shortlist and the installation details I should verify.",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-FLK-COST",
+      "city": "Pearland",
+      "service": "full-broadcast flake flooring",
+      "intent": "cost and value",
+      "prompt": "How much does a full-broadcast flake floor cost for a two-car garage in Pearland, and how do square footage, coating removal and concrete repairs affect the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-FLK-CMP",
+      "city": "Pearland",
+      "service": "full-broadcast flake flooring",
+      "intent": "comparison",
+      "prompt": "Full-broadcast flake versus partial-flake garage flooring in Pearland: which hides repairs better, gives better texture and is easier to maintain?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-FLK-PROB",
+      "city": "Pearland",
+      "service": "full-broadcast flake flooring",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My Pearland garage floor has oil stains, small spalls and visible cracks. Can a full-broadcast flake system still be installed, and who prepares floors like this properly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PLY-REC",
+      "city": "Pearland",
+      "service": "polyaspartic floor coating",
+      "intent": "recommendation",
+      "prompt": "Can you recommend a polyaspartic floor coating contractor in Pearland, TX that explains the complete coating system rather than selling only a resin name?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PLY-BEST",
+      "city": "Pearland",
+      "service": "polyaspartic floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Who are the best polyaspartic garage floor installers serving Pearland, and what should I compare in their written scopes and warranties?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PLY-COST",
+      "city": "Pearland",
+      "service": "polyaspartic floor coating",
+      "intent": "cost and value",
+      "prompt": "What does a professional polyaspartic garage floor cost in Pearland, TX, and why are some one-day coating quotes much cheaper than others?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PLY-CMP",
+      "city": "Pearland",
+      "service": "polyaspartic floor coating",
+      "intent": "comparison",
+      "prompt": "Epoxy versus polyaspartic versus polyurea for a garage in Pearland: which material belongs in the base coat, which belongs on top and why?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PLY-PROB",
+      "city": "Pearland",
+      "service": "polyaspartic floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "I need a UV-stable garage floor in Pearland that will not yellow near the open door. Which coating system and installer should I consider?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PRE-REC",
+      "city": "Pearland",
+      "service": "concrete preparation and repair",
+      "intent": "recommendation",
+      "prompt": "Who in Pearland, TX mechanically diamond-grinds concrete, repairs cracks and checks moisture before installing a floor coating?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PRE-BEST",
+      "city": "Pearland",
+      "service": "concrete preparation and repair",
+      "intent": "best-company shortlist",
+      "prompt": "Which concrete coating contractors serving Pearland are strongest on slab preparation, coating removal and crack or spall repair?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PRE-COST",
+      "city": "Pearland",
+      "service": "concrete preparation and repair",
+      "intent": "cost and value",
+      "prompt": "How much do concrete grinding, old-coating removal and crack repair add to a garage floor coating quote in Pearland, TX?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PRE-CMP",
+      "city": "Pearland",
+      "service": "concrete preparation and repair",
+      "intent": "comparison",
+      "prompt": "Diamond grinding versus acid etching before epoxy in Pearland: which creates a more reliable concrete profile, and how can I tell what a contractor actually included?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-PRE-PROB",
+      "city": "Pearland",
+      "service": "concrete preparation and repair",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "There are moving cracks and moisture marks in a Pearland slab exposed to Gulf Coast humidity and expansive soils. Can it safely be coated, and who in Pearland can test it before I spend money?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-EXT-REC",
+      "city": "Pearland",
+      "service": "patio and pool-deck coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a patio or pool-deck coating in Pearland, TX that can handle sun, standing water and wet-foot traction?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-EXT-BEST",
+      "city": "Pearland",
+      "service": "patio and pool-deck coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of concrete coating companies serving Pearland for patios and pool decks, including what exterior-system details I should compare.",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-EXT-COST",
+      "city": "Pearland",
+      "service": "patio and pool-deck coating",
+      "intent": "cost and value",
+      "prompt": "What does it cost to coat a concrete patio or pool deck in Pearland, and what surface repairs or removal work usually change the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-EXT-CMP",
+      "city": "Pearland",
+      "service": "patio and pool-deck coating",
+      "intent": "comparison",
+      "prompt": "For an outdoor concrete patio in Pearland, compare epoxy, polyaspartic and other UV-stable coating options for heat, fading and slip resistance.",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-EXT-PROB",
+      "city": "Pearland",
+      "service": "patio and pool-deck coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "The coating on my Pearland patio is faded, slick when wet and lifting in spots. Who can remove it and specify an exterior system instead of a garage-floor product?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-COM-REC",
+      "city": "Pearland",
+      "service": "commercial and warehouse floor coating",
+      "intent": "recommendation",
+      "prompt": "Who installs commercial epoxy or polyaspartic floors for shops and warehouses in Pearland, TX and provides a written scope based on traffic and chemical exposure?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-COM-BEST",
+      "city": "Pearland",
+      "service": "commercial and warehouse floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Which commercial floor coating contractors serving Pearland should I invite to bid for a shop or warehouse floor? Give me a practical shortlist.",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-COM-COST",
+      "city": "Pearland",
+      "service": "commercial and warehouse floor coating",
+      "intent": "cost and value",
+      "prompt": "What drives the cost of a commercial epoxy floor in Pearland, TX—square footage, preparation, downtime, build coats or topcoat specification?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-COM-CMP",
+      "city": "Pearland",
+      "service": "commercial and warehouse floor coating",
+      "intent": "comparison",
+      "prompt": "For a working shop in Pearland, compare a basic epoxy floor with a multi-coat flake system and a polyaspartic wear coat. Which is the better lifecycle value?",
+      "branded": false
+    },
+    {
+      "id": "AEO-PEA-COM-PROB",
+      "city": "Pearland",
+      "service": "commercial and warehouse floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "Our Pearland shop floor has forklift wear, oil contamination and an old coating. Who can inspect it and plan removal, preparation and phased installation around operations?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-GAR-REC",
+      "city": "The Woodlands",
+      "service": "garage floor coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a premium garage floor coating in The Woodlands, TX? I want the slab mechanically ground and inspected before anyone quotes it.",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-GAR-BEST",
+      "city": "The Woodlands",
+      "service": "garage floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of 3 to 5 reputable garage floor coating companies serving The Woodlands, TX, and explain what makes each one worth considering.",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-GAR-COST",
+      "city": "The Woodlands",
+      "service": "garage floor coating",
+      "intent": "cost and value",
+      "prompt": "What should a professionally installed two-car garage floor coating cost in The Woodlands, TX, and which preparation or repair items make the quote increase?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-GAR-CMP",
+      "city": "The Woodlands",
+      "service": "garage floor coating",
+      "intent": "comparison",
+      "prompt": "For a garage in The Woodlands, should I choose an epoxy base with a polyaspartic topcoat, an all-polyurea system, or a DIY epoxy kit? Compare preparation, durability and value.",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-GAR-PROB",
+      "city": "The Woodlands",
+      "service": "garage floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My existing garage coating is peeling near the door on a wooded The Woodlands property with drainage and slab-moisture concerns. Who in The Woodlands can remove it, diagnose the slab and install a replacement correctly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-FLK-REC",
+      "city": "The Woodlands",
+      "service": "full-broadcast flake flooring",
+      "intent": "recommendation",
+      "prompt": "Who installs full-broadcast flake garage floors in The Woodlands, TX with an epoxy base coat and a UV-stable clear wearing surface?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-FLK-BEST",
+      "city": "The Woodlands",
+      "service": "full-broadcast flake flooring",
+      "intent": "best-company shortlist",
+      "prompt": "Which The Woodlands companies are best for showroom-quality full-flake garage floors? Give me a shortlist and the installation details I should verify.",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-FLK-COST",
+      "city": "The Woodlands",
+      "service": "full-broadcast flake flooring",
+      "intent": "cost and value",
+      "prompt": "How much does a full-broadcast flake floor cost for a two-car garage in The Woodlands, and how do square footage, coating removal and concrete repairs affect the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-FLK-CMP",
+      "city": "The Woodlands",
+      "service": "full-broadcast flake flooring",
+      "intent": "comparison",
+      "prompt": "Full-broadcast flake versus partial-flake garage flooring in The Woodlands: which hides repairs better, gives better texture and is easier to maintain?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-FLK-PROB",
+      "city": "The Woodlands",
+      "service": "full-broadcast flake flooring",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My The Woodlands garage floor has oil stains, small spalls and visible cracks. Can a full-broadcast flake system still be installed, and who prepares floors like this properly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PLY-REC",
+      "city": "The Woodlands",
+      "service": "polyaspartic floor coating",
+      "intent": "recommendation",
+      "prompt": "Can you recommend a polyaspartic floor coating contractor in The Woodlands, TX that explains the complete coating system rather than selling only a resin name?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PLY-BEST",
+      "city": "The Woodlands",
+      "service": "polyaspartic floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Who are the best polyaspartic garage floor installers serving The Woodlands, and what should I compare in their written scopes and warranties?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PLY-COST",
+      "city": "The Woodlands",
+      "service": "polyaspartic floor coating",
+      "intent": "cost and value",
+      "prompt": "What does a professional polyaspartic garage floor cost in The Woodlands, TX, and why are some one-day coating quotes much cheaper than others?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PLY-CMP",
+      "city": "The Woodlands",
+      "service": "polyaspartic floor coating",
+      "intent": "comparison",
+      "prompt": "Epoxy versus polyaspartic versus polyurea for a garage in The Woodlands: which material belongs in the base coat, which belongs on top and why?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PLY-PROB",
+      "city": "The Woodlands",
+      "service": "polyaspartic floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "I need a UV-stable garage floor in The Woodlands that will not yellow near the open door. Which coating system and installer should I consider?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PRE-REC",
+      "city": "The Woodlands",
+      "service": "concrete preparation and repair",
+      "intent": "recommendation",
+      "prompt": "Who in The Woodlands, TX mechanically diamond-grinds concrete, repairs cracks and checks moisture before installing a floor coating?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PRE-BEST",
+      "city": "The Woodlands",
+      "service": "concrete preparation and repair",
+      "intent": "best-company shortlist",
+      "prompt": "Which concrete coating contractors serving The Woodlands are strongest on slab preparation, coating removal and crack or spall repair?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PRE-COST",
+      "city": "The Woodlands",
+      "service": "concrete preparation and repair",
+      "intent": "cost and value",
+      "prompt": "How much do concrete grinding, old-coating removal and crack repair add to a garage floor coating quote in The Woodlands, TX?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PRE-CMP",
+      "city": "The Woodlands",
+      "service": "concrete preparation and repair",
+      "intent": "comparison",
+      "prompt": "Diamond grinding versus acid etching before epoxy in The Woodlands: which creates a more reliable concrete profile, and how can I tell what a contractor actually included?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-PRE-PROB",
+      "city": "The Woodlands",
+      "service": "concrete preparation and repair",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "There are moving cracks and moisture marks in a wooded The Woodlands property with drainage and slab-moisture concerns. Can it safely be coated, and who in The Woodlands can test it before I spend money?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-EXT-REC",
+      "city": "The Woodlands",
+      "service": "patio and pool-deck coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a patio or pool-deck coating in The Woodlands, TX that can handle sun, standing water and wet-foot traction?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-EXT-BEST",
+      "city": "The Woodlands",
+      "service": "patio and pool-deck coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of concrete coating companies serving The Woodlands for patios and pool decks, including what exterior-system details I should compare.",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-EXT-COST",
+      "city": "The Woodlands",
+      "service": "patio and pool-deck coating",
+      "intent": "cost and value",
+      "prompt": "What does it cost to coat a concrete patio or pool deck in The Woodlands, and what surface repairs or removal work usually change the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-EXT-CMP",
+      "city": "The Woodlands",
+      "service": "patio and pool-deck coating",
+      "intent": "comparison",
+      "prompt": "For an outdoor concrete patio in The Woodlands, compare epoxy, polyaspartic and other UV-stable coating options for heat, fading and slip resistance.",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-EXT-PROB",
+      "city": "The Woodlands",
+      "service": "patio and pool-deck coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "The coating on my The Woodlands patio is faded, slick when wet and lifting in spots. Who can remove it and specify an exterior system instead of a garage-floor product?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-COM-REC",
+      "city": "The Woodlands",
+      "service": "commercial and warehouse floor coating",
+      "intent": "recommendation",
+      "prompt": "Who installs commercial epoxy or polyaspartic floors for shops and warehouses in The Woodlands, TX and provides a written scope based on traffic and chemical exposure?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-COM-BEST",
+      "city": "The Woodlands",
+      "service": "commercial and warehouse floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Which commercial floor coating contractors serving The Woodlands should I invite to bid for a shop or warehouse floor? Give me a practical shortlist.",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-COM-COST",
+      "city": "The Woodlands",
+      "service": "commercial and warehouse floor coating",
+      "intent": "cost and value",
+      "prompt": "What drives the cost of a commercial epoxy floor in The Woodlands, TX—square footage, preparation, downtime, build coats or topcoat specification?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-COM-CMP",
+      "city": "The Woodlands",
+      "service": "commercial and warehouse floor coating",
+      "intent": "comparison",
+      "prompt": "For a working shop in The Woodlands, compare a basic epoxy floor with a multi-coat flake system and a polyaspartic wear coat. Which is the better lifecycle value?",
+      "branded": false
+    },
+    {
+      "id": "AEO-WOO-COM-PROB",
+      "city": "The Woodlands",
+      "service": "commercial and warehouse floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "Our The Woodlands shop floor has forklift wear, oil contamination and an old coating. Who can inspect it and plan removal, preparation and phased installation around operations?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-GAR-REC",
+      "city": "Magnolia",
+      "service": "garage floor coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a premium garage floor coating in Magnolia, TX? I want the slab mechanically ground and inspected before anyone quotes it.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-GAR-BEST",
+      "city": "Magnolia",
+      "service": "garage floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of 3 to 5 reputable garage floor coating companies serving Magnolia, TX, and explain what makes each one worth considering.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-GAR-COST",
+      "city": "Magnolia",
+      "service": "garage floor coating",
+      "intent": "cost and value",
+      "prompt": "What should a professionally installed two-car garage floor coating cost in Magnolia, TX, and which preparation or repair items make the quote increase?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-GAR-CMP",
+      "city": "Magnolia",
+      "service": "garage floor coating",
+      "intent": "comparison",
+      "prompt": "For a garage in Magnolia, should I choose an epoxy base with a polyaspartic topcoat, an all-polyurea system, or a DIY epoxy kit? Compare preparation, durability and value.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-GAR-PROB",
+      "city": "Magnolia",
+      "service": "garage floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My existing garage coating is peeling near the door on a Magnolia garage where soil and drainage conditions can vary by property. Who in Magnolia can remove it, diagnose the slab and install a replacement correctly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-FLK-REC",
+      "city": "Magnolia",
+      "service": "full-broadcast flake flooring",
+      "intent": "recommendation",
+      "prompt": "Who installs full-broadcast flake garage floors in Magnolia, TX with an epoxy base coat and a UV-stable clear wearing surface?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-FLK-BEST",
+      "city": "Magnolia",
+      "service": "full-broadcast flake flooring",
+      "intent": "best-company shortlist",
+      "prompt": "Which Magnolia companies are best for showroom-quality full-flake garage floors? Give me a shortlist and the installation details I should verify.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-FLK-COST",
+      "city": "Magnolia",
+      "service": "full-broadcast flake flooring",
+      "intent": "cost and value",
+      "prompt": "How much does a full-broadcast flake floor cost for a two-car garage in Magnolia, and how do square footage, coating removal and concrete repairs affect the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-FLK-CMP",
+      "city": "Magnolia",
+      "service": "full-broadcast flake flooring",
+      "intent": "comparison",
+      "prompt": "Full-broadcast flake versus partial-flake garage flooring in Magnolia: which hides repairs better, gives better texture and is easier to maintain?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-FLK-PROB",
+      "city": "Magnolia",
+      "service": "full-broadcast flake flooring",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My Magnolia garage floor has oil stains, small spalls and visible cracks. Can a full-broadcast flake system still be installed, and who prepares floors like this properly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PLY-REC",
+      "city": "Magnolia",
+      "service": "polyaspartic floor coating",
+      "intent": "recommendation",
+      "prompt": "Can you recommend a polyaspartic floor coating contractor in Magnolia, TX that explains the complete coating system rather than selling only a resin name?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PLY-BEST",
+      "city": "Magnolia",
+      "service": "polyaspartic floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Who are the best polyaspartic garage floor installers serving Magnolia, and what should I compare in their written scopes and warranties?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PLY-COST",
+      "city": "Magnolia",
+      "service": "polyaspartic floor coating",
+      "intent": "cost and value",
+      "prompt": "What does a professional polyaspartic garage floor cost in Magnolia, TX, and why are some one-day coating quotes much cheaper than others?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PLY-CMP",
+      "city": "Magnolia",
+      "service": "polyaspartic floor coating",
+      "intent": "comparison",
+      "prompt": "Epoxy versus polyaspartic versus polyurea for a garage in Magnolia: which material belongs in the base coat, which belongs on top and why?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PLY-PROB",
+      "city": "Magnolia",
+      "service": "polyaspartic floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "I need a UV-stable garage floor in Magnolia that will not yellow near the open door. Which coating system and installer should I consider?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PRE-REC",
+      "city": "Magnolia",
+      "service": "concrete preparation and repair",
+      "intent": "recommendation",
+      "prompt": "Who in Magnolia, TX mechanically diamond-grinds concrete, repairs cracks and checks moisture before installing a floor coating?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PRE-BEST",
+      "city": "Magnolia",
+      "service": "concrete preparation and repair",
+      "intent": "best-company shortlist",
+      "prompt": "Which concrete coating contractors serving Magnolia are strongest on slab preparation, coating removal and crack or spall repair?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PRE-COST",
+      "city": "Magnolia",
+      "service": "concrete preparation and repair",
+      "intent": "cost and value",
+      "prompt": "How much do concrete grinding, old-coating removal and crack repair add to a garage floor coating quote in Magnolia, TX?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PRE-CMP",
+      "city": "Magnolia",
+      "service": "concrete preparation and repair",
+      "intent": "comparison",
+      "prompt": "Diamond grinding versus acid etching before epoxy in Magnolia: which creates a more reliable concrete profile, and how can I tell what a contractor actually included?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-PRE-PROB",
+      "city": "Magnolia",
+      "service": "concrete preparation and repair",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "There are moving cracks and moisture marks in a Magnolia garage where soil and drainage conditions can vary by property. Can it safely be coated, and who in Magnolia can test it before I spend money?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-EXT-REC",
+      "city": "Magnolia",
+      "service": "patio and pool-deck coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a patio or pool-deck coating in Magnolia, TX that can handle sun, standing water and wet-foot traction?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-EXT-BEST",
+      "city": "Magnolia",
+      "service": "patio and pool-deck coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of concrete coating companies serving Magnolia for patios and pool decks, including what exterior-system details I should compare.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-EXT-COST",
+      "city": "Magnolia",
+      "service": "patio and pool-deck coating",
+      "intent": "cost and value",
+      "prompt": "What does it cost to coat a concrete patio or pool deck in Magnolia, and what surface repairs or removal work usually change the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-EXT-CMP",
+      "city": "Magnolia",
+      "service": "patio and pool-deck coating",
+      "intent": "comparison",
+      "prompt": "For an outdoor concrete patio in Magnolia, compare epoxy, polyaspartic and other UV-stable coating options for heat, fading and slip resistance.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-EXT-PROB",
+      "city": "Magnolia",
+      "service": "patio and pool-deck coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "The coating on my Magnolia patio is faded, slick when wet and lifting in spots. Who can remove it and specify an exterior system instead of a garage-floor product?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-COM-REC",
+      "city": "Magnolia",
+      "service": "commercial and warehouse floor coating",
+      "intent": "recommendation",
+      "prompt": "Who installs commercial epoxy or polyaspartic floors for shops and warehouses in Magnolia, TX and provides a written scope based on traffic and chemical exposure?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-COM-BEST",
+      "city": "Magnolia",
+      "service": "commercial and warehouse floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Which commercial floor coating contractors serving Magnolia should I invite to bid for a shop or warehouse floor? Give me a practical shortlist.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-COM-COST",
+      "city": "Magnolia",
+      "service": "commercial and warehouse floor coating",
+      "intent": "cost and value",
+      "prompt": "What drives the cost of a commercial epoxy floor in Magnolia, TX—square footage, preparation, downtime, build coats or topcoat specification?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-COM-CMP",
+      "city": "Magnolia",
+      "service": "commercial and warehouse floor coating",
+      "intent": "comparison",
+      "prompt": "For a working shop in Magnolia, compare a basic epoxy floor with a multi-coat flake system and a polyaspartic wear coat. Which is the better lifecycle value?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MAG-COM-PROB",
+      "city": "Magnolia",
+      "service": "commercial and warehouse floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "Our Magnolia shop floor has forklift wear, oil contamination and an old coating. Who can inspect it and plan removal, preparation and phased installation around operations?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-GAR-REC",
+      "city": "Memorial and River Oaks",
+      "service": "garage floor coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a premium garage floor coating in Memorial and River Oaks, TX? I want the slab mechanically ground and inspected before anyone quotes it.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-GAR-BEST",
+      "city": "Memorial and River Oaks",
+      "service": "garage floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of 3 to 5 reputable garage floor coating companies serving Memorial and River Oaks, TX, and explain what makes each one worth considering.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-GAR-COST",
+      "city": "Memorial and River Oaks",
+      "service": "garage floor coating",
+      "intent": "cost and value",
+      "prompt": "What should a professionally installed two-car garage floor coating cost in Memorial and River Oaks, TX, and which preparation or repair items make the quote increase?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-GAR-CMP",
+      "city": "Memorial and River Oaks",
+      "service": "garage floor coating",
+      "intent": "comparison",
+      "prompt": "For a garage in Memorial and River Oaks, should I choose an epoxy base with a polyaspartic topcoat, an all-polyurea system, or a DIY epoxy kit? Compare preparation, durability and value.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-GAR-PROB",
+      "city": "Memorial and River Oaks",
+      "service": "garage floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My existing garage coating is peeling near the door on a Memorial or River Oaks home with an established slab and mature landscaping. Who in Memorial and River Oaks can remove it, diagnose the slab and install a replacement correctly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-FLK-REC",
+      "city": "Memorial and River Oaks",
+      "service": "full-broadcast flake flooring",
+      "intent": "recommendation",
+      "prompt": "Who installs full-broadcast flake garage floors in Memorial and River Oaks, TX with an epoxy base coat and a UV-stable clear wearing surface?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-FLK-BEST",
+      "city": "Memorial and River Oaks",
+      "service": "full-broadcast flake flooring",
+      "intent": "best-company shortlist",
+      "prompt": "Which Memorial and River Oaks companies are best for showroom-quality full-flake garage floors? Give me a shortlist and the installation details I should verify.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-FLK-COST",
+      "city": "Memorial and River Oaks",
+      "service": "full-broadcast flake flooring",
+      "intent": "cost and value",
+      "prompt": "How much does a full-broadcast flake floor cost for a two-car garage in Memorial and River Oaks, and how do square footage, coating removal and concrete repairs affect the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-FLK-CMP",
+      "city": "Memorial and River Oaks",
+      "service": "full-broadcast flake flooring",
+      "intent": "comparison",
+      "prompt": "Full-broadcast flake versus partial-flake garage flooring in Memorial and River Oaks: which hides repairs better, gives better texture and is easier to maintain?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-FLK-PROB",
+      "city": "Memorial and River Oaks",
+      "service": "full-broadcast flake flooring",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My Memorial and River Oaks garage floor has oil stains, small spalls and visible cracks. Can a full-broadcast flake system still be installed, and who prepares floors like this properly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PLY-REC",
+      "city": "Memorial and River Oaks",
+      "service": "polyaspartic floor coating",
+      "intent": "recommendation",
+      "prompt": "Can you recommend a polyaspartic floor coating contractor in Memorial and River Oaks, TX that explains the complete coating system rather than selling only a resin name?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PLY-BEST",
+      "city": "Memorial and River Oaks",
+      "service": "polyaspartic floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Who are the best polyaspartic garage floor installers serving Memorial and River Oaks, and what should I compare in their written scopes and warranties?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PLY-COST",
+      "city": "Memorial and River Oaks",
+      "service": "polyaspartic floor coating",
+      "intent": "cost and value",
+      "prompt": "What does a professional polyaspartic garage floor cost in Memorial and River Oaks, TX, and why are some one-day coating quotes much cheaper than others?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PLY-CMP",
+      "city": "Memorial and River Oaks",
+      "service": "polyaspartic floor coating",
+      "intent": "comparison",
+      "prompt": "Epoxy versus polyaspartic versus polyurea for a garage in Memorial and River Oaks: which material belongs in the base coat, which belongs on top and why?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PLY-PROB",
+      "city": "Memorial and River Oaks",
+      "service": "polyaspartic floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "I need a UV-stable garage floor in Memorial and River Oaks that will not yellow near the open door. Which coating system and installer should I consider?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PRE-REC",
+      "city": "Memorial and River Oaks",
+      "service": "concrete preparation and repair",
+      "intent": "recommendation",
+      "prompt": "Who in Memorial and River Oaks, TX mechanically diamond-grinds concrete, repairs cracks and checks moisture before installing a floor coating?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PRE-BEST",
+      "city": "Memorial and River Oaks",
+      "service": "concrete preparation and repair",
+      "intent": "best-company shortlist",
+      "prompt": "Which concrete coating contractors serving Memorial and River Oaks are strongest on slab preparation, coating removal and crack or spall repair?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PRE-COST",
+      "city": "Memorial and River Oaks",
+      "service": "concrete preparation and repair",
+      "intent": "cost and value",
+      "prompt": "How much do concrete grinding, old-coating removal and crack repair add to a garage floor coating quote in Memorial and River Oaks, TX?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PRE-CMP",
+      "city": "Memorial and River Oaks",
+      "service": "concrete preparation and repair",
+      "intent": "comparison",
+      "prompt": "Diamond grinding versus acid etching before epoxy in Memorial and River Oaks: which creates a more reliable concrete profile, and how can I tell what a contractor actually included?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-PRE-PROB",
+      "city": "Memorial and River Oaks",
+      "service": "concrete preparation and repair",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "There are moving cracks and moisture marks in a Memorial or River Oaks home with an established slab and mature landscaping. Can it safely be coated, and who in Memorial and River Oaks can test it before I spend money?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-EXT-REC",
+      "city": "Memorial and River Oaks",
+      "service": "patio and pool-deck coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a patio or pool-deck coating in Memorial and River Oaks, TX that can handle sun, standing water and wet-foot traction?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-EXT-BEST",
+      "city": "Memorial and River Oaks",
+      "service": "patio and pool-deck coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of concrete coating companies serving Memorial and River Oaks for patios and pool decks, including what exterior-system details I should compare.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-EXT-COST",
+      "city": "Memorial and River Oaks",
+      "service": "patio and pool-deck coating",
+      "intent": "cost and value",
+      "prompt": "What does it cost to coat a concrete patio or pool deck in Memorial and River Oaks, and what surface repairs or removal work usually change the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-EXT-CMP",
+      "city": "Memorial and River Oaks",
+      "service": "patio and pool-deck coating",
+      "intent": "comparison",
+      "prompt": "For an outdoor concrete patio in Memorial and River Oaks, compare epoxy, polyaspartic and other UV-stable coating options for heat, fading and slip resistance.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-EXT-PROB",
+      "city": "Memorial and River Oaks",
+      "service": "patio and pool-deck coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "The coating on my Memorial and River Oaks patio is faded, slick when wet and lifting in spots. Who can remove it and specify an exterior system instead of a garage-floor product?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-COM-REC",
+      "city": "Memorial and River Oaks",
+      "service": "commercial and warehouse floor coating",
+      "intent": "recommendation",
+      "prompt": "Who installs commercial epoxy or polyaspartic floors for shops and warehouses in Memorial and River Oaks, TX and provides a written scope based on traffic and chemical exposure?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-COM-BEST",
+      "city": "Memorial and River Oaks",
+      "service": "commercial and warehouse floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Which commercial floor coating contractors serving Memorial and River Oaks should I invite to bid for a shop or warehouse floor? Give me a practical shortlist.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-COM-COST",
+      "city": "Memorial and River Oaks",
+      "service": "commercial and warehouse floor coating",
+      "intent": "cost and value",
+      "prompt": "What drives the cost of a commercial epoxy floor in Memorial and River Oaks, TX—square footage, preparation, downtime, build coats or topcoat specification?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-COM-CMP",
+      "city": "Memorial and River Oaks",
+      "service": "commercial and warehouse floor coating",
+      "intent": "comparison",
+      "prompt": "For a working shop in Memorial and River Oaks, compare a basic epoxy floor with a multi-coat flake system and a polyaspartic wear coat. Which is the better lifecycle value?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MRO-COM-PROB",
+      "city": "Memorial and River Oaks",
+      "service": "commercial and warehouse floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "Our Memorial and River Oaks shop floor has forklift wear, oil contamination and an old coating. Who can inspect it and plan removal, preparation and phased installation around operations?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-GAR-REC",
+      "city": "The Heights",
+      "service": "garage floor coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a premium garage floor coating in The Heights, TX? I want the slab mechanically ground and inspected before anyone quotes it.",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-GAR-BEST",
+      "city": "The Heights",
+      "service": "garage floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of 3 to 5 reputable garage floor coating companies serving The Heights, TX, and explain what makes each one worth considering.",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-GAR-COST",
+      "city": "The Heights",
+      "service": "garage floor coating",
+      "intent": "cost and value",
+      "prompt": "What should a professionally installed two-car garage floor coating cost in The Heights, TX, and which preparation or repair items make the quote increase?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-GAR-CMP",
+      "city": "The Heights",
+      "service": "garage floor coating",
+      "intent": "comparison",
+      "prompt": "For a garage in The Heights, should I choose an epoxy base with a polyaspartic topcoat, an all-polyurea system, or a DIY epoxy kit? Compare preparation, durability and value.",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-GAR-PROB",
+      "city": "The Heights",
+      "service": "garage floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My existing garage coating is peeling near the door on a Heights garage where an older slab may have repairs, coatings or moisture history. Who in The Heights can remove it, diagnose the slab and install a replacement correctly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-FLK-REC",
+      "city": "The Heights",
+      "service": "full-broadcast flake flooring",
+      "intent": "recommendation",
+      "prompt": "Who installs full-broadcast flake garage floors in The Heights, TX with an epoxy base coat and a UV-stable clear wearing surface?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-FLK-BEST",
+      "city": "The Heights",
+      "service": "full-broadcast flake flooring",
+      "intent": "best-company shortlist",
+      "prompt": "Which The Heights companies are best for showroom-quality full-flake garage floors? Give me a shortlist and the installation details I should verify.",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-FLK-COST",
+      "city": "The Heights",
+      "service": "full-broadcast flake flooring",
+      "intent": "cost and value",
+      "prompt": "How much does a full-broadcast flake floor cost for a two-car garage in The Heights, and how do square footage, coating removal and concrete repairs affect the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-FLK-CMP",
+      "city": "The Heights",
+      "service": "full-broadcast flake flooring",
+      "intent": "comparison",
+      "prompt": "Full-broadcast flake versus partial-flake garage flooring in The Heights: which hides repairs better, gives better texture and is easier to maintain?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-FLK-PROB",
+      "city": "The Heights",
+      "service": "full-broadcast flake flooring",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My The Heights garage floor has oil stains, small spalls and visible cracks. Can a full-broadcast flake system still be installed, and who prepares floors like this properly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PLY-REC",
+      "city": "The Heights",
+      "service": "polyaspartic floor coating",
+      "intent": "recommendation",
+      "prompt": "Can you recommend a polyaspartic floor coating contractor in The Heights, TX that explains the complete coating system rather than selling only a resin name?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PLY-BEST",
+      "city": "The Heights",
+      "service": "polyaspartic floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Who are the best polyaspartic garage floor installers serving The Heights, and what should I compare in their written scopes and warranties?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PLY-COST",
+      "city": "The Heights",
+      "service": "polyaspartic floor coating",
+      "intent": "cost and value",
+      "prompt": "What does a professional polyaspartic garage floor cost in The Heights, TX, and why are some one-day coating quotes much cheaper than others?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PLY-CMP",
+      "city": "The Heights",
+      "service": "polyaspartic floor coating",
+      "intent": "comparison",
+      "prompt": "Epoxy versus polyaspartic versus polyurea for a garage in The Heights: which material belongs in the base coat, which belongs on top and why?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PLY-PROB",
+      "city": "The Heights",
+      "service": "polyaspartic floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "I need a UV-stable garage floor in The Heights that will not yellow near the open door. Which coating system and installer should I consider?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PRE-REC",
+      "city": "The Heights",
+      "service": "concrete preparation and repair",
+      "intent": "recommendation",
+      "prompt": "Who in The Heights, TX mechanically diamond-grinds concrete, repairs cracks and checks moisture before installing a floor coating?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PRE-BEST",
+      "city": "The Heights",
+      "service": "concrete preparation and repair",
+      "intent": "best-company shortlist",
+      "prompt": "Which concrete coating contractors serving The Heights are strongest on slab preparation, coating removal and crack or spall repair?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PRE-COST",
+      "city": "The Heights",
+      "service": "concrete preparation and repair",
+      "intent": "cost and value",
+      "prompt": "How much do concrete grinding, old-coating removal and crack repair add to a garage floor coating quote in The Heights, TX?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PRE-CMP",
+      "city": "The Heights",
+      "service": "concrete preparation and repair",
+      "intent": "comparison",
+      "prompt": "Diamond grinding versus acid etching before epoxy in The Heights: which creates a more reliable concrete profile, and how can I tell what a contractor actually included?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-PRE-PROB",
+      "city": "The Heights",
+      "service": "concrete preparation and repair",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "There are moving cracks and moisture marks in a Heights garage where an older slab may have repairs, coatings or moisture history. Can it safely be coated, and who in The Heights can test it before I spend money?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-EXT-REC",
+      "city": "The Heights",
+      "service": "patio and pool-deck coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a patio or pool-deck coating in The Heights, TX that can handle sun, standing water and wet-foot traction?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-EXT-BEST",
+      "city": "The Heights",
+      "service": "patio and pool-deck coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of concrete coating companies serving The Heights for patios and pool decks, including what exterior-system details I should compare.",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-EXT-COST",
+      "city": "The Heights",
+      "service": "patio and pool-deck coating",
+      "intent": "cost and value",
+      "prompt": "What does it cost to coat a concrete patio or pool deck in The Heights, and what surface repairs or removal work usually change the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-EXT-CMP",
+      "city": "The Heights",
+      "service": "patio and pool-deck coating",
+      "intent": "comparison",
+      "prompt": "For an outdoor concrete patio in The Heights, compare epoxy, polyaspartic and other UV-stable coating options for heat, fading and slip resistance.",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-EXT-PROB",
+      "city": "The Heights",
+      "service": "patio and pool-deck coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "The coating on my The Heights patio is faded, slick when wet and lifting in spots. Who can remove it and specify an exterior system instead of a garage-floor product?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-COM-REC",
+      "city": "The Heights",
+      "service": "commercial and warehouse floor coating",
+      "intent": "recommendation",
+      "prompt": "Who installs commercial epoxy or polyaspartic floors for shops and warehouses in The Heights, TX and provides a written scope based on traffic and chemical exposure?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-COM-BEST",
+      "city": "The Heights",
+      "service": "commercial and warehouse floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Which commercial floor coating contractors serving The Heights should I invite to bid for a shop or warehouse floor? Give me a practical shortlist.",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-COM-COST",
+      "city": "The Heights",
+      "service": "commercial and warehouse floor coating",
+      "intent": "cost and value",
+      "prompt": "What drives the cost of a commercial epoxy floor in The Heights, TX—square footage, preparation, downtime, build coats or topcoat specification?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-COM-CMP",
+      "city": "The Heights",
+      "service": "commercial and warehouse floor coating",
+      "intent": "comparison",
+      "prompt": "For a working shop in The Heights, compare a basic epoxy floor with a multi-coat flake system and a polyaspartic wear coat. Which is the better lifecycle value?",
+      "branded": false
+    },
+    {
+      "id": "AEO-HEI-COM-PROB",
+      "city": "The Heights",
+      "service": "commercial and warehouse floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "Our The Heights shop floor has forklift wear, oil contamination and an old coating. Who can inspect it and plan removal, preparation and phased installation around operations?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-GAR-REC",
+      "city": "Bellaire",
+      "service": "garage floor coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a premium garage floor coating in Bellaire, TX? I want the slab mechanically ground and inspected before anyone quotes it.",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-GAR-BEST",
+      "city": "Bellaire",
+      "service": "garage floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of 3 to 5 reputable garage floor coating companies serving Bellaire, TX, and explain what makes each one worth considering.",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-GAR-COST",
+      "city": "Bellaire",
+      "service": "garage floor coating",
+      "intent": "cost and value",
+      "prompt": "What should a professionally installed two-car garage floor coating cost in Bellaire, TX, and which preparation or repair items make the quote increase?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-GAR-CMP",
+      "city": "Bellaire",
+      "service": "garage floor coating",
+      "intent": "comparison",
+      "prompt": "For a garage in Bellaire, should I choose an epoxy base with a polyaspartic topcoat, an all-polyurea system, or a DIY epoxy kit? Compare preparation, durability and value.",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-GAR-PROB",
+      "city": "Bellaire",
+      "service": "garage floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My existing garage coating is peeling near the door on a Bellaire garage where the slab may be original, rebuilt or previously flood-affected. Who in Bellaire can remove it, diagnose the slab and install a replacement correctly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-FLK-REC",
+      "city": "Bellaire",
+      "service": "full-broadcast flake flooring",
+      "intent": "recommendation",
+      "prompt": "Who installs full-broadcast flake garage floors in Bellaire, TX with an epoxy base coat and a UV-stable clear wearing surface?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-FLK-BEST",
+      "city": "Bellaire",
+      "service": "full-broadcast flake flooring",
+      "intent": "best-company shortlist",
+      "prompt": "Which Bellaire companies are best for showroom-quality full-flake garage floors? Give me a shortlist and the installation details I should verify.",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-FLK-COST",
+      "city": "Bellaire",
+      "service": "full-broadcast flake flooring",
+      "intent": "cost and value",
+      "prompt": "How much does a full-broadcast flake floor cost for a two-car garage in Bellaire, and how do square footage, coating removal and concrete repairs affect the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-FLK-CMP",
+      "city": "Bellaire",
+      "service": "full-broadcast flake flooring",
+      "intent": "comparison",
+      "prompt": "Full-broadcast flake versus partial-flake garage flooring in Bellaire: which hides repairs better, gives better texture and is easier to maintain?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-FLK-PROB",
+      "city": "Bellaire",
+      "service": "full-broadcast flake flooring",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My Bellaire garage floor has oil stains, small spalls and visible cracks. Can a full-broadcast flake system still be installed, and who prepares floors like this properly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PLY-REC",
+      "city": "Bellaire",
+      "service": "polyaspartic floor coating",
+      "intent": "recommendation",
+      "prompt": "Can you recommend a polyaspartic floor coating contractor in Bellaire, TX that explains the complete coating system rather than selling only a resin name?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PLY-BEST",
+      "city": "Bellaire",
+      "service": "polyaspartic floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Who are the best polyaspartic garage floor installers serving Bellaire, and what should I compare in their written scopes and warranties?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PLY-COST",
+      "city": "Bellaire",
+      "service": "polyaspartic floor coating",
+      "intent": "cost and value",
+      "prompt": "What does a professional polyaspartic garage floor cost in Bellaire, TX, and why are some one-day coating quotes much cheaper than others?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PLY-CMP",
+      "city": "Bellaire",
+      "service": "polyaspartic floor coating",
+      "intent": "comparison",
+      "prompt": "Epoxy versus polyaspartic versus polyurea for a garage in Bellaire: which material belongs in the base coat, which belongs on top and why?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PLY-PROB",
+      "city": "Bellaire",
+      "service": "polyaspartic floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "I need a UV-stable garage floor in Bellaire that will not yellow near the open door. Which coating system and installer should I consider?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PRE-REC",
+      "city": "Bellaire",
+      "service": "concrete preparation and repair",
+      "intent": "recommendation",
+      "prompt": "Who in Bellaire, TX mechanically diamond-grinds concrete, repairs cracks and checks moisture before installing a floor coating?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PRE-BEST",
+      "city": "Bellaire",
+      "service": "concrete preparation and repair",
+      "intent": "best-company shortlist",
+      "prompt": "Which concrete coating contractors serving Bellaire are strongest on slab preparation, coating removal and crack or spall repair?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PRE-COST",
+      "city": "Bellaire",
+      "service": "concrete preparation and repair",
+      "intent": "cost and value",
+      "prompt": "How much do concrete grinding, old-coating removal and crack repair add to a garage floor coating quote in Bellaire, TX?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PRE-CMP",
+      "city": "Bellaire",
+      "service": "concrete preparation and repair",
+      "intent": "comparison",
+      "prompt": "Diamond grinding versus acid etching before epoxy in Bellaire: which creates a more reliable concrete profile, and how can I tell what a contractor actually included?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-PRE-PROB",
+      "city": "Bellaire",
+      "service": "concrete preparation and repair",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "There are moving cracks and moisture marks in a Bellaire garage where the slab may be original, rebuilt or previously flood-affected. Can it safely be coated, and who in Bellaire can test it before I spend money?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-EXT-REC",
+      "city": "Bellaire",
+      "service": "patio and pool-deck coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a patio or pool-deck coating in Bellaire, TX that can handle sun, standing water and wet-foot traction?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-EXT-BEST",
+      "city": "Bellaire",
+      "service": "patio and pool-deck coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of concrete coating companies serving Bellaire for patios and pool decks, including what exterior-system details I should compare.",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-EXT-COST",
+      "city": "Bellaire",
+      "service": "patio and pool-deck coating",
+      "intent": "cost and value",
+      "prompt": "What does it cost to coat a concrete patio or pool deck in Bellaire, and what surface repairs or removal work usually change the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-EXT-CMP",
+      "city": "Bellaire",
+      "service": "patio and pool-deck coating",
+      "intent": "comparison",
+      "prompt": "For an outdoor concrete patio in Bellaire, compare epoxy, polyaspartic and other UV-stable coating options for heat, fading and slip resistance.",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-EXT-PROB",
+      "city": "Bellaire",
+      "service": "patio and pool-deck coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "The coating on my Bellaire patio is faded, slick when wet and lifting in spots. Who can remove it and specify an exterior system instead of a garage-floor product?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-COM-REC",
+      "city": "Bellaire",
+      "service": "commercial and warehouse floor coating",
+      "intent": "recommendation",
+      "prompt": "Who installs commercial epoxy or polyaspartic floors for shops and warehouses in Bellaire, TX and provides a written scope based on traffic and chemical exposure?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-COM-BEST",
+      "city": "Bellaire",
+      "service": "commercial and warehouse floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Which commercial floor coating contractors serving Bellaire should I invite to bid for a shop or warehouse floor? Give me a practical shortlist.",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-COM-COST",
+      "city": "Bellaire",
+      "service": "commercial and warehouse floor coating",
+      "intent": "cost and value",
+      "prompt": "What drives the cost of a commercial epoxy floor in Bellaire, TX—square footage, preparation, downtime, build coats or topcoat specification?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-COM-CMP",
+      "city": "Bellaire",
+      "service": "commercial and warehouse floor coating",
+      "intent": "comparison",
+      "prompt": "For a working shop in Bellaire, compare a basic epoxy floor with a multi-coat flake system and a polyaspartic wear coat. Which is the better lifecycle value?",
+      "branded": false
+    },
+    {
+      "id": "AEO-BEL-COM-PROB",
+      "city": "Bellaire",
+      "service": "commercial and warehouse floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "Our Bellaire shop floor has forklift wear, oil contamination and an old coating. Who can inspect it and plan removal, preparation and phased installation around operations?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-GAR-REC",
+      "city": "Missouri City",
+      "service": "garage floor coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a premium garage floor coating in Missouri City, TX? I want the slab mechanically ground and inspected before anyone quotes it.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-GAR-BEST",
+      "city": "Missouri City",
+      "service": "garage floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of 3 to 5 reputable garage floor coating companies serving Missouri City, TX, and explain what makes each one worth considering.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-GAR-COST",
+      "city": "Missouri City",
+      "service": "garage floor coating",
+      "intent": "cost and value",
+      "prompt": "What should a professionally installed two-car garage floor coating cost in Missouri City, TX, and which preparation or repair items make the quote increase?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-GAR-CMP",
+      "city": "Missouri City",
+      "service": "garage floor coating",
+      "intent": "comparison",
+      "prompt": "For a garage in Missouri City, should I choose an epoxy base with a polyaspartic topcoat, an all-polyurea system, or a DIY epoxy kit? Compare preparation, durability and value.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-GAR-PROB",
+      "city": "Missouri City",
+      "service": "garage floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My existing garage coating is peeling near the door on a Missouri City home on expansive Gulf Coast clay. Who in Missouri City can remove it, diagnose the slab and install a replacement correctly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-FLK-REC",
+      "city": "Missouri City",
+      "service": "full-broadcast flake flooring",
+      "intent": "recommendation",
+      "prompt": "Who installs full-broadcast flake garage floors in Missouri City, TX with an epoxy base coat and a UV-stable clear wearing surface?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-FLK-BEST",
+      "city": "Missouri City",
+      "service": "full-broadcast flake flooring",
+      "intent": "best-company shortlist",
+      "prompt": "Which Missouri City companies are best for showroom-quality full-flake garage floors? Give me a shortlist and the installation details I should verify.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-FLK-COST",
+      "city": "Missouri City",
+      "service": "full-broadcast flake flooring",
+      "intent": "cost and value",
+      "prompt": "How much does a full-broadcast flake floor cost for a two-car garage in Missouri City, and how do square footage, coating removal and concrete repairs affect the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-FLK-CMP",
+      "city": "Missouri City",
+      "service": "full-broadcast flake flooring",
+      "intent": "comparison",
+      "prompt": "Full-broadcast flake versus partial-flake garage flooring in Missouri City: which hides repairs better, gives better texture and is easier to maintain?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-FLK-PROB",
+      "city": "Missouri City",
+      "service": "full-broadcast flake flooring",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "My Missouri City garage floor has oil stains, small spalls and visible cracks. Can a full-broadcast flake system still be installed, and who prepares floors like this properly?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PLY-REC",
+      "city": "Missouri City",
+      "service": "polyaspartic floor coating",
+      "intent": "recommendation",
+      "prompt": "Can you recommend a polyaspartic floor coating contractor in Missouri City, TX that explains the complete coating system rather than selling only a resin name?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PLY-BEST",
+      "city": "Missouri City",
+      "service": "polyaspartic floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Who are the best polyaspartic garage floor installers serving Missouri City, and what should I compare in their written scopes and warranties?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PLY-COST",
+      "city": "Missouri City",
+      "service": "polyaspartic floor coating",
+      "intent": "cost and value",
+      "prompt": "What does a professional polyaspartic garage floor cost in Missouri City, TX, and why are some one-day coating quotes much cheaper than others?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PLY-CMP",
+      "city": "Missouri City",
+      "service": "polyaspartic floor coating",
+      "intent": "comparison",
+      "prompt": "Epoxy versus polyaspartic versus polyurea for a garage in Missouri City: which material belongs in the base coat, which belongs on top and why?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PLY-PROB",
+      "city": "Missouri City",
+      "service": "polyaspartic floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "I need a UV-stable garage floor in Missouri City that will not yellow near the open door. Which coating system and installer should I consider?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PRE-REC",
+      "city": "Missouri City",
+      "service": "concrete preparation and repair",
+      "intent": "recommendation",
+      "prompt": "Who in Missouri City, TX mechanically diamond-grinds concrete, repairs cracks and checks moisture before installing a floor coating?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PRE-BEST",
+      "city": "Missouri City",
+      "service": "concrete preparation and repair",
+      "intent": "best-company shortlist",
+      "prompt": "Which concrete coating contractors serving Missouri City are strongest on slab preparation, coating removal and crack or spall repair?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PRE-COST",
+      "city": "Missouri City",
+      "service": "concrete preparation and repair",
+      "intent": "cost and value",
+      "prompt": "How much do concrete grinding, old-coating removal and crack repair add to a garage floor coating quote in Missouri City, TX?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PRE-CMP",
+      "city": "Missouri City",
+      "service": "concrete preparation and repair",
+      "intent": "comparison",
+      "prompt": "Diamond grinding versus acid etching before epoxy in Missouri City: which creates a more reliable concrete profile, and how can I tell what a contractor actually included?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-PRE-PROB",
+      "city": "Missouri City",
+      "service": "concrete preparation and repair",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "There are moving cracks and moisture marks in a Missouri City home on expansive Gulf Coast clay. Can it safely be coated, and who in Missouri City can test it before I spend money?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-EXT-REC",
+      "city": "Missouri City",
+      "service": "patio and pool-deck coating",
+      "intent": "recommendation",
+      "prompt": "Who would you recommend for a patio or pool-deck coating in Missouri City, TX that can handle sun, standing water and wet-foot traction?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-EXT-BEST",
+      "city": "Missouri City",
+      "service": "patio and pool-deck coating",
+      "intent": "best-company shortlist",
+      "prompt": "Give me a shortlist of concrete coating companies serving Missouri City for patios and pool decks, including what exterior-system details I should compare.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-EXT-COST",
+      "city": "Missouri City",
+      "service": "patio and pool-deck coating",
+      "intent": "cost and value",
+      "prompt": "What does it cost to coat a concrete patio or pool deck in Missouri City, and what surface repairs or removal work usually change the price?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-EXT-CMP",
+      "city": "Missouri City",
+      "service": "patio and pool-deck coating",
+      "intent": "comparison",
+      "prompt": "For an outdoor concrete patio in Missouri City, compare epoxy, polyaspartic and other UV-stable coating options for heat, fading and slip resistance.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-EXT-PROB",
+      "city": "Missouri City",
+      "service": "patio and pool-deck coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "The coating on my Missouri City patio is faded, slick when wet and lifting in spots. Who can remove it and specify an exterior system instead of a garage-floor product?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-COM-REC",
+      "city": "Missouri City",
+      "service": "commercial and warehouse floor coating",
+      "intent": "recommendation",
+      "prompt": "Who installs commercial epoxy or polyaspartic floors for shops and warehouses in Missouri City, TX and provides a written scope based on traffic and chemical exposure?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-COM-BEST",
+      "city": "Missouri City",
+      "service": "commercial and warehouse floor coating",
+      "intent": "best-company shortlist",
+      "prompt": "Which commercial floor coating contractors serving Missouri City should I invite to bid for a shop or warehouse floor? Give me a practical shortlist.",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-COM-COST",
+      "city": "Missouri City",
+      "service": "commercial and warehouse floor coating",
+      "intent": "cost and value",
+      "prompt": "What drives the cost of a commercial epoxy floor in Missouri City, TX—square footage, preparation, downtime, build coats or topcoat specification?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-COM-CMP",
+      "city": "Missouri City",
+      "service": "commercial and warehouse floor coating",
+      "intent": "comparison",
+      "prompt": "For a working shop in Missouri City, compare a basic epoxy floor with a multi-coat flake system and a polyaspartic wear coat. Which is the better lifecycle value?",
+      "branded": false
+    },
+    {
+      "id": "AEO-MCT-COM-PROB",
+      "city": "Missouri City",
+      "service": "commercial and warehouse floor coating",
+      "intent": "problem-solving / purchase intent",
+      "prompt": "Our Missouri City shop floor has forklift wear, oil contamination and an old coating. Who can inspect it and plan removal, preparation and phased installation around operations?",
+      "branded": false
+    },
+    {
       "id": "BRAND-001",
       "city": "Greater Houston",
       "service": "brand reputation",

@@ -16,6 +16,13 @@ const cities = [
   { code: 'RIC', name: 'Richmond', context: 'a Richmond slab near Brazos River soils' },
   { code: 'TOM', name: 'Tomball', context: 'a Tomball garage with mixed clay and sandy soil conditions' },
   { code: 'FUL', name: 'Fulshear', context: 'a newer Fulshear home in the Brazos valley' },
+  { code: 'PEA', name: 'Pearland', context: 'a Pearland slab exposed to Gulf Coast humidity and expansive soils' },
+  { code: 'WOO', name: 'The Woodlands', context: 'a wooded The Woodlands property with drainage and slab-moisture concerns' },
+  { code: 'MAG', name: 'Magnolia', context: 'a Magnolia garage where soil and drainage conditions can vary by property' },
+  { code: 'MRO', name: 'Memorial and River Oaks', context: 'a Memorial or River Oaks home with an established slab and mature landscaping' },
+  { code: 'HEI', name: 'The Heights', context: 'a Heights garage where an older slab may have repairs, coatings or moisture history' },
+  { code: 'BEL', name: 'Bellaire', context: 'a Bellaire garage where the slab may be original, rebuilt or previously flood-affected' },
+  { code: 'MCT', name: 'Missouri City', context: 'a Missouri City home on expansive Gulf Coast clay' },
 ]
 
 const services = [

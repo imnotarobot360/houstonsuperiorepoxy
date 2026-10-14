@@ -199,7 +199,7 @@ function checkAeoCatalog() {
 
     const unbranded = prompts.filter((prompt) => prompt.branded === false)
     const branded = prompts.filter((prompt) => prompt.branded === true)
-    if (unbranded.length !== 210) failures.push(`data/aeo/prompts.json: expected 210 unbranded prompts, found ${unbranded.length}.`)
+    if (unbranded.length !== 420) failures.push(`data/aeo/prompts.json: expected 420 unbranded prompts, found ${unbranded.length}.`)
     if (branded.length !== 10) failures.push(`data/aeo/prompts.json: expected 10 branded prompts, found ${branded.length}.`)
 
     const ids = prompts.map((prompt) => prompt.id)
