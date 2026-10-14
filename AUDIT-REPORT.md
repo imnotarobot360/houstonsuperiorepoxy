@@ -1,6 +1,8 @@
 # Houston Superior Epoxy — Instant-Estimate Funnel & SEO/Tracking Audit
 
-_Last updated: 2026-09-10_
+_Last updated: 2026-10-14. Historical notes below may describe the former
+five-year warranty; the current approved offer is the Limited Lifetime
+Workmanship Warranty on qualifying residential garage installations._
 
 ## 0. Enhancement pass (2026-09-10) — MyGarageFloors-style conversion upgrade
 

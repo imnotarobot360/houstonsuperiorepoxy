@@ -67,22 +67,7 @@ next to a commercial word, so this cannot drift by accident.
 
 ---
 
-## 4. GA4 measurement ID — analytics is dark without it
-
-**Needed:** the GA4 Measurement ID (`G-XXXXXXXXXX`) for the Houston Superior
-**Epoxy** property — not the Painting one.
-
-**Where it goes:** `NEXT_PUBLIC_GA_MEASUREMENT_ID` in Vercel, then redeploy
-(`NEXT_PUBLIC_*` is baked in at build time).
-
-**What the site does meanwhile.** `lib/analytics.ts` self-disables: no GA
-script, no GA cookie, and `generate_lead` is a no-op. The Meta Pixel
-(`908445922031813`) is configured and firing, so Meta conversions are
-unaffected.
-
----
-
-## 5. Meta Conversions API token — browser-only tracking meanwhile
+## 4. Meta Conversions API token — browser-only tracking meanwhile
 
 **Needed:** `META_CAPI_ACCESS_TOKEN` (a secret — set it in the Vercel
 dashboard, do not paste it into a chat or commit it).

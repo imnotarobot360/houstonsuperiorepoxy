@@ -24,7 +24,7 @@
   Exit code 1 on any failure, so CI or a pre-deploy step can gate on it.
 */
 
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -175,8 +175,50 @@ function checkPolicyModule() {
   }
 }
 
+function checkAeoCatalog() {
+  const failures = []
+  const required = [
+    'data/aeo/prompts.json',
+    'data/aeo/prompts.csv',
+    'data/aeo/results-schema.json',
+    'docs/aeo/prompt-catalog.md',
+    'docs/aeo/measurement-plan.md',
+    'docs/aeo-prompt-baseline-2026-10.csv',
+    'scripts/record-ai-visibility.mjs',
+  ]
+
+  for (const rel of required) {
+    if (!existsSync(join(ROOT, rel))) failures.push(`${rel} is missing from the AI-visibility measurement system.`)
+  }
+  if (failures.length) return failures
+
+  try {
+    const catalog = JSON.parse(readFileSync(join(ROOT, 'data/aeo/prompts.json'), 'utf8'))
+    const prompts = catalog.prompts
+    if (!Array.isArray(prompts)) return ['data/aeo/prompts.json: prompts must be an array.']
+
+    const unbranded = prompts.filter((prompt) => prompt.branded === false)
+    const branded = prompts.filter((prompt) => prompt.branded === true)
+    if (unbranded.length !== 210) failures.push(`data/aeo/prompts.json: expected 210 unbranded prompts, found ${unbranded.length}.`)
+    if (branded.length !== 10) failures.push(`data/aeo/prompts.json: expected 10 branded prompts, found ${branded.length}.`)
+
+    const ids = prompts.map((prompt) => prompt.id)
+    if (new Set(ids).size !== ids.length) failures.push('data/aeo/prompts.json: prompt IDs are not unique.')
+
+    for (const prompt of unbranded) {
+      if (/Houston Superior Epoxy/i.test(prompt.prompt)) {
+        failures.push(`${prompt.id}: unbranded prompt names Houston Superior Epoxy.`)
+      }
+    }
+  } catch (error) {
+    failures.push(`data/aeo/prompts.json: ${error instanceof Error ? error.message : 'could not parse catalog'}`)
+  }
+
+  return failures
+}
+
 function scanSource() {
-  const failures = checkPolicyModule()
+  const failures = [...checkPolicyModule(), ...checkAeoCatalog()]
   for (const file of walk(ROOT)) {
     const rel = relative(ROOT, file).replace(/\\/g, '/')
     const text = readFileSync(file, 'utf8')

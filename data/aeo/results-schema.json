@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Houston Superior Epoxy AI visibility results",
+  "type": "object",
+  "required": ["version", "results"],
+  "properties": {
+    "version": { "const": 1 },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["promptId", "prompt", "branded", "date", "platform", "mentioned", "accuracy"],
+        "properties": {
+          "promptId": { "type": "string" },
+          "prompt": { "type": "string" },
+          "branded": { "type": "boolean" },
+          "date": { "type": "string", "format": "date" },
+          "platform": { "enum": ["ChatGPT", "Google AI Mode", "Gemini", "Claude", "Perplexity", "Grok"] },
+          "model": { "type": ["string", "null"] },
+          "mentioned": { "type": "boolean" },
+          "position": { "type": ["integer", "null"], "minimum": 1 },
+          "citedUrl": { "type": ["string", "null"], "format": "uri" },
+          "competitors": { "type": "array", "items": { "type": "string" } },
+          "accuracy": { "enum": ["accurate", "mixed", "incorrect", "unknown"] },
+          "sourceTypes": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

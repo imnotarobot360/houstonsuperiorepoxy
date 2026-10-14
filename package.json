@@ -9,9 +9,11 @@
     "textures": "node scripts/build-flake-textures.mjs",
     "indexnow": "node scripts/indexnow-ping.mjs",
     "indexnow:dry": "node scripts/indexnow-ping.mjs --dry-run",
+    "aeo:build": "node scripts/build-ai-visibility-prompts.mjs",
+    "aeo:record": "node scripts/record-ai-visibility.mjs",
     "typecheck": "tsc --noEmit",
     "test:build": "tsc -p tsconfig.test.json",
-    "test": "npm run test:build && node --require ./tests/alias.cjs --test .test-build/tests/"
+    "test": "npm run test:build && node --require ./tests/alias.cjs --test .test-build/tests/*.test.js"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

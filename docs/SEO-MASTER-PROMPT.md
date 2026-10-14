@@ -72,8 +72,8 @@ Read before planning. Duplicating any of this is a regression, not progress.
 | robots | `app/robots.ts`; `/admin`, `/lp`, `/app/`, `/catalog/` disallowed |
 | Structured data | `lib/schema.ts` — Organization, LocalBusiness, WebSite, Service, BlogPosting, Project, FAQPage, BreadcrumbList. One graph per page, entities declared once |
 | AEO | `lib/content/answers.ts` — 40–70 word quick answers per route, with a dev-time word-count guard in `components/aeo.tsx` |
-| GEO / AI | `/llms.txt`, generated from the same constants the pages use (`lib/llms.ts`) |
-| City pages | 9: richmond, katy, sugar-land, cypress, fulshear, pearland, the-woodlands, magnolia, memorial-river-oaks (`lib/content/cities.ts`) |
+| GEO / AI | `/llms.txt`, generated from the same constants the pages use (`lib/llms.ts`); 210 unbranded discovery prompts plus 10 branded accuracy checks in `data/aeo/` |
+| City pages | 14: richmond, katy, sugar-land, cypress, fulshear, pearland, the-woodlands, magnolia, memorial-river-oaks, the-heights, bellaire, missouri-city, spring and tomball (`lib/content/cities.ts`) |
 | Resource articles | 22 (`lib/content/resources.ts`) |
 | Specs / authority | `lib/content/specs.ts` (per-system spec blocks, warranty split by surface), `lib/content/authority.ts` |
 | Analytics | GA4 `G-GSEQHCDCPL` (production only) and Meta Pixel `908445922031813`, both live. `generate_lead` fires once after a confirmed lead (`lib/conversion.ts`) |
@@ -86,7 +86,8 @@ Read before planning. Duplicating any of this is a regression, not progress.
    the local relevance and the image surface all at once.
 2. **No reviews.** `content/reviews.ts` is empty by design until this entity
    has its own.
-3. **9 city pages** against a metro with far more searchable communities.
+3. **14 city pages** against a metro with far more searchable communities. New
+   pages still require genuinely city-specific slab and housing-stock evidence.
 
 ---
 
@@ -114,12 +115,12 @@ performance and SEO reported per template, and `verify-site.mjs` passes.
 
 ### 2.2 Local SEO
 
-- Expand city coverage beyond the current 9. Candidates: Spring, Tomball,
-  Conroe, Humble, Kingwood, Friendswood, League City, Missouri City, Stafford,
-  Bellaire, West University, Jersey Village.
+- Expand city coverage beyond the current 14 only when the page earns its URL.
+  Remaining candidates: Conroe, Humble, Kingwood, Friendswood, League City,
+  Stafford, West University and Jersey Village.
 - **A city page must say something true and specific about that city's slabs** —
   housing stock age, soil, typical garage size, builder practice. Read
-  `lib/content/cities.ts` first: the existing nine follow this rule and the file
+  `lib/content/cities.ts` first: the existing fourteen follow this rule and the file
   documents it. A templated page with the name swapped is worse than no page.
 - Service-area schema: confirm `areaServed` matches the published list.
 - Google Business Profile is **not** in this repo. Report what should change
@@ -149,14 +150,16 @@ schema is visibly on the page.
 - Qualifiers must travel with facts, because an AI answer is quoted off-site
   where we cannot correct it: the rate never without its minimum, the warranty
   never as a bare "lifetime warranty".
-- Establish a baseline: ask ChatGPT, Claude, Gemini and Perplexity the ten
-  queries that matter ("best garage floor coating Houston", "epoxy garage floor
-  cost Houston", etc.), record verbatim what they say and whether this business
-  appears. **Record the baseline before changing anything**, or improvement is
-  unmeasurable.
+- Establish and repeat the baseline using the stable catalog in
+  `data/aeo/prompts.json`: 210 unbranded prompts across 7 cities, 6 services and
+  5 intents, plus 10 branded accuracy checks. Run fresh conversations in
+  ChatGPT, Google AI Mode, Gemini, Claude, Perplexity and Grok; record platform,
+  model, mention, position, cited URL, competitors and accuracy. Branded results
+  never count as discovery visibility.
 
-**Done when:** a dated baseline table exists in `docs/`, with the exact prompts
-used so it can be re-run.
+**Done when:** `docs/aeo-prompt-baseline-2026-10.csv` contains dated
+observations and the exact prompt IDs, so the same questions can be re-run
+without wording drift.
 
 ### 2.5 Structured data
 
