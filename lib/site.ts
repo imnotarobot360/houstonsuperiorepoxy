@@ -269,7 +269,7 @@ export const assurances = [
     true of every job; /warranty breaks the terms down by what is coated.
   */
   'Written workmanship warranty',
-  'No upfront payment',
+  'Clear written payment terms',
 ] as const
 
 /*
@@ -730,7 +730,7 @@ export const faqs = [
       The figures are interpolated from `pricing` so this cannot drift from the
       calculator.
     */
-    a: `A standard two-car garage in our flake system starts at ${pricing.twoCarFrom} — that is ${pricing.perSqFtFrom} per square foot across a typical 400 sq ft bay, with a ${pricing.oneCarFrom} minimum on any garage. That is a starting point on a sound slab, not a quote. Four things move it, and slab condition matters more than square footage: whether an existing coating has to be ground off, which is the single largest swing; crack and spall repair, quoted as its own line; slab moisture, which can change which system will bond; and the system itself. We inspect the slab, itemize all of it in writing, and take no payment upfront.`,
+    a: `A standard two-car garage in our flake system starts at ${pricing.twoCarFrom} — that is ${pricing.perSqFtFrom} per square foot across a typical 400 sq ft bay, with a ${pricing.oneCarFrom} minimum on any garage. That is a starting point on a sound slab, not a quote. Four things move it, and slab condition matters more than square footage: whether an existing coating has to be ground off, which is the single largest swing; crack and spall repair, quoted as its own line; slab moisture, which can change which system will bond; and the system itself. We inspect the slab, itemize all of it in writing, including the deposit and payment schedule.`,
   },
   {
     q: 'How long does the installation take?',
@@ -794,7 +794,7 @@ export const faqs = [
   },
   {
     q: 'Are estimates really free?',
-    a: 'Yes — the onsite estimate is free, itemized in writing, and carries no obligation and no upfront payment. We come to your slab, inspect the concrete, check for moisture and repair needs, and go through flake and colour samples under your own lighting. Quoting a floor without seeing it is how surprises end up on invoices.',
+    a: 'Yes — the onsite estimate is free, itemized in writing, and carries no obligation; the written quote includes the deposit and payment schedule. We come to your slab, inspect the concrete, check for moisture and repair needs, and go through flake and colour samples under your own lighting. Quoting a floor without seeing it is how surprises end up on invoices.',
   },
   {
     q: 'Which Houston areas do you serve?',

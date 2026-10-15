@@ -43,7 +43,7 @@ const commitments = [
   {
     tag: 'Estimates',
     title: 'Free, onsite, itemized',
-    body: 'We look at your concrete before quoting it, because the slab determines the scope. The quote comes back itemized so preparation, repair and coating are separate lines, and no payment is due upfront.',
+    body: 'We look at your concrete before quoting it, because the slab determines the scope. The quote comes back itemized so preparation, repair and coating are separate lines, and the deposit and payment schedule are written in before you approve.',
   },
   {
     tag: 'Preparation',

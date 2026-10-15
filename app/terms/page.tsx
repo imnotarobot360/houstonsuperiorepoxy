@@ -44,7 +44,7 @@ export default function Page() {
             },
             {
               heading: 'The quote is the contract',
-              paras: ['If you hire us, the agreement is the written itemized quote we produce after the onsite inspection, including its scope, price, schedule and warranty terms. Where anything on this website differs from your signed quote, the quote governs. No payment is due upfront to receive one.'],
+              paras: ['If you hire us, the agreement is the written itemized quote we produce after the onsite inspection, including its scope, price, schedule and warranty terms. Where anything on this website differs from your signed quote, the quote governs. The quote states the required deposit and payment schedule.'],
             },
             {
               heading: 'Pricing shown here is a range',
@@ -96,7 +96,7 @@ export default function Page() {
 
       <CtaBand
         title="Ready for a real number instead of a range?"
-        body="The onsite estimate is free, itemized in writing, and carries no upfront payment."
+        body="The onsite estimate is free and itemized in writing, including the deposit and payment schedule."
       />
     </>
   )

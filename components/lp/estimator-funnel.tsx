@@ -635,7 +635,7 @@ export function EstimatorFunnel() {
             Where should we send your written estimate?
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            We&apos;ll confirm details and set up your free onsite inspection. No upfront payment.
+            We&apos;ll confirm details and set up your free onsite inspection.
           </p>
 
           <form action={submitLead} className="mt-6 flex flex-col gap-4">
@@ -960,7 +960,7 @@ function BookingStep({ leadId, name, zip }: { leadId: number | null; name: strin
           We&apos;ve saved your time and sent a confirmation{' '}
           {/* Customer email only goes out from a verified domain; wording stays true either way. */}
           to your phone or email. We&apos;ll arrive within that window to confirm your slab and put a
-          firm price in writing — no upfront payment. Need to change it? Call or text {site.phone}.
+          firm price, deposit and payment schedule in writing. Need to change it? Call or text {site.phone}.
         </p>
 
         <div className="mt-6 flex flex-col gap-3 border-t border-border pt-5 sm:flex-row">
@@ -1083,7 +1083,7 @@ function BookingStep({ leadId, name, zip }: { leadId: number | null; name: strin
             )}
           </button>
           <p className="mt-2 text-center text-xs text-muted-foreground">
-            Free onsite visit · no upfront payment · takes about 30 minutes
+            Free onsite visit · takes about 30 minutes
           </p>
         </div>
       )}

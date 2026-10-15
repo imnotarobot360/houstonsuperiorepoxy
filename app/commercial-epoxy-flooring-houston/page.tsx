@@ -99,7 +99,7 @@ const planning = [
     heading: 'What the walkthrough covers',
     paras: [
       'We assess slab condition, existing coatings, moisture, joint and crack detail, drain locations and traffic patterns. For warehouse and industrial slabs there is additional detail around joint treatment and forklift loading, covered on the warehouse page.',
-      'You receive an itemized proposal: preparation, repair, each coating layer, striping if applicable, phasing and mobilization broken out separately. No payment is due upfront.',
+      'You receive an itemized proposal: preparation, repair, each coating layer, striping if applicable, phasing and mobilization broken out separately, along with the deposit and payment schedule.',
     ],
   },
 ]
@@ -127,7 +127,7 @@ const faqs = [
   },
   {
     q: 'Do you require a deposit for commercial work?',
-    a: 'No payment is due upfront.',
+    a: 'Yes. The deposit and payment schedule are written into your proposal before you approve the project.',
   },
 ]
 

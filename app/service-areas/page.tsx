@@ -53,7 +53,7 @@ const body = [
 ]
 
 const coverage = [
-  'Free onsite estimates throughout the coverage area, with nothing due upfront.',
+  'Free onsite estimates throughout the coverage area, with clear written payment terms.',
   'The same written workmanship warranty regardless of which city you are in — the term is set by what is being coated, not by where you live.',
   'The same diamond grinding and repair standards on every slab we coat.',
   'Residential garages, patios and pool decks, plus commercial and warehouse slabs.',
@@ -183,7 +183,7 @@ export default function Page() {
 
       <CtaBand
         title="Find out what your slab actually needs"
-        body={`Free onsite estimate anywhere we work, with nothing due upfront. Call or text ${site.phone}.`}
+        body={`Free onsite estimate anywhere we work. Call or text ${site.phone}.`}
       />
 
       <Section>

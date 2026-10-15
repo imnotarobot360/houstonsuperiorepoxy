@@ -154,7 +154,7 @@ export function EstimateResult({
           Get My Written Estimate
         </button>
         <p className="mt-3 text-center text-xs text-muted-foreground">
-          Rough estimate generated {generatedLabel}. No upfront payment.
+          Rough estimate generated {generatedLabel}. Your written quote includes the deposit and payment schedule.
         </p>
       </div>
     </div>

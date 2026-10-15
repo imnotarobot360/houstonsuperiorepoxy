@@ -66,7 +66,7 @@ export const routes = {
     h1: 'Premium Garage Floor Coatings in Houston, TX',
     title: 'Garage Epoxy Flooring Houston | Houston Superior Epoxy',
     description:
-      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, written warranty, no upfront payment.',
+      'Diamond-ground epoxy and polyaspartic floor coatings for Houston garages, patios and commercial slabs. $2M insured, written warranty, clear written payment terms.',
     parent: null,
     label: 'Home',
   },
@@ -253,7 +253,7 @@ export const routes = {
     h1: 'About Houston Superior Epoxy',
     title: 'About Us | Houston Superior Epoxy',
     description:
-      'The concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, written warranty, no upfront payment.',
+      'The concrete coatings division of Houston Superior Painting, serving Greater Houston. $2M insured, written warranty, clear written payment terms.',
     parent: null,
     label: 'About',
   },
@@ -320,7 +320,7 @@ export const routes = {
     h1: 'Contact Houston Superior Epoxy',
     title: 'Contact Us | Houston Superior Epoxy',
     description:
-      'Call or text (346) 782-0903, or send photos of your slab. Free onsite estimates across Greater Houston, no payment due upfront.',
+      'Call or text (346) 782-0903, or send photos of your slab. Free onsite estimates across Greater Houston, with clear written payment terms.',
     parent: null,
     label: 'Contact',
   },

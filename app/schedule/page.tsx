@@ -89,7 +89,7 @@ export default function SchedulePage() {
       <PageHero
         routeKey="schedule"
         eyebrow="Book a visit"
-        intro="Estimates are free, happen at your property, and nothing is due upfront. Send the form below or call and we will find a window that works."
+        intro="Estimates are free and happen at your property. Send the form below or call and we will find a window that works."
       />
 
       <Section>
@@ -135,7 +135,7 @@ export default function SchedulePage() {
           <p className="mt-3 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
             Our live estimate calendar shows real open windows, so nothing offered is already
             taken. Booking a time is still just an inspection and a written number — free, with
-            nothing due at the visit.
+            no charge for the visit.
           </p>
           <a
             href={site.bookingUrl}

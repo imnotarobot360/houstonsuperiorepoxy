@@ -100,7 +100,7 @@ export default function Page() {
 
       <CtaBand
         title="Prefer to talk it through?"
-        body={`Call or text ${site.phone}. Free onsite estimate, no upfront payment, and we will walk your slab with you.`}
+        body={`Call or text ${site.phone}. Free onsite estimate, and we will walk your slab with you.`}
       />
     </>
   )

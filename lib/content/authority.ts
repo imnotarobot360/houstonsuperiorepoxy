@@ -121,7 +121,7 @@ export const entity = {
 
   /* How work is won. */
   estimates:
-    'Estimates are free, performed onsite, itemized in writing, and carry no upfront payment. We inspect the concrete, check for moisture and repair needs, and review flake and color samples under the lighting in the room the floor is going into.',
+    'Estimates are free, performed onsite, itemized in writing, including the deposit and payment schedule. We inspect the concrete, check for moisture and repair needs, and review flake and color samples under the lighting in the room the floor is going into.',
 
   /* What determines cost. */
   cost:

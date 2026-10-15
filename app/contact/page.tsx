@@ -30,8 +30,8 @@ const faqs = [
     a: 'For a garage, someone needs to let us in so we can moisture test the slab and check for existing coatings. For commercial work we can coordinate with a property manager or building engineer instead.',
   },
   {
-    q: 'Is the estimate really free, with nothing due upfront?',
-    a: 'Yes. We inspect the concrete, put an itemized number in writing, and there is no payment due until work is scheduled.',
+    q: 'Is the estimate really free?',
+    a: 'Yes. We inspect the concrete and put an itemized number in writing. Your written estimate identifies the complete scope, total price, required deposit and payment schedule before you approve the project.',
   },
 ]
 
@@ -237,7 +237,7 @@ export default function ContactPage() {
 
       <CtaBand
         title="Ready for a real number?"
-        body="We will inspect the slab, moisture test it, and give you an itemized written quote. Nothing is due upfront."
+        body="We will inspect the slab, moisture test it, and give you an itemized written quote with the deposit and payment schedule."
       />
     </>
   )

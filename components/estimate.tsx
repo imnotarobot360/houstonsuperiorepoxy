@@ -244,7 +244,7 @@ export function Estimate() {
           </h2>
           <p className="mt-6 leading-relaxed text-muted-foreground text-pretty">
             Send a few details and we will schedule a walkthrough, moisture test the concrete, and
-            put an itemized number in writing. No payment is due upfront, and we will tell you
+            put an itemized number in writing, including the deposit and payment schedule. We will tell you
             honestly if your slab needs repair before it needs coating.
           </p>
 
@@ -704,7 +704,7 @@ export function Estimate() {
               {pending ? 'Sending…' : 'Request My Free Estimate'}
             </button>
             <p className="mt-4 text-center text-[0.7rem] leading-relaxed text-muted-foreground">
-              No payment due upfront. We respond to every request within one business day.
+              Clear written payment terms. We respond to every request within one business day.
             </p>
           </form>
         )}

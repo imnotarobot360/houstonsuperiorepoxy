@@ -61,7 +61,7 @@ const credentials: Fact[] = [
     icon: ShieldCheck,
     href: r('warranty'),
   },
-  { value: '$0', label: 'Due upfront', icon: HandCoins },
+  { value: 'Written', label: 'Deposit & payment terms', icon: HandCoins },
   { value: 'Res. + Com.', label: 'Residential & commercial', icon: Building2 },
 ]
 

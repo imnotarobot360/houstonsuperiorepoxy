@@ -6,7 +6,7 @@ import { r } from '@/lib/routes'
 /* Closing conversion block used at the foot of every subpage. */
 export function CtaBand({
   title = 'Get an itemized quote after we have seen your concrete',
-  body = 'Every estimate is free, happens onsite, and comes back itemized. No payment is due upfront.',
+  body = 'Every estimate is free, happens onsite, and comes back itemized, with the deposit and payment schedule in writing.',
 }: {
   title?: string
   body?: string

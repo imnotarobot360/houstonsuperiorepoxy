@@ -78,8 +78,8 @@ const quoteRows = [
   },
   {
     point: 'Payment',
-    ours: 'No payment due upfront.',
-    theirs: 'A significant deposit before any work happens.',
+    ours: 'Deposit and payment schedule written into the quote before you approve.',
+    theirs: 'Payment terms agreed verbally, or changed after work starts.',
   },
 ]
 
@@ -105,8 +105,8 @@ const redFlags = [
     tag: 'Scheduling',
   },
   {
-    title: 'A large deposit up front',
-    body: 'We do not take payment before the work. A company that needs your money to start the job is telling you something about how it is funded.',
+    title: 'Payment terms that are not in writing',
+    body: 'Ask for the deposit and payment schedule in writing before you approve. Ours are written into the quote, so you know exactly what is due and when.',
     tag: 'Payment',
   },
   {
@@ -123,7 +123,7 @@ const askThem = [
   'What specific products are you installing, by name?',
   'How are cracks and spalls priced, and is that in this quote?',
   'What happens to the price if the slab turns out to be in worse shape than expected?',
-  'Do you require a deposit?',
+  'What deposit do you require, and what is the payment schedule?',
   'Who is actually on site — your crew, or a subcontractor?',
 ]
 

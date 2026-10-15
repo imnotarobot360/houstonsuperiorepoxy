@@ -155,7 +155,7 @@ export default function Page() {
                 'What you type into an estimate request: your name and phone number, which are the only required fields, plus anything else you choose to give us — email address, ZIP code, the approximate square footage, which space the slab is in, the coating system you are interested in, the current condition of the floor, your timeframe, how you prefer to be contacted, and whatever you tell us in your own words about the floor.',
                 'If you attach photos of your floor, we receive those images. Photographs can carry embedded metadata such as the time the picture was taken and, on some phones, GPS coordinates; we do not strip that metadata, so please do not attach a photo you would not want us to hold.',
                 'We also record how you arrived at the site alongside your enquiry: the page you landed on, the referring site, and any campaign tags or advertising click identifiers in the link you followed. This tells us which advertising actually produces work, and it is attached to your enquiry rather than held separately.',
-                'Nothing on this site requires an account, and we do not ask for payment information at any point — there is no upfront payment to take.',
+                'Nothing on this site requires an account, and we do not ask for payment information anywhere on this site.',
               ],
             },
             {

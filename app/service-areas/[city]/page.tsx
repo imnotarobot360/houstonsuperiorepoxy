@@ -29,7 +29,7 @@ export async function generateMetadata({
 
   const path = `/service-areas/${city.slug}/`
   const title = fitTitle(`Epoxy & Polyaspartic Floor Coatings in ${city.name}, TX | Houston Superior Epoxy`)
-  const description = `Garage floor coatings in ${city.name}, ${city.county}. We diamond grind, repair the slab and quote onsite — free estimates with nothing due upfront.`
+  const description = `Garage floor coatings in ${city.name}, ${city.county}. We diamond grind, repair the slab and quote onsite — free onsite estimates with clear written payment terms.`
 
   return {
     title,
@@ -140,7 +140,7 @@ export default async function Page({ params }: { params: Promise<{ city: string 
 
       <CtaBand
         title={`Get a free onsite estimate in ${city.name}`}
-        body="We inspect the slab, moisture test it, and hand you an itemized written quote. Nothing is due upfront."
+        body="We inspect the slab, moisture test it, and hand you an itemized written quote with the deposit and payment schedule."
       />
 
       {neighborLinks.length > 0 && (

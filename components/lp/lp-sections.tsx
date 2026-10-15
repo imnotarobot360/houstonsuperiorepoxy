@@ -136,7 +136,7 @@ export function LpSystem() {
           <li aria-hidden="true" className="text-border">
             |
           </li>
-          <li>No upfront payment</li>
+          <li>Clear written payment terms</li>
         </ul>
       </div>
     </section>

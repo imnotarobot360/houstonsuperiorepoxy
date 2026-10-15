@@ -72,7 +72,7 @@ export function Pricing({ detailHref }: { detailHref?: string }) {
             has to come off, how much crack and spall repair the floor needs, slab moisture and the
             system you choose all move the figure, and the only way to know by how much is to look
             at the concrete. The onsite inspection that produces your actual number is free, and the
-            quote is itemized in writing with no payment due upfront.
+            quote is itemized in writing, including the deposit and payment schedule.
           </span>
         </p>
 
@@ -101,7 +101,7 @@ export function Pricing({ detailHref }: { detailHref?: string }) {
 
         <div className="mt-16 flex flex-col gap-4 border-t border-border pt-10 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl leading-relaxed text-muted-foreground text-pretty">
-            The onsite estimate is free, itemized in writing, and carries no upfront payment.
+            The onsite estimate is free and itemized in writing, including the deposit and payment schedule.
           </p>
           {detailHref ? (
             <Link

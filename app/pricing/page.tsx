@@ -56,7 +56,7 @@ const body = [
     heading: 'What you get in writing',
     paras: [
       'Every estimate is itemized. Preparation, repair, the coating system, and any removal appear as separate lines, so you can see what each portion of the work costs rather than being handed one number for everything.',
-      'No payment is due upfront. You are not asked for a deposit to hold a date, and there is no charge for the inspection or the quote itself.',
+      'Your written estimate identifies the complete scope, total price, required deposit and payment schedule before you approve the project. There is no charge for the inspection or the quote itself.',
     ],
   },
 ]
@@ -96,7 +96,7 @@ const faqs = [
       in this string is a price claim made to Google. Answers the question by
       naming the cost drivers instead.
     */
-    a: 'Because the two largest cost drivers are the condition of your slab and whether an existing coating has to come off, and neither is something you can describe accurately over the phone or that we can assess from a photo. What we can do over the phone is walk you through what those factors mean for a floor like yours, and what the itemized quote will break out. The onsite inspection that produces the real number is free, and no payment is due upfront.',
+    a: 'Because the two largest cost drivers are the condition of your slab and whether an existing coating has to come off, and neither is something you can describe accurately over the phone or that we can assess from a photo. What we can do over the phone is walk you through what those factors mean for a floor like yours, and what the itemized quote will break out. The onsite inspection that produces the real number is free, and the quote includes the deposit and payment schedule.',
   },
   {
     q: 'Is the cheapest quote ever the right one?',
@@ -104,7 +104,7 @@ const faqs = [
   },
   {
     q: 'Do you charge for the estimate?',
-    a: 'No. The onsite inspection and the written itemized quote are free, and no payment is due upfront if you decide to proceed.',
+    a: 'No. The onsite inspection and the written itemized quote are free. If you decide to proceed, the deposit and payment schedule are written into the quote before you approve.',
   },
   {
     q: 'Will the price change after work starts?',
@@ -112,7 +112,7 @@ const faqs = [
   },
   {
     q: 'Do you offer financing?',
-    a: 'Contact us to discuss payment arrangements for your specific project. Since no payment is due upfront, there is nothing to arrange before the work is scheduled.',
+    a: 'Your quote spells out the deposit and payment schedule for your specific project before you approve it. Contact us with any questions about payment arrangements.',
   },
   {
     q: 'How much does garage floor coating cost per square foot in Houston?',
@@ -218,7 +218,7 @@ export default function Page() {
           {[
             ...systemLayers.map((l) => l.name),
             `${SYSTEM_WARRANTY}, subject to the written terms`,
-            'No upfront payment',
+            'Clear written payment terms',
           ].map((item) => (
             <li
               key={item}

@@ -475,7 +475,7 @@ export default function Page() {
               },
               {
                 t: 'Payment',
-                d: 'No payment due upfront. Estimates are free and carried out onsite.',
+                d: 'Estimates are free and carried out onsite. Your written estimate identifies the complete scope, total price, required deposit and payment schedule before you approve the project.',
               },
             ].map((item) => (
               <div key={item.t} className="bg-background p-7">
@@ -564,7 +564,7 @@ export default function Page() {
 
       <CtaBand
         title="Ask us all fourteen"
-        body="We would rather be measured against this list than talked about in general terms. Free onsite estimate, itemized in writing, no payment upfront."
+        body="We would rather be measured against this list than talked about in general terms. Free onsite estimate, itemized in writing, with the deposit and payment schedule spelled out."
       />
     </>
   )
